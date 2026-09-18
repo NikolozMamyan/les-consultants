@@ -1,0 +1,252 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conseil | Les Consultants{% endblock %}
+{% block meta_description %}Consultants externes spécialisés en compliance, contrôle interne, juridique, fund administration et transformation digitale au Luxembourg.{% endblock %}
+
+{% block body %}
+<main id="contenu" class="container frame">
+<section class="page-intro" data-section="hero" data-section-label="Introduction des expertises" data-reveal-target="item">
+<nav class="breadcrumb" aria-label="Fil d’Ariane">
+<a href="{{ path('app_home') }}">Accueil</a>
+<span aria-hidden="true">/</span>
+<span aria-current="page">Nos expertises</span>
+</nav>
+<div class="intro-grid">
+<div>
+<div class="eyebrow">Conseil</div>
+<h1>Des consultants externes<br>
+<span class="accent">pour vos enjeux métiers.</span>
+</h1>
+<p class="lead">Nous accompagnons les acteurs de la finance au Luxembourg en leur proposant des consultants externes spécialisés, sur des missions ciblées à fort enjeu.</p>
+<a class="button button-primary" href="{{ path('app_deposit') }}">Déposer une mission<span class="arrow-box">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</span>
+</a>
+</div>
+<div class="intro-art" aria-hidden="true">
+<div class="orbit">
+</div>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 10 5-10 5L2 8l10-5Zm-10 9 10 5 10-5M2 16l10 5 10-5"/>
+</svg>
+<span class="pill green">Finance & conformité</span>
+<span class="pill purple">Des profils ciblés</span>
+</div>
+</div>
+</section>
+<section class="section" data-section="services" data-section-label="Nos domaines d’intervention" data-controller="filter" data-reveal-target="item">
+<div class="section-heading">
+<div>
+<div class="eyebrow">Notre savoir-faire</div>
+<h2>Des expertises ciblées.<br>Des réponses concrètes.</h2>
+</div>
+</div>
+<div class="expertise-tabs" aria-label="Filtrer les expertises">
+<button class="filter-button" type="button" data-filter-target="button" data-action="filter#select" data-filter-category-param="all" aria-pressed="true">Toutes les expertises</button>
+<button class="filter-button" type="button" data-filter-target="button" data-action="filter#select" data-filter-category-param="Conformité" aria-pressed="false">Conformité</button>
+<button class="filter-button" type="button" data-filter-target="button" data-action="filter#select" data-filter-category-param="Finance" aria-pressed="false">Finance</button>
+<button class="filter-button" type="button" data-filter-target="button" data-action="filter#select" data-filter-category-param="Transformation" aria-pressed="false">Transformation</button>
+</div>
+<div class="service-grid">
+<article class="service-card" id="compliance" data-category="Conformité" data-filter-target="card">
+<span class="service-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Zm-4 9 3 3 5-6"/>
+</svg>
+</span>
+<h3>Expertise Compliance</h3>
+<p>Nous mettons à disposition des consultants spécialisés pour accompagner les institutions financières dans leurs obligations de lutte contre le blanchiment d’argent (AML), de connaissance client (KYC) et de conformité globale.</p>
+<div class="tag-list">
+<span class="pill">AML / CFT</span>
+<span class="pill">KYC</span>
+<span class="pill">Compliance Officer</span>
+</div>
+<a class="text-link" href="{{ path('app_contact', { expertise: 'compliance' }) }}">Échanger sur ce besoin<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="service-card" id="finance" data-category="Finance" data-filter-target="card">
+<span class="service-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M4 3v17h17M8 15v-4m5 4V7m5 8V5"/>
+</svg>
+</span>
+<h3>Services Fund Administration</h3>
+<p>Nous proposons des consultants spécialisés en comptabilité de fonds, NAV oversight, reporting financier et middle-office, pour des missions d’intérim, de renfort ou de projets ponctuels.</p>
+<div class="tag-list">
+<span class="pill">Fund Accounting</span>
+<span class="pill">NAV Oversight</span>
+<span class="pill">Reporting</span>
+</div>
+<a class="text-link" href="{{ path('app_contact', { expertise: 'finance' }) }}">Échanger sur ce besoin<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="service-card" id="risques" data-category="Conformité" data-filter-target="card">
+<span class="service-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-4 0a5 5 0 1 1-10 0 5 5 0 0 1 10 0Zm-4 0h-2"/>
+</svg>
+</span>
+<h3>Contrôle interne & gouvernance</h3>
+<p>Nos consultants en audit et contrôle interne interviennent pour évaluer, améliorer et sécuriser les processus internes financiers, opérationnels et réglementaires.</p>
+<div class="tag-list">
+<span class="pill">Audit interne</span>
+<span class="pill">Risk & Control</span>
+<span class="pill">Gouvernance</span>
+</div>
+<a class="text-link" href="{{ path('app_contact', { expertise: 'risques' }) }}">Échanger sur ce besoin<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="service-card" id="juridique" data-category="Conformité" data-filter-target="card">
+<span class="service-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M14 2H4v20h16V8l-6-6Zm0 0v6h6M8 13h8m-8 4h6"/>
+</svg>
+</span>
+<h3>Services Juridiques &amp; Réglementaires</h3>
+<p>Nos juristes et consultants en conformité vous assistent dans la rédaction contractuelle, l’analyse réglementaire et la gestion du risque juridique.</p>
+<div class="tag-list">
+<span class="pill">Legal Officer</span>
+<span class="pill">Fonds</span>
+<span class="pill">Banque privée</span>
+</div>
+<a class="text-link" href="{{ path('app_contact', { expertise: 'juridique' }) }}">Échanger sur ce besoin<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="service-card" id="digital" data-category="Transformation" data-filter-target="card">
+<span class="service-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-12-2 14"/>
+</svg>
+</span>
+<h3>Services Transformation Digitale (IT)</h3>
+<p>Nous fournissons des experts IT pour renforcer vos équipes ou piloter vos projets : gouvernance et conformité, gestion de projet, optimisation ITSM, opérations, infrastructures et cybersécurité.</p>
+<div class="tag-list">
+<span class="pill">Gestion de projet</span>
+<span class="pill">Cybersécurité</span>
+<span class="pill">Gouvernance IT</span>
+</div>
+<a class="text-link" href="{{ path('app_contact', { expertise: 'digital' }) }}">Échanger sur ce besoin<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="service-card custom" data-category="all" data-filter-target="card">
+<span class="service-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/>
+</svg>
+</span>
+<h3>Votre besoin ne rentre pas dans une case ?</h3>
+<p>Nous construisons des solutions sur mesure pour vos besoins non standards ou multisectoriels.</p>
+<a class="button button-primary" href="{{ path('app_deposit') }}">Déposer une mission<span class="arrow-box">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</span>
+</a>
+</article>
+</div>
+<p class="contact-note" aria-live="polite" id="filter-status" data-filter-target="status">5 domaines d’expertise</p>
+</section>
+<section class="digital-platform-section" data-section="plateforme" data-section-label="Plateforme e-learning" data-reveal-target="item">
+<div class="platform-ambient" aria-hidden="true"></div>
+<div class="platform-copy">
+<div class="eyebrow">Notre solution digitale</div>
+<h2>La formation réglementaire.<br><span>Accessible partout.</span></h2>
+<p class="platform-lead">Une plateforme e-learning pensée pour les professionnels et les équipes réglementées au Luxembourg. Déployez vos formations, suivez les progrès et centralisez les certificats depuis un espace clair et sécurisé.</p>
+
+<div class="platform-benefits">
+<div class="platform-benefit">
+<span class="platform-benefit-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm4 4h8M8 13h5"/></svg>
+</span>
+<div><strong>30+ modules métier</strong><small>Compliance, AML/CFT, Risk, GDPR et Cybersécurité.</small></div>
+</div>
+<div class="platform-benefit">
+<span class="platform-benefit-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V3"/></svg>
+</span>
+<div><strong>Suivi centralisé</strong><small>Progression, complétion et certificats visibles en temps réel.</small></div>
+</div>
+<div class="platform-benefit">
+<span class="platform-benefit-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 3h8v18H8V3Zm3 15h2M4 7H2v10h2m16-10h2v10h-2"/></svg>
+</span>
+<div><strong>Web &amp; mobile</strong><small>Vos parcours restent disponibles 24/7, au bureau comme en mobilité.</small></div>
+</div>
+</div>
+
+<a class="platform-main-link" href="https://elearning-lesconsultants.com/" target="_blank" rel="noopener noreferrer">Découvrir la plateforme<span>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+</span></a>
+
+<div class="app-downloads">
+<span class="app-downloads-label">Emportez vos formations partout</span>
+<div class="store-badges">
+<a class="store-badge" href="https://apps.apple.com/fr/app/les-consultants-e-learning/id6761538535" target="_blank" rel="noopener noreferrer" aria-label="Télécharger Les Consultants e-learning sur l’App Store">
+<svg class="store-logo store-logo-apple" aria-hidden="true" viewBox="0 0 24 24"><path d="M17.1 12.6c0-2.8 2.3-4.2 2.4-4.3a5.2 5.2 0 0 0-4.1-2.2c-1.8-.2-3.4 1-4.3 1s-2.3-1-3.8-.9a5.6 5.6 0 0 0-4.7 2.9c-2 3.5-.5 8.7 1.4 11.5.9 1.4 2.1 3 3.6 2.9 1.5 0 2-1 3.8-1s2.3 1 3.8 1c1.6 0 2.6-1.4 3.5-2.8a12.5 12.5 0 0 0 1.6-3.4 5 5 0 0 1-3.2-4.7ZM14.2 4.2A5 5 0 0 0 15.4.6a5 5 0 0 0-3.3 1.7 4.7 4.7 0 0 0-1.2 3.5 4.2 4.2 0 0 0 3.3-1.6Z"/></svg>
+<span><small>Télécharger sur</small><strong>App Store</strong></span>
+<svg class="store-arrow" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+</a>
+<a class="store-badge" href="https://play.google.com/store/apps/details?id=com.mycompany.lesconsultantselearning&amp;hl=en" target="_blank" rel="noopener noreferrer" aria-label="Télécharger Les Consultants sur Google Play">
+<svg class="store-logo store-logo-play" aria-hidden="true" viewBox="0 0 32 36">
+<path class="play-blue" d="M3 3.3v29.4L18.7 18 3 3.3Z"/>
+<path class="play-green" d="m3.8 2.5 18.6 10.7-3.7 4.8L3 3.3l.8-.8Z"/>
+<path class="play-yellow" d="m18.7 18 3.7 4.8L3.8 33.5l-.8-.8L18.7 18Z"/>
+<path class="play-red" d="m22.4 13.2 5.1 2.9c1 .6 1 1.3 0 1.8l-5.1 2.9-3.7-2.8 3.7-4.8Z"/>
+</svg>
+<span><small>Disponible sur</small><strong>Google Play</strong></span>
+<svg class="store-arrow" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+</a>
+</div>
+</div>
+</div>
+
+<div class="platform-showcase">
+<div class="platform-browser">
+<div class="platform-browser-bar" aria-hidden="true">
+<span></span><span></span><span></span>
+<div><i></i> elearning-lesconsultants.com</div>
+</div>
+<div class="platform-screen">
+<img src="{{ asset('images/plateforme.webp') }}" alt="Tableau de bord de la plateforme Les Consultants e-learning avec les cours, la progression et les certificats" width="1920" height="1690" loading="lazy">
+</div>
+</div>
+<div class="platform-floating-card platform-floating-modules"><span>Catalogue</span><strong>30+ modules</strong><small>Actualisés régulièrement</small></div>
+<div class="platform-floating-card platform-floating-progress">
+<span>Progression des équipes</span>
+<strong>Suivi en temps réel</strong>
+<i aria-hidden="true"><b></b></i>
+</div>
+<div class="platform-device-chip"><span></span> Disponible sur tous vos appareils</div>
+</div>
+</section>
+<section class="cta-section" data-reveal-target="item">
+<div class="eyebrow">Prêt à démarrer ?</div>
+<h2>Besoin d’un consultant qualifié<br><span class="accent">pour renforcer vos équipes ?</span></h2>
+<p>Parlez-nous de votre besoin, on s’occupe du reste !</p>
+<div class="actions">
+<a class="button button-primary" href="{{ path('app_deposit') }}">Commencer<span class="arrow-box">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</span>
+</a>
+<a class="button button-quiet" href="{{ path('app_contact', { profil: 'consultant' }) }}">Je suis consultant <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M6 18 18 6M6 6h12v12"/>
+</svg>
+</a>
+</div>
+</section>
+</main>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}Modifier {{ pageData.name }}{% endblock %}
+
+{% block body %}
+<div class="admin-editor" data-controller="content-editor">
+    <header class="admin-editor-heading">
+        <div>
+            <a class="admin-back-link" href="{{ path('admin_content') }}">{{ ui.icon('arrow') }} Toutes les pages</a>
+            <span class="admin-editor-title"><i>{{ ui.icon(pageData.icon) }}</i><span><strong>{{ pageData.name }}</strong><small>{{ pageData.path }}</small></span></span>
+        </div>
+        <div class="admin-editor-actions">
+            <span class="admin-editor-status" data-content-editor-target="status"><i></i> Aperçu synchronisé</span>
+            <button class="admin-button admin-button-light" type="button" data-action="content-editor#reset">Réinitialiser</button>
+            <button class="admin-button admin-button-primary" type="button" data-action="content-editor#save">Enregistrer {{ ui.icon('check') }}</button>
+        </div>
+    </header>
+
+    <div class="admin-editor-layout">
+        <aside class="admin-editor-panel">
+            <header><span class="admin-kicker">Contenu de la page</span><h2>Sections</h2><p>Sélectionnez une section puis modifiez uniquement son contenu.</p></header>
+            <nav class="admin-section-nav" aria-label="Sections de la page">
+                {% for section in pageData.sections %}
+                    <button type="button" class="admin-section-button{% if loop.first %} is-active{% endif %}" data-content-editor-target="sectionButton" data-section-id="{{ section.id }}" data-section-selector="{{ section.selector|e('html_attr') }}" data-action="content-editor#selectSection">
+                        <span>{{ loop.index < 10 ? '0' ~ loop.index : loop.index }}</span><span><strong>{{ section.label }}</strong><small>{{ section.fieldsCount }} éléments{% if section.carousel %} · {{ section.carousel.cards|length }} cartes{% endif %}</small></span>{{ ui.icon('arrow') }}
+                    </button>
+                {% endfor %}
+            </nav>
+
+            <form class="admin-section-forms" data-action="submit->content-editor#save">
+                {% for section in pageData.sections %}
+                    <section class="admin-section-form" data-content-editor-target="panel" data-section-id="{{ section.id }}"{% if not loop.first %} hidden{% endif %}>
+                        <div class="admin-section-form-heading"><span>Section {{ loop.index }} · {{ section.fieldsCount }} éléments modifiables</span><h3>{{ section.label }}</h3></div>
+                        {% for field in section.fields %}
+                            {% include 'admin/content/_editor_field.html.twig' with {fieldId: 'field-' ~ section.id ~ '-' ~ loop.index} %}
+                        {% endfor %}
+
+                        {% if section.carousel %}
+                            <div class="admin-carousel-editor" data-carousel-root-selector="{{ section.selector|e('html_attr') }}" data-carousel-viewport-selector="{{ section.carousel.viewportSelector|e('html_attr') }}" data-carousel-track-selector="{{ section.carousel.trackSelector|e('html_attr') }}">
+                                <header class="admin-carousel-editor-heading">
+                                    <span>{{ ui.icon('activity') }}</span>
+                                    <div><strong>Gestion du carrousel</strong><small>Réglages et contenu des {{ section.carousel.cards|length }} cartes</small></div>
+                                </header>
+
+                                <div class="admin-carousel-settings">
+                                    <label class="admin-carousel-mode-switch">
+                                        <span><strong>Bandeau compact</strong><small>Défilement continu en boucle</small></span>
+                                        <input type="checkbox" data-action="change->content-editor#updateCarouselMode">
+                                        <i aria-hidden="true"><b></b></i>
+                                    </label>
+                                    <label class="admin-carousel-interval">
+                                        <span><strong>Intervalle</strong><output>{{ (section.carousel.interval / 1000)|number_format(1, ',', ' ') }} s</output></span>
+                                        <input type="range" min="2000" max="10000" step="200" value="{{ section.carousel.interval }}" data-action="input->content-editor#updateCarouselInterval">
+                                        <small>Temps entre deux cartes. En mode bandeau, ce réglage contrôle la vitesse.</small>
+                                    </label>
+                                </div>
+
+                                <div class="admin-carousel-cards-heading"><span>Cartes du carrousel</span><small>Sélectionnez une carte pour la modifier</small></div>
+                                <div class="admin-carousel-card-picker">
+                                    {% for card in section.carousel.cards %}
+                                        <button type="button" class="admin-carousel-card-button{% if loop.first %} is-active{% endif %}" data-content-editor-target="carouselCardButton" data-card-id="{{ section.id }}-{{ loop.index }}" data-card-selector="{{ card.selector|e('html_attr') }}" data-action="content-editor#selectCarouselCard">
+                                            <span>{{ loop.index < 10 ? '0' ~ loop.index : loop.index }}</span><strong>{{ card.label }}</strong>{{ ui.icon('arrow') }}
+                                        </button>
+                                    {% endfor %}
+                                </div>
+
+                                {% for card in section.carousel.cards %}
+                                    {% set cardIndex = loop.index %}
+                                    <div class="admin-carousel-card-panel" data-content-editor-target="carouselCardPanel" data-card-id="{{ section.id }}-{{ cardIndex }}"{% if not loop.first %} hidden{% endif %}>
+                                        <div class="admin-carousel-card-panel-heading"><span>Carte {{ cardIndex }} / {{ section.carousel.cards|length }}</span><strong>{{ card.label }}</strong></div>
+                                        {% for field in card.fields %}
+                                            {% include 'admin/content/_editor_field.html.twig' with {fieldId: 'field-' ~ section.id ~ '-card-' ~ cardIndex ~ '-' ~ loop.index} %}
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </section>
+                {% endfor %}
+            </form>
+        </aside>
+
+        <section class="admin-preview-area">
+            <header class="admin-preview-toolbar">
+                <div class="admin-browser-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+                <span class="admin-preview-url">les-consultants.com{{ pageData.path }}</span>
+                <div class="admin-preview-tools">
+                    <span class="admin-preview-locked">{{ ui.icon('lock') }} Navigation désactivée</span>
+                    <div class="admin-zoom-control" aria-label="Zoom de l’aperçu">
+                        <button type="button" aria-label="Réduire le zoom" data-action="content-editor#zoomOut">−</button>
+                        <span data-content-editor-target="zoomLabel">85 %</span>
+                        <button type="button" aria-label="Augmenter le zoom" data-action="content-editor#zoomIn">+</button>
+                    </div>
+                    <div class="admin-device-switch" aria-label="Taille de l’aperçu">
+                        <button class="is-active" type="button" aria-label="Ordinateur" data-content-editor-target="device" data-size="desktop" data-action="content-editor#viewport">{{ ui.icon('desktop') }}</button>
+                        <button type="button" aria-label="Tablette" data-content-editor-target="device" data-size="tablet" data-action="content-editor#viewport">{{ ui.icon('tablet') }}</button>
+                        <button type="button" aria-label="Mobile" data-content-editor-target="device" data-size="mobile" data-action="content-editor#viewport">{{ ui.icon('mobile') }}</button>
+                    </div>
+                </div>
+            </header>
+            <div class="admin-preview-stage" data-content-editor-target="preview" data-zoom="85">
+                <div class="admin-preview-frame" data-content-editor-target="frameShell">
+                    <iframe src="{{ path(pageData.route) }}" title="Aperçu non navigable de la page {{ pageData.name }}" tabindex="-1" data-content-editor-target="frame" data-action="load->content-editor#previewReady"></iframe>
+                    <div class="admin-section-outline" data-content-editor-target="outline" hidden>
+                        <span data-content-editor-target="outlineLabel">Section</span><i aria-hidden="true">•••</i>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

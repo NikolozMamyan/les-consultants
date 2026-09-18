@@ -1,0 +1,31 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}Missions & Talents{% endblock %}
+
+{% block body %}
+<header class="admin-page-heading">
+    <div><span class="admin-kicker">Suivi commercial</span><h1>Missions &amp; Talents</h1><p>Centralisez les besoins des entreprises et les candidatures des consultants.</p></div>
+    <button class="admin-button admin-button-light" type="button" data-action="admin-shell#demo" data-admin-shell-message-param="L’export sera connecté aux données réelles.">{{ ui.icon('up') }} Exporter</button>
+</header>
+
+<section class="admin-stat-grid admin-stat-grid-compact">
+    <article class="admin-mini-stat"><span>Nouvelles demandes</span><strong>9</strong><small>Aujourd’hui</small></article>
+    <article class="admin-mini-stat"><span>Missions ouvertes</span><strong>14</strong><small>6 prioritaires</small></article>
+    <article class="admin-mini-stat"><span>Profils à qualifier</span><strong>21</strong><small>Cette semaine</small></article>
+    <article class="admin-mini-stat"><span>Matchs potentiels</span><strong>38</strong><small>Score supérieur à 80 %</small></article>
+</section>
+
+<section class="admin-panel">
+    <header class="admin-panel-header admin-table-heading">
+        <div class="admin-filter-tabs"><button class="is-active" type="button">Tous <b>{{ submissions|length }}</b></button><button type="button">Missions</button><button type="button">Profils</button></div>
+        <label class="admin-search">{{ ui.icon('search') }}<input type="search" placeholder="Rechercher" aria-label="Rechercher un dépôt"></label>
+    </header>
+    <div class="admin-table-wrap">
+        <table class="admin-table admin-submission-table">
+            <thead><tr><th>Type</th><th>Dépôt</th><th>Entreprise / spécialité</th><th>Reçu</th><th>Statut</th><th></th></tr></thead>
+            <tbody>{% for item in submissions %}<tr><td><span class="admin-type-label admin-type-{{ item.type|lower }}">{{ ui.icon(item.type == 'Mission' ? 'briefcase' : 'people') }} {{ item.type }}</span></td><td><strong>{{ item.name }}</strong>{% if item.priority %}<small class="admin-priority">Prioritaire</small>{% endif %}</td><td>{{ item.contact }}</td><td>{{ item.date }}</td><td><span class="admin-status admin-status-{{ item.status|lower|replace({' ': '-', 'à': 'a'}) }}">{{ item.status }}</span></td><td><button class="admin-row-menu" type="button" aria-label="Ouvrir le dépôt" data-action="admin-shell#demo" data-admin-shell-message-param="La fiche détaillée sera connectée aux dépôts enregistrés.">•••</button></td></tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

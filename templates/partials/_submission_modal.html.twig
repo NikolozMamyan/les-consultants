@@ -1,0 +1,246 @@
+{% import 'macros/ui.html.twig' as ui %}
+
+<dialog class="submission-modal" data-submission-modal-target="dialog" data-action="click->submission-modal#backdrop close->submission-modal#closed" aria-labelledby="submission-modal-title">
+    <div class="submission-modal-shell">
+        <header class="submission-modal-header">
+            <div>
+                <div class="eyebrow" data-submission-modal-target="eyebrow">Votre besoin</div>
+                <h2 id="submission-modal-title" data-submission-modal-target="title">Déposez votre mission</h2>
+                <p data-submission-modal-target="intro">Quelques informations suffisent pour lancer la recherche du bon expert.</p>
+            </div>
+            <button class="submission-modal-close" type="button" data-action="submission-modal#close" aria-label="Fermer la fenêtre">
+                <span aria-hidden="true"></span>
+            </button>
+        </header>
+
+        <div class="submission-modal-body">
+            <div class="submission-flow-switch" role="tablist" aria-label="Choisir le type de dépôt">
+                <button class="submission-flow-option{% if activeFlow == 'mission' %} is-active{% endif %}" type="button" role="tab" aria-selected="{{ activeFlow == 'mission' ? 'true' : 'false' }}" data-submission-modal-target="flowOption" data-flow="mission" data-action="submission-modal#switchFlow" data-submission-modal-flow-param="mission">
+                    <span class="submission-flow-icon">{{ ui.icon('briefcase') }}</span>
+                    <span><strong>Un besoin</strong><small>Je cherche un expert</small></span>
+                </button>
+                <button class="submission-flow-option{% if activeFlow == 'consultant' %} is-active{% endif %}" type="button" role="tab" aria-selected="{{ activeFlow == 'consultant' ? 'true' : 'false' }}" data-submission-modal-target="flowOption" data-flow="consultant" data-action="submission-modal#switchFlow" data-submission-modal-flow-param="consultant">
+                    <span class="submission-flow-icon">{{ ui.icon('people') }}</span>
+                    <span><strong>Mon profil</strong><small>Je suis consultant</small></span>
+                </button>
+            </div>
+
+            <div data-submission-modal-target="flow" data-flow="mission"{% if activeFlow != 'mission' %} hidden{% endif %}>
+                {{ form_start(missionForm, { attr: { novalidate: 'novalidate', 'data-action': 'submit->submission-modal#validateSubmit' } }) }}
+                    {{ form_errors(missionForm) }}
+                    <div class="submission-progress" aria-label="Progression du formulaire">
+                        <span class="is-active"><i>1</i><small>Mission</small></span>
+                        <span><i>2</i><small>Contact</small></span>
+                        <span><i>3</i><small>Contexte</small></span>
+                    </div>
+
+                    <section class="submission-step" data-step="0">
+                        <div class="submission-step-heading">
+                            <span>01</span>
+                            <div><h3>Parlez-nous de la mission</h3><p>Précisez le besoin pour orienter immédiatement notre recherche.</p></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="field full">
+                                {{ form_label(missionForm.missionTitle, 'Intitulé de la mission *') }}
+                                {{ form_widget(missionForm.missionTitle, { attr: { placeholder: 'Ex. Compliance Officer — renfort AML/KYC', autocomplete: 'off', maxlength: 160 } }) }}
+                                {{ form_errors(missionForm.missionTitle) }}
+                            </div>
+                            <div class="field full">
+                                {{ form_label(missionForm.expertise, 'Expertise recherchée *') }}
+                                {{ form_widget(missionForm.expertise) }}
+                                {{ form_errors(missionForm.expertise) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(missionForm.startDate, 'Date de début souhaitée') }}
+                                {{ form_widget(missionForm.startDate) }}
+                                {{ form_errors(missionForm.startDate) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(missionForm.duration, 'Durée estimée *') }}
+                                {{ form_widget(missionForm.duration) }}
+                                {{ form_errors(missionForm.duration) }}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="submission-step" data-step="1" hidden>
+                        <div class="submission-step-heading">
+                            <span>02</span>
+                            <div><h3>À qui devons-nous répondre ?</h3><p>Un interlocuteur dédié vous recontactera sous 24 heures.</p></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="field full">
+                                {{ form_label(missionForm.company, 'Entreprise *') }}
+                                {{ form_widget(missionForm.company, { attr: { placeholder: 'Votre organisation', autocomplete: 'organization', maxlength: 160 } }) }}
+                                {{ form_errors(missionForm.company) }}
+                            </div>
+                            <div class="field full">
+                                {{ form_label(missionForm.contactName, 'Nom et prénom *') }}
+                                {{ form_widget(missionForm.contactName, { attr: { placeholder: 'Votre nom', autocomplete: 'name', maxlength: 160 } }) }}
+                                {{ form_errors(missionForm.contactName) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(missionForm.email, 'E-mail professionnel *') }}
+                                {{ form_widget(missionForm.email, { attr: { placeholder: 'vous@entreprise.com', autocomplete: 'email', maxlength: 180 } }) }}
+                                {{ form_errors(missionForm.email) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(missionForm.phone, 'Téléphone') }}
+                                {{ form_widget(missionForm.phone, { attr: { placeholder: '+352 …', autocomplete: 'tel', maxlength: 35 } }) }}
+                                {{ form_errors(missionForm.phone) }}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="submission-step" data-step="2" hidden>
+                        <div class="submission-step-heading">
+                            <span>03</span>
+                            <div><h3>Contexte et objectifs</h3><p>Les éléments partagés restent confidentiels et nous permettent d’affiner la sélection.</p></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="field full">
+                                {{ form_label(missionForm.description, 'Décrivez votre besoin *') }}
+                                {{ form_widget(missionForm.description, { attr: { rows: 7, placeholder: 'Contexte, enjeux, compétences attendues, livrables…', minlength: 20, maxlength: 4000 } }) }}
+                                <small class="field-hint">20 caractères minimum</small>
+                                {{ form_errors(missionForm.description) }}
+                            </div>
+                        </div>
+                        <div class="consent">
+                            {{ form_widget(missionForm.consent) }}
+                            {{ form_label(missionForm.consent, 'J’accepte que mes informations soient utilisées pour traiter cette demande. *') }}
+                            {{ form_errors(missionForm.consent) }}
+                        </div>
+                    </section>
+
+                    {{ form_rest(missionForm) }}
+                    <footer class="submission-modal-footer">
+                        <button class="submission-back" type="button" data-role="previous" data-action="submission-modal#previous" hidden>
+                            {{ ui.icon('arrow') }} Retour
+                        </button>
+                        <span class="submission-step-count" aria-live="polite">Étape 1 sur 3</span>
+                        <button class="button button-primary" type="button" data-role="next" data-action="submission-modal#next">
+                            Continuer <span class="arrow-box">{{ ui.icon('arrow') }}</span>
+                        </button>
+                        <button class="button button-primary" type="submit" data-role="submit" hidden>
+                            Envoyer la mission <span class="arrow-box">{{ ui.icon('arrow') }}</span>
+                        </button>
+                    </footer>
+                {{ form_end(missionForm, { render_rest: false }) }}
+            </div>
+
+            <div data-submission-modal-target="flow" data-flow="consultant"{% if activeFlow != 'consultant' %} hidden{% endif %}>
+                {{ form_start(consultantForm, { attr: { novalidate: 'novalidate', 'data-action': 'submit->submission-modal#validateSubmit' } }) }}
+                    {{ form_errors(consultantForm) }}
+                    <div class="submission-progress" aria-label="Progression du formulaire">
+                        <span class="is-active"><i>1</i><small>Identité</small></span>
+                        <span><i>2</i><small>Métiers</small></span>
+                        <span><i>3</i><small>Disponibilité</small></span>
+                    </div>
+
+                    <section class="submission-step" data-step="0">
+                        <div class="submission-step-heading">
+                            <span>01</span>
+                            <div><h3>Informations personnelles</h3><p>Ces coordonnées nous permettent de vous recontacter dès qu’une mission correspond à votre profil.</p></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="field">
+                                {{ form_label(consultantForm.firstName, 'Prénom *') }}
+                                {{ form_widget(consultantForm.firstName, { attr: { placeholder: 'John', autocomplete: 'given-name', maxlength: 80 } }) }}
+                                {{ form_errors(consultantForm.firstName) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(consultantForm.lastName, 'Nom *') }}
+                                {{ form_widget(consultantForm.lastName, { attr: { placeholder: 'Doe', autocomplete: 'family-name', maxlength: 80 } }) }}
+                                {{ form_errors(consultantForm.lastName) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(consultantForm.email, 'E-mail *') }}
+                                {{ form_widget(consultantForm.email, { attr: { placeholder: 'j.doe@email.com', autocomplete: 'email', maxlength: 180 } }) }}
+                                {{ form_errors(consultantForm.email) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(consultantForm.phone, 'Téléphone *') }}
+                                {{ form_widget(consultantForm.phone, { attr: { placeholder: '+352 621 123 456', autocomplete: 'tel', maxlength: 35 } }) }}
+                                {{ form_errors(consultantForm.phone) }}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="submission-step" data-step="1" hidden>
+                        <div class="submission-step-heading">
+                            <span>02</span>
+                            <div><h3>Détails professionnels</h3><p>Indiquez vos métiers cibles, votre TJM et les pays dans lesquels vous souhaitez intervenir.</p></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="field full">
+                                {{ form_label(consultantForm.primaryDomain, 'Votre premier domaine *') }}
+                                {{ form_widget(consultantForm.primaryDomain) }}
+                                {{ form_errors(consultantForm.primaryDomain) }}
+                            </div>
+                            <div class="field full submission-role-field">
+                                {{ form_label(consultantForm.targetRoles, 'Postes visés *') }}
+                                {{ form_widget(consultantForm.targetRoles, { attr: { class: 'submission-role-select', 'aria-describedby': 'target-roles-hint' } }) }}
+                                <small class="field-hint" id="target-roles-hint">Vous pouvez sélectionner plusieurs métiers, y compris dans un second domaine.</small>
+                                {{ form_errors(consultantForm.targetRoles) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(consultantForm.dailyRateMin, 'TJM minimum *') }}
+                                {{ form_widget(consultantForm.dailyRateMin, { attr: { placeholder: '550', inputmode: 'numeric' } }) }}
+                                {{ form_errors(consultantForm.dailyRateMin) }}
+                            </div>
+                            <div class="field">
+                                {{ form_label(consultantForm.dailyRateMax, 'TJM maximum') }}
+                                {{ form_widget(consultantForm.dailyRateMax, { attr: { placeholder: '750', inputmode: 'numeric' } }) }}
+                                {{ form_errors(consultantForm.dailyRateMax) }}
+                            </div>
+                            <div class="field full submission-country-field">
+                                {{ form_label(consultantForm.countries, 'Pays souhaités *') }}
+                                {{ form_widget(consultantForm.countries, { attr: { class: 'submission-country-choices' } }) }}
+                                {{ form_errors(consultantForm.countries) }}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="submission-step" data-step="2" hidden>
+                        <div class="submission-step-heading">
+                            <span>03</span>
+                            <div><h3>Disponibilité &amp; CV</h3><p>Une dernière étape pour intégrer notre base de consultants en Belgique et au Luxembourg.</p></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="field full">
+                                {{ form_label(consultantForm.availability, 'Disponibilité *') }}
+                                {{ form_widget(consultantForm.availability) }}
+                                {{ form_errors(consultantForm.availability) }}
+                            </div>
+                            <div class="field full file-field">
+                                {{ form_label(consultantForm.cv, 'Dépôt de CV *') }}
+                                {{ form_widget(consultantForm.cv) }}
+                                <small class="field-hint">PDF uniquement · 5 Mo maximum</small>
+                                {{ form_errors(consultantForm.cv) }}
+                            </div>
+                        </div>
+                        <div class="consent">
+                            {{ form_widget(consultantForm.consent) }}
+                            {{ form_label(consultantForm.consent, 'J’accepte que mes informations et mon CV soient utilisés pour étudier mon profil. *') }}
+                            {{ form_errors(consultantForm.consent) }}
+                        </div>
+                    </section>
+
+                    {{ form_rest(consultantForm) }}
+                    <footer class="submission-modal-footer">
+                        <button class="submission-back" type="button" data-role="previous" data-action="submission-modal#previous" hidden>
+                            {{ ui.icon('arrow') }} Retour
+                        </button>
+                        <span class="submission-step-count" aria-live="polite">Étape 1 sur 3</span>
+                        <button class="button button-primary" type="button" data-role="next" data-action="submission-modal#next">
+                            Continuer <span class="arrow-box">{{ ui.icon('arrow') }}</span>
+                        </button>
+                        <button class="button button-primary" type="submit" data-role="submit" hidden>
+                            Envoyer mon profil <span class="arrow-box">{{ ui.icon('arrow') }}</span>
+                        </button>
+                    </footer>
+                {{ form_end(consultantForm, { render_rest: false }) }}
+            </div>
+        </div>
+    </div>
+</dialog>

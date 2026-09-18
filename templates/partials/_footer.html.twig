@@ -1,0 +1,39 @@
+<footer class="site-footer container frame">
+    <div class="footer-top">
+        <div class="footer-brand">
+            <a class="brand" href="{{ path('app_home') }}" aria-label="Les Consultants — Accueil">
+                <span class="brand-symbol"><img src="{{ asset('images/logo-original.png') }}" alt="" width="94" height="94"></span>
+                <span class="brand-name">les consultants<small>CONSEIL &amp; FORMATION</small></span>
+            </a>
+            <p>Conseil & FORMATION au Luxembourg</p>
+        </div>
+        <div class="footer-column">
+            <h3>Nos services</h3>
+            <a href="{{ path('app_expertises') }}">Conseil</a>
+            <a href="https://elearning-lesconsultants.com/" target="_blank" rel="noopener noreferrer">E-Learning ↗</a>
+        </div>
+        <div class="footer-column">
+            <h3>Liens utiles</h3>
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_cabinet') }}">Qui sommes-nous</a>
+            <a href="{{ path('app_expertises') }}">Nos expertises</a>
+            <a href="{{ path('app_blog_index') }}">Blog</a>
+            <a href="{{ path('app_deposit') }}">Déposer une mission</a>
+        </div>
+        <div class="footer-column">
+            <h3>Contact</h3>
+            <a href="tel:+352621735201">+352 621 735 201</a>
+            <a href="tel:+33766501444">+33 7 66 50 14 44</a>
+            <a href="mailto:pruffin@les-consultants.lu">pruffin@les-consultants.lu</a>
+            <p>1 Simmerfarm, L-8363<br>Luxembourg</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© {{ 'now'|date('Y') }} LES CONSULTANTS — Tous droits réservés</span>
+        <div>
+            <a href="https://les-consultants.com/mentions-legales/" target="_blank" rel="noopener noreferrer">Mentions légales ↗</a>
+            <a href="https://les-consultants.com/politique-confidentialite/" target="_blank" rel="noopener noreferrer">Politique de confidentialité ↗</a>
+            <a href="{{ path('app_contact') }}">Contact</a>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.metaTitle }}{% endblock %}
+{% block meta_description %}{{ post.metaDescription }}{% endblock %}
+{% block canonical_url %}{{ url('app_blog_show', { slug: post.slug }) }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{% if post.featuredImage %}{{ absolute_url(asset(post.featuredImage)) }}{% endif %}{% endblock %}
+
+{% block structured_data %}
+    {% set articleSchema = post.featuredImage ? structuredData|merge({ image: absolute_url(asset(post.featuredImage)) }) : structuredData %}
+    <script type="application/ld+json">{{ articleSchema|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE'))|raw }}</script>
+{% endblock %}
+
+{% block body %}
+<main id="contenu" class="blog-article">
+    <header class="container frame blog-article-hero" data-reveal-target="item">
+        <nav class="breadcrumb" aria-label="Fil d’Ariane">
+            <a href="{{ path('app_home') }}">Accueil</a><span aria-hidden="true">/</span>
+            <a href="{{ path('app_blog_index') }}">Blog</a><span aria-hidden="true">/</span>
+            <span aria-current="page">{{ post.category }}</span>
+        </nav>
+        <div class="blog-article-heading">
+            <div class="blog-article-kicker"><span>{{ post.category }}</span><span>Analyse</span></div>
+            <h1>{{ post.title }}</h1>
+            <p>{{ post.excerpt }}</p>
+            <div class="blog-article-meta">
+                <span class="blog-author-mark">LC</span>
+                <div><strong>{{ post.author }}</strong><small>Expertises finance &amp; conformité</small></div>
+                <i aria-hidden="true"></i>
+                <time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time>
+                <span>{{ post.readingTime }} min de lecture</span>
+            </div>
+        </div>
+        {% if post.featuredImage %}
+            <figure class="blog-article-cover">
+                <img src="{{ asset(post.featuredImage) }}" alt="{{ post.featuredImageAlt }}">
+                <figcaption><span>LES CONSULTANTS · INSIGHT</span><span>{{ post.publishedAt|date('Y') }}</span></figcaption>
+            </figure>
+        {% endif %}
+    </header>
+
+    <div class="container frame blog-article-layout">
+        <aside class="blog-article-aside" aria-label="Informations sur l’article">
+            <div class="blog-aside-card">
+                <span>Dans cette analyse</span>
+                <strong>{{ post.category }}</strong>
+                <p>Un éclairage préparé par l’équipe Les Consultants pour les professionnels des métiers régulés.</p>
+            </div>
+            <a class="blog-back-link" href="{{ path('app_blog_index', { category: post.category }) }}">Voir les articles similaires <span aria-hidden="true">→</span></a>
+        </aside>
+
+        <article class="blog-prose">
+            {{ post.content|raw }}
+
+            {% if post.contentImages %}
+                <div class="blog-article-gallery" aria-label="Illustrations de l’article">
+                    {% for image in post.contentImages %}
+                        <figure><img src="{{ asset(image.path) }}" alt="{{ image.alt }}" loading="lazy"></figure>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <footer class="blog-article-signature">
+                <span class="blog-author-mark">LC</span>
+                <div><strong>Les Consultants</strong><p>Conseil et formation pour les métiers régulés au Luxembourg.</p></div>
+            </footer>
+        </article>
+    </div>
+
+    {% if relatedPosts %}
+        <section class="container frame blog-related" aria-labelledby="related-title" data-reveal-target="item">
+            <header><div><span>Pour aller plus loin</span><h2 id="related-title">À lire ensuite</h2></div><a href="{{ path('app_blog_index') }}">Toutes les analyses →</a></header>
+            <div class="blog-grid blog-grid-related">
+                {% for related in relatedPosts %}{% include 'blog/_card.html.twig' with { post: related } only %}{% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
+    <section class="container frame blog-article-cta" data-reveal-target="item">
+        <div><span class="eyebrow">Votre contexte est unique</span><h2>Parlons de vos enjeux.</h2></div>
+        <div><p>Nos consultants vous accompagnent sur vos problématiques réglementaires, financières et opérationnelles.</p><a class="button button-primary" href="{{ path('app_contact') }}">Échanger avec nous <span class="arrow-box">↗</span></a></div>
+    </section>
+</main>
+{% endblock %}

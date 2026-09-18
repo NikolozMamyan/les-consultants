@@ -1,0 +1,92 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<header class="admin-page-heading">
+    <div>
+        <span class="admin-kicker">Vue d’ensemble</span>
+        <h1>Bonjour Patrick <span aria-hidden="true">👋</span></h1>
+        <p>Voici ce qui se passe aujourd’hui sur Les Consultants.</p>
+    </div>
+    <div class="admin-heading-actions">
+        <span class="admin-date">Mercredi 16 septembre 2026</span>
+        <a class="admin-button admin-button-primary" href="{{ path('admin_content') }}">Modifier le site {{ ui.icon('arrow') }}</a>
+    </div>
+</header>
+
+<section class="admin-stat-grid" aria-label="Indicateurs principaux">
+    {% for stat in stats %}
+        <article class="admin-stat-card admin-stat-{{ stat.tone }}">
+            <div class="admin-stat-top">
+                <span class="admin-stat-icon">{{ ui.icon(stat.icon) }}</span>
+                <span class="admin-stat-trend">{% if stat.tone == 'live' %}<i></i>{% endif %}{{ stat.trend }}</span>
+            </div>
+            <strong>{{ stat.value }}</strong>
+            <p>{{ stat.label }}</p>
+        </article>
+    {% endfor %}
+</section>
+
+<div class="admin-dashboard-grid">
+    <section class="admin-panel admin-traffic-panel">
+        <header class="admin-panel-header">
+            <div><span class="admin-kicker">Audience</span><h2>Visites cette semaine</h2></div>
+            <button class="admin-filter-button" type="button" data-action="admin-shell#demo" data-admin-shell-message-param="Le filtre de période sera connecté aux statistiques réelles.">7 derniers jours {{ ui.icon('arrow') }}</button>
+        </header>
+        <div class="admin-traffic-summary"><strong>1 830</strong><span>visites</span><small>+14,6 % par rapport à la semaine dernière</small></div>
+        <div class="admin-bar-chart" aria-label="Graphique des visites par jour">
+            {% for point in traffic %}
+                <div class="admin-bar-column">
+                    <span class="admin-bar-value">{{ point.visits }}</span>
+                    <i class="admin-chart-bar chart-bar-{{ point.value }}"></i>
+                    <small>{{ point.day }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="admin-panel admin-quick-panel">
+        <header class="admin-panel-header"><div><span class="admin-kicker">Performance</span><h2>À surveiller</h2></div></header>
+        <div class="admin-quick-list">
+            {% for item in quickStats %}
+                <article>
+                    <span>{{ item.label }}</span><strong>{{ item.value }}</strong><small>{{ item.detail }}</small>
+                </article>
+            {% endfor %}
+        </div>
+        <a class="admin-text-link" href="{{ path('admin_submissions') }}">Voir toutes les demandes {{ ui.icon('arrow') }}</a>
+    </section>
+</div>
+
+<div class="admin-dashboard-grid admin-dashboard-grid-bottom">
+    <section class="admin-panel">
+        <header class="admin-panel-header">
+            <div><span class="admin-kicker">Activité</span><h2>Derniers dépôts</h2></div>
+            <a class="admin-text-link" href="{{ path('admin_submissions') }}">Tout voir</a>
+        </header>
+        <div class="admin-activity-list">
+            {% for item in recentSubmissions %}
+                <article>
+                    <span class="admin-type-icon admin-type-{{ item.type|lower }}">{{ ui.icon(item.type == 'Mission' ? 'briefcase' : 'people') }}</span>
+                    <span class="admin-activity-copy"><strong>{{ item.name }}</strong><small>{{ item.contact }} · {{ item.date }}</small></span>
+                    <span class="admin-status admin-status-{{ item.status|lower|replace({' ': '-', 'à': 'a'}) }}">{{ item.status }}</span>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="admin-panel">
+        <header class="admin-panel-header"><div><span class="admin-kicker">Contenu</span><h2>Pages les plus vues</h2></div></header>
+        <div class="admin-popular-list">
+            {% for item in popularPages %}
+                <article>
+                    <span><strong>{{ item.name }}</strong><small>{{ item.views }} vues</small></span>
+                    <i><b class="admin-progress-{{ item.share }}"></b></i>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

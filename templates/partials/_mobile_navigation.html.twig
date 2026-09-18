@@ -1,0 +1,26 @@
+{% import 'macros/ui.html.twig' as ui %}
+
+<nav class="mobile-bottom-nav" aria-label="Navigation mobile">
+    <div class="mobile-bottom-nav-inner">
+        <a class="mobile-nav-item" href="{{ path('app_home') }}"{% if page == 'home' %} aria-current="page"{% endif %}>
+            {{ ui.icon('home') }}
+            <span>Accueil</span>
+        </a>
+        <a class="mobile-nav-item" href="{{ path('app_expertises') }}"{% if page == 'expertises' %} aria-current="page"{% endif %}>
+            {{ ui.icon('services') }}
+            <span>Services</span>
+        </a>
+        <a class="mobile-nav-item mobile-nav-mission" href="{{ path('app_deposit', { form: 'mission' }) }}"{% if page == 'deposit' %} aria-current="page"{% endif %}>
+            <span class="mobile-mission-icon">{{ ui.icon('briefcase') }}</span>
+            <span>Mission</span>
+        </a>
+        <a class="mobile-nav-item" href="{{ path('app_cabinet') }}"{% if page == 'cabinet' %} aria-current="page"{% endif %}>
+            {{ ui.icon('people') }}
+            <span>À propos</span>
+        </a>
+        <a class="mobile-nav-item" href="{{ path('app_contact') }}"{% if page == 'contact' %} aria-current="page"{% endif %}>
+            {{ ui.icon('mail') }}
+            <span>Contact</span>
+        </a>
+    </div>
+</nav>

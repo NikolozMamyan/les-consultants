@@ -1,0 +1,20 @@
+<article class="blog-card">
+    <a class="blog-card-link" href="{{ path('app_blog_show', { slug: post.slug }) }}">
+        <div class="blog-card-media">
+            {% if post.featuredImage %}
+                <img src="{{ asset(post.featuredImage) }}" alt="{{ post.featuredImageAlt }}" loading="lazy">
+            {% endif %}
+            <span class="blog-card-category">{{ post.category }}</span>
+            <span class="blog-card-arrow" aria-hidden="true">↗</span>
+        </div>
+        <div class="blog-card-body">
+            <div class="blog-card-meta">
+                <time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time>
+                <span>{{ post.readingTime }} min</span>
+            </div>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.excerpt }}</p>
+            <span class="blog-card-read">Lire l’article <span aria-hidden="true">→</span></span>
+        </div>
+    </a>
+</article>

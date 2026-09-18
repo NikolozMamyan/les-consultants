@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}Contact | Les Consultants{% endblock %}
+{% block meta_description %}Contactez Les Consultants au Luxembourg pour un besoin de renfort, une formation ou un échange confidentiel sur vos enjeux métiers.{% endblock %}
+
+{% block body %}
+<main id="contenu" class="container frame">
+    <div class="page-intro page-intro-compact" data-reveal-target="item">
+        <nav class="breadcrumb" aria-label="Fil d’Ariane">
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Contact</span>
+        </nav>
+    </div>
+
+    <section class="contact-layout" data-reveal-target="item">
+        <div class="contact-copy">
+            <div class="eyebrow">Contact</div>
+            <h1>Un besoin, une question ?<br><span class="accent">Contactez-nous.</span></h1>
+            <p class="lead">Notre équipe est à votre disposition pour toute demande d’information, besoin de renfort ou échange confidentiel sur vos enjeux métiers.</p>
+            <span class="pill green">{{ ui.icon('people') }} Un échange direct avec notre équipe</span>
+
+            <div class="contact-details">
+                <div class="contact-detail">
+                    {{ ui.icon('mail') }}
+                    <div><small>Email</small><a href="mailto:pruffin@les-consultants.lu">pruffin@les-consultants.lu</a></div>
+                </div>
+                <div class="contact-detail">
+                    {{ ui.icon('phone') }}
+                    <div><small>Téléphone</small><a href="tel:+352621735201">+352 621 735 201</a><br><a href="tel:+33766501444">+33 7 66 50 14 44</a></div>
+                </div>
+                <div class="contact-detail">
+                    {{ ui.icon('pin') }}
+                    <div><small>Adresse</small><p>1 Simmerfarm<br>L-8363 Simmerfarm, Luxembourg</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form-wrap" data-controller="contact-form" data-contact-form-profile-value="{{ selectedProfile }}">
+            <div class="eyebrow">Envoyez-nous un message</div>
+            <h2>Nous vous répondons sous 24h.</h2>
+            <div class="format-switch" role="tablist" aria-label="Votre profil">
+                <button type="button" role="tab" aria-controls="contact-panel" data-contact-form-target="tab" data-action="contact-form#select" data-contact-form-profile-param="entreprise">Je suis une entreprise</button>
+                <button type="button" role="tab" aria-controls="contact-panel" data-contact-form-target="tab" data-action="contact-form#select" data-contact-form-profile-param="consultant">Je suis consultant</button>
+            </div>
+
+            <div role="tabpanel" id="contact-panel">
+                {{ form_start(contactForm, { attr: { novalidate: 'novalidate' } }) }}
+                    {{ form_widget(contactForm.profile, { attr: { 'data-contact-form-target': 'profile' } }) }}
+                    {{ form_errors(contactForm) }}
+                    <div class="form-grid">
+                        <div class="field full">
+                            {{ form_label(contactForm.name, 'Nom *') }}
+                            {{ form_widget(contactForm.name, { attr: { autocomplete: 'name', placeholder: 'Votre nom', maxlength: 160 } }) }}
+                            {{ form_errors(contactForm.name) }}
+                        </div>
+                        <div class="field">
+                            {{ form_label(contactForm.email, 'Email *') }}
+                            {{ form_widget(contactForm.email, { attr: { autocomplete: 'email', placeholder: 'vous@entreprise.com', maxlength: 180 } }) }}
+                            {{ form_errors(contactForm.email) }}
+                        </div>
+                        <div class="field">
+                            {{ form_label(contactForm.phone, 'Téléphone') }}
+                            {{ form_widget(contactForm.phone, { attr: { autocomplete: 'tel', placeholder: '+352 …', maxlength: 35 } }) }}
+                            {{ form_errors(contactForm.phone) }}
+                        </div>
+                        <div class="field full">
+                            {{ form_label(contactForm.subject, 'Sujet *', { label_attr: { 'data-contact-form-target': 'subjectLabel' } }) }}
+                            {{ form_widget(contactForm.subject) }}
+                            {{ form_errors(contactForm.subject) }}
+                        </div>
+                        <div class="field full">
+                            {{ form_label(contactForm.message, 'Votre message *', { label_attr: { 'data-contact-form-target': 'messageLabel' } }) }}
+                            {{ form_widget(contactForm.message, { attr: { rows: 6, placeholder: 'Votre besoin, le contexte et votre calendrier…', maxlength: 3000 } }) }}
+                            {{ form_errors(contactForm.message) }}
+                        </div>
+                    </div>
+                    <div class="consent">
+                        {{ form_widget(contactForm.consent) }}
+                        {{ form_label(contactForm.consent, 'J’accepte que mes informations soient utilisées pour répondre à ma demande. *') }}
+                        {{ form_errors(contactForm.consent) }}
+                    </div>
+                    <div class="contact-submit">
+                        <button class="button button-primary" type="submit">Envoyer <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
+                    </div>
+                    {{ form_rest(contactForm) }}
+                {{ form_end(contactForm, { render_rest: false }) }}
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-map-section" aria-labelledby="contact-map-title" data-reveal-target="item">
+        <div class="contact-map-card">
+            <div class="contact-map-copy">
+                <div class="eyebrow">Notre adresse</div>
+                <h2 id="contact-map-title">Retrouvez-nous<br><span class="accent">au Luxembourg.</span></h2>
+                <p>Au cœur de notre écosystème, à proximité directe de nos clients et de nos consultants.</p>
+                <address>1 Simmerfarm<br>L-8363 Simmerfarm, Luxembourg</address>
+                <a class="text-link" href="https://www.google.com/maps/search/?api=1&amp;query=1%20Simmerfarm%2C%20L-8363%20Simmerfarm%2C%20Luxembourg" target="_blank" rel="noopener noreferrer">Ouvrir dans Google Maps {{ ui.icon('up') }}</a>
+            </div>
+            <div class="contact-map" role="img" aria-label="Carte stylisée situant Les Consultants à Simmerfarm au Luxembourg">
+                <svg class="contact-map-art" aria-hidden="true" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid slice">
+                    <path class="map-water" d="M-40 438C90 376 165 474 286 415c89-44 127-132 241-131 123 1 192 80 413 23V570H-40Z"/>
+                    <path class="map-road map-road-primary" d="M-36 116C129 165 178 251 351 248c177-3 293-177 592-162"/>
+                    <path class="map-road" d="M92-32c69 110 128 190 228 242 128 67 208 168 222 356"/>
+                    <path class="map-road" d="M764-33c-80 105-113 195-98 277 17 94 80 155 142 310"/>
+                    <path class="map-road map-road-small" d="M-35 347c145-61 250-51 362 6 93 48 213 39 339-17 75-34 159-32 276-1"/>
+                    <path class="map-road map-road-small" d="M438-25c-26 107-10 183 47 227 67 52 149 58 181 142"/>
+                    <circle class="map-park" cx="201" cy="370" r="84"/>
+                    <circle class="map-park map-park-small" cx="724" cy="151" r="57"/>
+                </svg>
+                <span class="map-place map-place-city">Luxembourg</span>
+                <span class="map-place map-place-mamer">Mamer</span>
+                <span class="map-place map-place-capellen">Capellen</span>
+                <div class="map-home-marker">
+                    <span class="map-home-icon">{{ ui.icon('home') }}</span>
+                    <span class="map-home-label"><strong>Les Consultants</strong><small>1 Simmerfarm</small></span>
+                </div>
+                <span class="map-location-pulse" aria-hidden="true"></span>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

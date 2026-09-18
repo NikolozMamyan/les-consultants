@@ -1,0 +1,27 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}Blog{% endblock %}
+
+{% block body %}
+<header class="admin-page-heading">
+    <div><span class="admin-kicker">Contenus éditoriaux</span><h1>Blog</h1><p>Préparez et publiez les actualités du cabinet.</p></div>
+    <button class="admin-button admin-button-primary" type="button" data-action="admin-shell#demo" data-admin-shell-message-param="L’éditeur d’article sera connecté lors de la phase back-office.">Nouvel article {{ ui.icon('edit') }}</button>
+</header>
+
+<section class="admin-stat-grid admin-stat-grid-compact">
+    <article class="admin-mini-stat"><span>Articles publiés</span><strong>12</strong><small>+2 ce mois</small></article>
+    <article class="admin-mini-stat"><span>Brouillons</span><strong>3</strong><small>À finaliser</small></article>
+    <article class="admin-mini-stat"><span>Vues ce mois</span><strong>3 482</strong><small>+21 %</small></article>
+</section>
+
+<section class="admin-panel">
+    <header class="admin-panel-header admin-table-heading"><div><h2>Tous les articles</h2><p>Gérez vos publications et brouillons.</p></div><label class="admin-search">{{ ui.icon('search') }}<input type="search" placeholder="Rechercher un article" aria-label="Rechercher un article"></label></header>
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead><tr><th>Article</th><th>Catégorie</th><th>Date</th><th>Vues</th><th>Statut</th><th></th></tr></thead>
+            <tbody>{% for post in posts %}<tr><td><strong>{{ post.title }}</strong></td><td>{{ post.category }}</td><td>{{ post.date }}</td><td>{{ post.views }}</td><td><span class="admin-status admin-status-{{ post.status|lower }}">{{ post.status }}</span></td><td><button class="admin-row-menu" type="button" aria-label="Actions pour {{ post.title }}" data-action="admin-shell#demo" data-admin-shell-message-param="Les actions de l’article seront disponibles avec la persistance.">•••</button></td></tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

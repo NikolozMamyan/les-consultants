@@ -1,0 +1,48 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}Constructeur de contenu{% endblock %}
+
+{% block body %}
+<header class="admin-page-heading">
+    <div>
+        <span class="admin-kicker">Constructeur de thème</span>
+        <h1>Pages du site</h1>
+        <p>Modifiez les textes et les visuels, section par section.</p>
+    </div>
+    <div class="admin-heading-actions"><span class="admin-content-health"><i></i> Toutes les pages sont publiées</span></div>
+</header>
+
+<section class="admin-panel admin-pages-panel">
+    <header class="admin-panel-header admin-table-heading">
+        <div><h2>Pages principales</h2><p>{{ pages|length }} pages disponibles</p></div>
+        <label class="admin-search">{{ ui.icon('search') }}<input type="search" placeholder="Rechercher une page" aria-label="Rechercher une page"></label>
+    </header>
+    <div class="admin-table-wrap">
+        <table class="admin-table admin-pages-table">
+            <thead><tr><th>Page</th><th>Sections</th><th>Dernière modification</th><th>Statut</th><th>Actions</th></tr></thead>
+            <tbody>
+            {% for pageItem in pages %}
+                <tr>
+                    <td><span class="admin-page-cell"><i>{{ ui.icon(pageItem.icon) }}</i><span><strong>{{ pageItem.name }}</strong><small>{{ pageItem.description }}</small></span></span></td>
+                    <td><strong>{{ pageItem.sectionsCount }}</strong> sections</td>
+                    <td>{{ pageItem.updated }}</td>
+                    <td><span class="admin-published"><i></i> Publiée</span></td>
+                    <td>
+                        <span class="admin-row-actions">
+                            <a class="admin-action-secondary" href="{{ path(pageItem.route) }}" target="_blank" rel="noopener">{{ ui.icon('eye') }} Voir</a>
+                            <a class="admin-action-primary" href="{{ path('admin_content_edit', {slug: pageItem.slug}) }}">{{ ui.icon('edit') }} Modifier</a>
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<aside class="admin-info-banner">
+    <span>{{ ui.icon('check') }}</span>
+    <div><strong>Un éditeur volontairement simple</strong><p>Les administrateurs peuvent modifier les contenus existants sans toucher à la structure ni au code du site.</p></div>
+</aside>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Actualités finance & conformité au Luxembourg | Les Consultants{% endblock %}
+{% block meta_description %}Analyses et conseils sur la conformité, la finance, la gestion des risques, la transformation digitale et la formation au Luxembourg.{% endblock %}
+{% block canonical_url %}{{ url('app_blog_index') }}{% endblock %}
+
+{% block body %}
+<main id="contenu" class="container frame blog-index">
+    <section class="blog-hero" data-reveal-target="item">
+        <div class="blog-hero-orb blog-hero-orb-one" aria-hidden="true"></div>
+        <div class="blog-hero-orb blog-hero-orb-two" aria-hidden="true"></div>
+        <nav class="breadcrumb breadcrumb-on-dark" aria-label="Fil d’Ariane">
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Blog</span>
+        </nav>
+        <div class="blog-hero-grid">
+            <div>
+                <div class="eyebrow">Le journal des métiers régulés</div>
+                <h1>Décrypter aujourd’hui.<br><span>Décider avec confiance.</span></h1>
+            </div>
+            <div class="blog-hero-copy">
+                <p>Analyses réglementaires, tendances métier et conseils opérationnels pour les acteurs de la finance au Luxembourg.</p>
+                <div class="blog-hero-signals" aria-label="Thématiques du blog">
+                    <span>Finance</span><span>Compliance</span><span>Risk</span><span>Formation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-discovery" aria-label="Rechercher dans le blog" data-reveal-target="item">
+        <form class="blog-search" method="get" action="{{ path('app_blog_index') }}">
+            <label for="blog-search-input">Rechercher un sujet</label>
+            <div class="blog-search-field">
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                <input id="blog-search-input" name="q" type="search" value="{{ search }}" placeholder="AML, DORA, fonds, formation…" autocomplete="off">
+                {% if selectedCategory %}<input type="hidden" name="category" value="{{ selectedCategory }}">{% endif %}
+                <button type="submit">Rechercher</button>
+            </div>
+        </form>
+        <nav class="blog-categories" aria-label="Filtrer par catégorie">
+            <a href="{{ path('app_blog_index', search ? { q: search } : {}) }}"{% if not selectedCategory %} aria-current="page"{% endif %}>Tous</a>
+            {% for category in categories %}
+                <a href="{{ path('app_blog_index', { category: category, q: search ?: null }) }}"{% if selectedCategory == category %} aria-current="page"{% endif %}>{{ category }}</a>
+            {% endfor %}
+        </nav>
+        {% if search or selectedCategory %}
+            <div class="blog-results-heading">
+                <p><strong>{{ posts|length }}</strong> résultat{{ posts|length > 1 ? 's' }}{% if search %} pour « {{ search }} »{% endif %}</p>
+                <a href="{{ path('app_blog_index') }}">Effacer les filtres</a>
+            </div>
+        {% endif %}
+    </section>
+
+    {% if featured %}
+        <section class="blog-featured" aria-labelledby="featured-title" data-reveal-target="item">
+            <a href="{{ path('app_blog_show', { slug: featured.slug }) }}" class="blog-featured-link">
+                <div class="blog-featured-media">
+                    {% if featured.featuredImage %}<img src="{{ asset(featured.featuredImage) }}" alt="{{ featured.featuredImageAlt }}">{% endif %}
+                    <span>À la une</span>
+                </div>
+                <div class="blog-featured-copy">
+                    <div class="blog-card-meta"><span>{{ featured.category }}</span><time datetime="{{ featured.publishedAt|date('Y-m-d') }}">{{ featured.publishedAt|date('d.m.Y') }}</time></div>
+                    <h2 id="featured-title">{{ featured.title }}</h2>
+                    <p>{{ featured.excerpt }}</p>
+                    <div class="blog-featured-footer">
+                        <span>{{ featured.readingTime }} min de lecture</span>
+                        <strong>Lire l’analyse <span aria-hidden="true">↗</span></strong>
+                    </div>
+                </div>
+            </a>
+        </section>
+    {% endif %}
+
+    <section class="blog-feed" aria-labelledby="blog-feed-title" data-reveal-target="item">
+        <header class="blog-feed-heading">
+            <div><span>Perspectives</span><h2 id="blog-feed-title">Toutes nos analyses</h2></div>
+            <p>{{ posts|length }} publication{{ posts|length > 1 ? 's' }}</p>
+        </header>
+        {% if posts %}
+            <div class="blog-grid">
+                {% for post in posts %}{% include 'blog/_card.html.twig' with { post: post } only %}{% endfor %}
+            </div>
+        {% else %}
+            <div class="blog-empty">
+                <span aria-hidden="true">⌕</span>
+                <h2>Aucune analyse trouvée</h2>
+                <p>Essayez une autre expression ou explorez l’ensemble des catégories.</p>
+                <a class="button button-primary" href="{{ path('app_blog_index') }}">Voir tous les articles</a>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="blog-newsletter" data-reveal-target="item">
+        <div><span class="eyebrow">Besoin d’un regard expert ?</span><h2>Transformons l’analyse<br>en action.</h2></div>
+        <div><p>Une question réglementaire, un besoin de renfort ou un projet de formation ? Échangez directement avec notre équipe.</p><a class="button button-primary" href="{{ path('app_contact') }}">Parler à un expert <span class="arrow-box">↗</span></a></div>
+    </section>
+</main>
+{% endblock %}

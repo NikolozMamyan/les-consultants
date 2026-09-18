@@ -1,0 +1,73 @@
+{% import 'macros/ui.html.twig' as ui %}
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex,nofollow">
+        <meta name="theme-color" content="#071e22">
+        <title>{% block title %}Administration{% endblock %} · Les Consultants</title>
+        <link rel="icon" href="{{ asset('images/logo-original.png') }}">
+        <link rel="preload" href="{{ asset('fonts/plus-jakarta-sans.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="{{ asset('styles/admin.css') }}">
+        {{ importmap('app') }}
+    </head>
+    <body class="admin-body" data-controller="admin-shell" data-action="admin:notice@window->admin-shell#notice">
+        <a class="admin-skip-link" href="#admin-content">Aller au contenu</a>
+        <aside class="admin-sidebar">
+            <a class="admin-brand" href="{{ path('admin_dashboard') }}">
+                <span class="admin-brand-mark"><img src="{{ asset('images/logo-original.png') }}" alt="" width="42" height="42"></span>
+                <span><strong>Les Consultants</strong><small>Administration</small></span>
+            </a>
+
+            <nav class="admin-nav" aria-label="Navigation de l’administration">
+                <a href="{{ path('admin_dashboard') }}"{% if adminSection == 'dashboard' %} aria-current="page"{% endif %}>
+                    {{ ui.icon('home') }}<span>Dashboard</span>
+                </a>
+                <a href="{{ path('admin_content') }}"{% if adminSection == 'content' %} aria-current="page"{% endif %}>
+                    {{ ui.icon('services') }}<span>Constructeur de thème</span>
+                </a>
+                <a href="{{ path('admin_blog') }}"{% if adminSection == 'blog' %} aria-current="page"{% endif %}>
+                    {{ ui.icon('edit') }}<span>Blog</span>
+                </a>
+                <a href="{{ path('admin_submissions') }}"{% if adminSection == 'submissions' %} aria-current="page"{% endif %}>
+                    {{ ui.icon('briefcase') }}<span>Missions &amp; Talents</span>
+                    <b class="admin-nav-count">9</b>
+                </a>
+                <a href="{{ path('admin_users') }}"{% if adminSection == 'users' %} aria-current="page"{% endif %}>
+                    {{ ui.icon('people') }}<span>Utilisateurs</span>
+                </a>
+            </nav>
+
+            <div class="admin-sidebar-footer">
+                <a class="admin-site-link" href="{{ path('app_home') }}" target="_blank" rel="noopener">
+                    {{ ui.icon('up') }} <span>Voir le site</span>
+                </a>
+                <div class="admin-profile">
+                    <span class="admin-avatar">PR</span>
+                    <span><strong>Patrick Ruffin</strong><small>Super administrateur</small></span>
+                    <button type="button" aria-label="Options du compte" data-action="admin-shell#demo" data-admin-shell-message-param="Gestion du compte disponible dans la prochaine étape.">•••</button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="admin-workspace">
+            <header class="admin-topbar">
+                <div>
+                    <span class="admin-environment"><i></i> Maquette interactive</span>
+                </div>
+                <div class="admin-topbar-actions">
+                    <button class="admin-icon-button" type="button" aria-label="Notifications" data-action="admin-shell#demo" data-admin-shell-message-param="Vous avez 3 nouvelles notifications.">
+                        {{ ui.icon('notification') }}<span class="admin-notification-dot"></span>
+                    </button>
+                    <a class="admin-help-link" href="{{ path('app_contact') }}">Besoin d’aide ?</a>
+                </div>
+            </header>
+            <main class="admin-main" id="admin-content">
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+
+        <div class="admin-toast" role="status" data-admin-shell-target="toast" hidden></div>
+    </body>
+</html>

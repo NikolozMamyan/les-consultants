@@ -1,0 +1,30 @@
+{% import 'macros/ui.html.twig' as ui %}
+<section class="section faq-layout" data-controller="faq" data-reveal-target="item">
+    <div class="faq-intro">
+        <div class="eyebrow">Foire aux questions</div>
+        <h2>Nos réponses<br>à vos questions</h2>
+        <a class="text-link" href="{{ path('app_contact') }}">Contactez-nous {{ ui.icon('arrow') }}</a>
+    </div>
+    <div>
+        <details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+            <summary>Quel type de profils proposez-vous ?</summary>
+            <p>Nous proposons des consultants externes expérimentés dans la finance, la conformité (compliance), la gestion des risques et la transformation digitale. Chaque profil est soigneusement sélectionné et validé avant la mise en relation.</p>
+        </details>
+        <details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+            <summary>Sous quel délai recevrons-nous des candidatures ?</summary>
+            <p>Nous nous engageons à vous présenter des profils adaptés sous 48 heures, avec un suivi personnalisé pour répondre à vos besoins spécifiques.</p>
+        </details>
+        <details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+            <summary>Quels sont vos domaines d’expertise ?</summary>
+            <p>Nos domaines couvrent la conformité, l’AML/CFT, MIFID, DORA, MICA, la cybersécurité et le digital. Nous vous accompagnons également dans le FORMATION stratégique et le développement commercial.</p>
+        </details>
+        <details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+            <summary>Les consultants sont-ils déjà disponibles ?</summary>
+            <p>Oui, nos consultants sont déjà référencés et validés. Nous nous assurons de leur disponibilité avant de vous les proposer, pour garantir un démarrage rapide de la mission.</p>
+        </details>
+        <details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+            <summary>Travaillez-vous uniquement au Luxembourg ?</summary>
+            <p>Non, nous intervenons aussi en Belgique et en Europe. Nos consultants sont mobiles et habitués à travailler dans un environnement international.</p>
+        </details>
+    </div>
+</section>

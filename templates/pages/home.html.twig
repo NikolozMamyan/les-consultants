@@ -1,0 +1,712 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les Consultants | Conseil & FORMATION au Luxembourg{% endblock %}
+{% block meta_description %}Les Consultants propose aux entreprises du secteur financier au Luxembourg des consultants externes spécialisés en finance, conformité, risques et transformation digitale.{% endblock %}
+
+{% block body %}
+<main id="contenu" class="container frame home-page">
+
+<section class="hero" data-section="hero" data-section-label="En-tête d’accueil" data-reveal-target="item">
+<div class="hero-trust-pill">
+<span aria-hidden="true">
+<svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-7a4 4 0 0 1 0 7"/></svg>
+</span>
+Un réseau qualifié au service des acteurs financiers
+</div>
+<h1>
+<span>Consultants spécialisés</span>
+<span class="accent">pour le monde financier</span>
+</h1>
+<p class="lead">Nous accompagnons les entreprises du secteur financier au Luxembourg en leur proposant des consultants externes spécialisés.</p>
+<div class="hero-reassurance">
+<span>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m5 12 4 4L19 6"/>
+</svg><strong>+100</strong> clients satisfaits</span>
+<span>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+</svg>Profils présentés sous <strong>48h</strong></span>
+<span>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Zm-4 9 3 3 5-6"/>
+</svg>Expertise <strong>finance &amp; conformité</strong></span>
+</div>
+<div class="actions">
+<a class="button button-primary" href="{{ path('app_deposit') }}">Déposer une mission<span class="arrow-box">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+</span></a>
+<a class="button button-quiet" href="{{ path('app_expertises') }}">Découvrir nos expertises <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+</div>
+</section>
+<div class="home-showcase">
+<section class="radar-section" aria-labelledby="radar-section-title" data-reveal-target="item">
+<div class="radar-section-heading">
+<div>
+<div class="eyebrow">Notre réseau d’experts</div>
+<h2 id="radar-section-title">Les bons experts.<br> Au bon moment.</h2>
+</div>
+<div class="radar-section-intro">
+<p>Nous qualifions votre besoin, activons notre réseau et vous présentons des consultants spécialisés, disponibles et adaptés à votre environnement.</p>
+<a class="button button-primary" href="{{ path('app_deposit') }}">Confier une mission<span class="arrow-box"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span></a>
+</div>
+</div>
+<div class="hero-stage" data-controller="radar">
+<div class="stage-grid">
+</div>
+<span class="stage-caption">RADAR D’EXPERTISE · RÉSEAU QUALIFIÉ</span>
+<div class="network" id="expert-radar" aria-label="Un réseau d’expertises en finance et conformité">
+<div class="orbit">
+</div>
+<div class="orbit two">
+</div>
+<div class="orbit three">
+</div>
+<span class="radar-axis radar-axis-horizontal" aria-hidden="true"></span>
+<span class="radar-axis radar-axis-vertical" aria-hidden="true"></span>
+<span class="radar-signal radar-signal-one" aria-hidden="true"></span>
+<span class="radar-signal radar-signal-two" aria-hidden="true"></span>
+<span class="radar-signal radar-signal-three" aria-hidden="true"></span>
+<div class="radar-sweep" aria-hidden="true">
+</div>
+<div class="radar-waves" aria-hidden="true">
+<span class="radar-pulse">
+</span>
+<span class="radar-pulse">
+</span>
+<span class="radar-pulse">
+</span>
+</div>
+<div class="network-center">
+<span class="brand-symbol">
+<img src="{{ asset('images/logo-original.png') }}" alt="Les Consultants" width="94" height="94">
+</span>
+</div>
+<div class="network-label node-1">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Zm-4 9 3 3 5-6"/>
+</svg>Compliance</div>
+<div class="network-label node-2">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m3 8 9-5 9 5H3Zm2 3v7m5-7v7m4-7v7m5-7v7M3 21h18"/>
+</svg>Finance</div>
+<div class="network-label node-3">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-4 0a5 5 0 1 1-10 0 5 5 0 0 1 10 0Zm-4 0h-2"/>
+</svg>Risk management</div>
+<div class="network-label node-4">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-12-2 14"/>
+</svg>Transformation IT</div>
+<div class="network-label node-5">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M12 5C8 2 4 3 2 4v15c4-2 7-1 10 1 3-2 6-3 10-1V4c-4-2-7-1-10 1Zm0 0v15"/>
+</svg>Formation</div>
+</div>
+<div class="matching-dashboard" aria-label="Aperçu du processus de sélection des consultants">
+<div class="matching-dashboard-bar">
+<span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+<p><i aria-hidden="true"></i> Mission · Compliance AML</p>
+</div>
+<div class="matching-dashboard-body">
+<div class="matching-dashboard-title">
+<span>MISSION ACTIVE</span>
+<strong>Compliance Officer</strong>
+<small>Luxembourg · Fonds d’investissement</small>
+</div>
+<div class="matching-timeline" aria-label="Trois étapes de sélection">
+<div class="is-complete"><span>01</span><p>Besoin qualifié</p></div>
+<i aria-hidden="true"></i>
+<div class="is-complete"><span>02</span><p>Experts identifiés</p></div>
+<i aria-hidden="true"></i>
+<div class="is-current"><span>03</span><p>Profils présentés</p></div>
+</div>
+<div class="matching-dashboard-metrics">
+<article><strong>48h</strong><span>Délai moyen</span></article>
+<article><strong>3</strong><span>Profils ciblés</span></article>
+<article><strong>100%</strong><span>Profils validés</span></article>
+</div>
+<div class="matching-profiles" aria-hidden="true">
+<div><span>AL</span><p><strong>Senior Compliance</strong><small>AML · KYC · 9 ans</small></p><b>96%</b></div>
+<div><span>SM</span><p><strong>Risk Manager</strong><small>UCITS · AIFMD · 7 ans</small></p><b>92%</b></div>
+</div>
+</div>
+</div>
+<button class="radar-toggle" type="button" data-radar-target="toggle" data-action="radar#toggle" aria-pressed="false" aria-controls="expert-radar" aria-label="Mettre l’animation du radar en pause">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path data-radar-target="icon" d="M8 5v14M16 5v14"/>
+</svg>
+<span data-radar-target="label">Pause</span>
+</button>
+</div>
+<div class="radar-section-captions">
+<article>
+<span>01</span>
+<div><h3>Un réseau ciblé et qualifié</h3><p>Finance, conformité, risques et transformation : nous activons les expertises réellement utiles à votre mission.</p></div>
+</article>
+<article>
+<span>02</span>
+<div><h3>Une sélection rapide et transparente</h3><p>Chaque profil est vérifié, disponible et présenté avec les éléments nécessaires pour décider sereinement.</p></div>
+</article>
+</div>
+</section>
+<section class="ecosystem" aria-labelledby="ecosystem-title" aria-roledescription="carrousel" data-controller="carousel" data-carousel-interval-value="4800" data-action="mouseenter->carousel#mouseEnter mouseleave->carousel#mouseLeave focusin->carousel#focusIn focusout->carousel#focusOut" data-reveal-target="item">
+<div class="ecosystem-heading">
+<div class="eyebrow">Nos expertises</div>
+<h2 id="ecosystem-title">Des compétences adaptées<span class="accent"> à vos enjeux réglementaires et financiers</span>
+</h2>
+<p>Nous intervenons dans les métiers clés du secteur financier pour répondre à vos besoins ponctuels ou stratégiques.</p>
+</div>
+<div class="carousel-viewport" id="sector-carousel" tabindex="0" aria-label="Secteurs accompagnés. Utilisez les flèches du clavier pour parcourir les cartes." data-carousel-target="viewport" data-action="keydown->carousel#keyboard scroll->carousel#scrolled pointerdown->carousel#pointerDown pointermove->carousel#pointerMove pointerup->carousel#pointerUp pointercancel->carousel#pointerUp click->carousel#protectClick">
+<div class="carousel-track">
+<article class="sector-card" role="group" aria-roledescription="diapositive" aria-label="1 sur 5 : Banques privées" data-carousel-target="card">
+<div class="sector-card-top">
+<span class="sector-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m3 8 9-5 9 5H3Zm2 3v7m5-7v7m4-7v7m5-7v7M3 21h18"/>
+</svg>
+</span>
+<span class="sector-index">01 / 05</span>
+</div>
+<h3>Banques privées</h3>
+<p class="sector-tagline">La confiance, à chaque étape.</p>
+<p class="sector-description">Conformité, connaissance client et expertise opérationnelle au service de vos équipes.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#compliance">Explorer nos expertises<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="sector-card is-active" role="group" aria-roledescription="diapositive" aria-label="2 sur 5 : Fonds d’investissement" data-carousel-target="card">
+<div class="sector-card-top">
+<span class="sector-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M4 3v17h17M8 15v-4m5 4V7m5 8V5"/>
+</svg>
+</span>
+<span class="sector-index">02 / 05</span>
+</div>
+<h3>Fonds d’investissement</h3>
+<p class="sector-tagline">De l’exigence à la précision.</p>
+<p class="sector-description">Administration de fonds, reporting et gouvernance : des compétences au cœur de vos opérations.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#finance">Explorer nos expertises<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="sector-card" role="group" aria-roledescription="diapositive" aria-label="3 sur 5 : Assurances" data-carousel-target="card">
+<div class="sector-card-top">
+<span class="sector-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Zm-4 9 3 3 5-6"/>
+</svg>
+</span>
+<span class="sector-index">03 / 05</span>
+</div>
+<h3>Assurances</h3>
+<p class="sector-tagline">Anticiper pour mieux protéger.</p>
+<p class="sector-description">Risques, contrôle interne et conformité : une expertise attentive à votre environnement.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#risques">Explorer nos expertises<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="sector-card" role="group" aria-roledescription="diapositive" aria-label="4 sur 5 : Fiduciaires & audit" data-carousel-target="card">
+<div class="sector-card-top">
+<span class="sector-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 10 5-10 5L2 8l10-5Zm-10 9 10 5 10-5M2 16l10 5 10-5"/>
+</svg>
+</span>
+<span class="sector-index">04 / 05</span>
+</div>
+<h3>Fiduciaires & audit</h3>
+<p class="sector-tagline">Un regard juste. Un renfort ciblé.</p>
+<p class="sector-description">Des consultants pour accompagner vos missions comptables, financières et de contrôle.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#finance">Explorer nos expertises<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="sector-card" role="group" aria-roledescription="diapositive" aria-label="5 sur 5 : Fintechs" data-carousel-target="card">
+<div class="sector-card-top">
+<span class="sector-icon">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z"/>
+</svg>
+</span>
+<span class="sector-index">05 / 05</span>
+</div>
+<h3>Fintechs</h3>
+<p class="sector-tagline">L’innovation, bien accompagnée.</p>
+<p class="sector-description">Reliez vos projets numériques aux compétences métier, IT et réglementaires qui les font avancer.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#digital">Explorer nos expertises<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+</div>
+</div>
+<div class="carousel-controls">
+<button class="carousel-arrow previous" type="button" data-carousel-target="previous" data-action="carousel#previous" aria-label="Secteur précédent" aria-controls="sector-carousel">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</button>
+<div class="carousel-dots" role="group" aria-label="Choisir un secteur">
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="0" aria-label="Afficher : Banques privées">
+<span>
+</span>
+</button>
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="1" aria-label="Afficher : Fonds d’investissement" aria-current="true">
+<span>
+</span>
+</button>
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="2" aria-label="Afficher : Assurances">
+<span>
+</span>
+</button>
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="3" aria-label="Afficher : Fiduciaires & audit">
+<span>
+</span>
+</button>
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="4" aria-label="Afficher : Fintechs">
+<span>
+</span>
+</button>
+</div>
+<button class="carousel-arrow next" type="button" data-carousel-target="next" data-action="carousel#next" aria-label="Secteur suivant" aria-controls="sector-carousel">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</button>
+<span class="visually-hidden" id="carousel-status" role="status" data-carousel-target="status">Fonds d’investissement, 2 sur 5</span>
+</div>
+</section>
+<section class="section expertise-section" data-section="expertises" data-section-label="Présentation des expertises" aria-roledescription="carrousel" data-controller="carousel" data-carousel-interval-value="5600" data-action="mouseenter->carousel#mouseEnter mouseleave->carousel#mouseLeave focusin->carousel#focusIn focusout->carousel#focusOut" data-reveal-target="item">
+<div class="section-heading">
+<div>
+<div class="eyebrow">Notre expertise</div>
+<h2>Une expertise reconnue<br> dans les secteurs financiers.</h2>
+</div>
+<a class="text-link" href="{{ path('app_expertises') }}">Toutes nos expertises<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</div>
+<div class="expertise-viewport" id="expertise-carousel" tabindex="0" aria-label="Expertises proposées. Utilisez les flèches du clavier pour parcourir les cartes." data-carousel-target="viewport" data-action="keydown->carousel#keyboard scroll->carousel#scrolled pointerdown->carousel#pointerDown pointermove->carousel#pointerMove pointerup->carousel#pointerUp pointercancel->carousel#pointerUp click->carousel#protectClick">
+<div class="expertise-grid">
+<article class="expertise-card" role="group" aria-roledescription="diapositive" aria-label="1 sur 4 : Compliance et réglementation" data-carousel-target="card">
+<div class="visual">
+<div class="visual-glow">
+</div>
+<div class="compliance-doc">
+<div class="mini-top">Votre dispositif de conformité <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Zm-4 9 3 3 5-6"/>
+</svg>
+</div>
+<div class="mini-row">Connaissance client <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m5 12 4 4L19 6"/>
+</svg>
+</div>
+<div class="mini-row">Analyse des risques <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m5 12 4 4L19 6"/>
+</svg>
+</div>
+<div class="mini-row">Contrôle & suivi <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m5 12 4 4L19 6"/>
+</svg>
+</div>
+</div>
+<div class="visual-badge">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Zm-4 9 3 3 5-6"/>
+</svg>L’expertise à chaque étape</div>
+</div>
+<h3>Compliance & réglementation</h3>
+<p>Nous vous accompagnons dans la mise en conformité, le renforcement des dispositifs de contrôle et l’anticipation des évolutions réglementaires.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#compliance">Renforcer ma conformité<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="expertise-card" role="group" aria-roledescription="diapositive" aria-label="2 sur 4 : Finance et fonds d’investissement" data-carousel-target="card">
+<div class="visual visual-purple">
+<div class="visual-glow">
+</div>
+<div class="chart-card">
+<div class="mini-top">Finance & opérations <span class="pill purple">Fonds</span>
+</div>
+<div class="bars" aria-hidden="true">
+<i class="bar-height-30">
+</i>
+<i class="bar-height-47">
+</i>
+<i class="bar-height-41">
+</i>
+<i class="bar-height-69">
+</i>
+<i class="bar-height-84">
+</i>
+<i class="bar-height-100">
+</i>
+</div>
+</div>
+<div class="visual-badge">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 10 5-10 5L2 8l10-5Zm-10 9 10 5 10-5M2 16l10 5 10-5"/>
+</svg>De la précision à la décision</div>
+</div>
+<h3>Finance & fonds d’investissement</h3>
+<p>Nous accompagnons les sociétés de gestion et administrateurs de fonds dans leurs fonctions opérationnelles, financières et réglementaires.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#finance">Accompagner mes opérations<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="expertise-card" role="group" aria-roledescription="diapositive" aria-label="3 sur 4 : Risques et gouvernance" data-carousel-target="card">
+<div class="visual">
+<div class="visual-glow">
+</div>
+<div class="risk-circles">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-4 0a5 5 0 1 1-10 0 5 5 0 0 1 10 0Zm-4 0h-2"/>
+</svg>
+</div>
+<span class="risk-tag">Anticiper</span>
+<span class="risk-tag">Piloter</span>
+</div>
+<h3>Risques & gouvernance</h3>
+<p>Nous renforçons vos dispositifs de contrôle interne, de gestion des risques et de gouvernance avec des experts immédiatement opérationnels.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#risques">Structurer mes dispositifs<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+<article class="expertise-card" role="group" aria-roledescription="diapositive" aria-label="4 sur 4 : Transformation et IT" data-carousel-target="card">
+<div class="visual visual-purple">
+<div class="visual-glow">
+</div>
+<div class="digital-flow">
+<span class="flow-node">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-12-2 14"/>
+</svg>
+</span>
+<span class="flow-line">
+</span>
+<span class="flow-node main">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 10 5-10 5L2 8l10-5Zm-10 9 10 5 10-5M2 16l10 5 10-5"/>
+</svg>
+</span>
+<span class="flow-line">
+</span>
+<span class="flow-node">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Zm-4 9 3 3 5-6"/>
+</svg>
+</span>
+</div>
+<div class="visual-badge">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/>
+</svg>La transformation en mouvement</div>
+</div>
+<h3>Transformation & IT</h3>
+<p>Nous vous aidons à structurer, piloter et sécuriser vos projets de transformation digitale dans un environnement financier exigeant.</p>
+<a class="text-link" href="{{ path('app_expertises') }}#digital">Faire avancer mes projets<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</article>
+</div>
+</div>
+<div class="carousel-controls expertise-controls">
+<button class="carousel-arrow previous" type="button" data-carousel-target="previous" data-action="carousel#previous" aria-label="Expertise précédente" aria-controls="expertise-carousel">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+</button>
+<div class="carousel-dots" role="group" aria-label="Choisir une expertise">
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="0" aria-label="Afficher : Compliance et réglementation"><span></span></button>
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="1" aria-label="Afficher : Finance et fonds d’investissement" aria-current="true"><span></span></button>
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="2" aria-label="Afficher : Risques et gouvernance"><span></span></button>
+<button type="button" data-carousel-target="dot" data-action="carousel#select" data-carousel-index-param="3" aria-label="Afficher : Transformation et IT"><span></span></button>
+</div>
+<button class="carousel-arrow next" type="button" data-carousel-target="next" data-action="carousel#next" aria-label="Expertise suivante" aria-controls="expertise-carousel">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+</button>
+<span class="visually-hidden" role="status" data-carousel-target="status">Finance et fonds d’investissement, 2 sur 4</span>
+</div>
+</section>
+<section class="section approach-chapter" data-section="approche" data-section-label="Notre approche" data-controller="method" data-reveal-target="item">
+<div class="approach-heading">
+<div>
+<div class="eyebrow">Notre approche</div>
+<h2>Un accompagnement<br> simple et efficace.</h2>
+</div>
+<p>De la compréhension du besoin au suivi de la mission, chaque étape est structurée pour vous faire gagner du temps et sécuriser votre décision.</p>
+</div>
+<div class="approach-canvas">
+<div class="approach-canvas-top">
+<span>VOTRE PROJET · ÉTAPE PAR ÉTAPE</span>
+<span data-method-target="count">01 / 03</span>
+</div>
+<div class="approach-scene approach-scene-match is-active" id="method-panel-0" role="tabpanel" aria-labelledby="step-0" data-method-target="visual" data-method-index="0">
+<div class="match-brief-card">
+<span>BESOIN QUALIFIÉ</span>
+<strong>Compliance Officer</strong>
+<small>Luxembourg · Fonds d’investissement</small>
+<div><i></i><i></i><i></i></div>
+</div>
+<svg class="match-connections" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden="true">
+<path d="M235 160 C350 160 360 80 500 80 S660 70 770 86"/>
+<path d="M235 160 C365 160 380 160 500 160 S665 160 790 160"/>
+<path d="M235 160 C350 160 360 240 500 240 S660 250 770 235"/>
+</svg>
+<div class="match-core" aria-hidden="true">
+<span></span><span></span><span></span>
+<div><svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-7a4 4 0 0 1 0 7"/></svg></div>
+</div>
+<div class="match-candidate match-candidate-one">
+<span>AL</span><div><strong>Senior Compliance</strong><small>AML · KYC · 9 ans</small></div><b>96%</b>
+</div>
+<div class="match-candidate match-candidate-two">
+<span>SM</span><div><strong>Risk Manager</strong><small>UCITS · AIFMD · 7 ans</small></div><b>92%</b>
+</div>
+<div class="match-candidate match-candidate-three">
+<span>NB</span><div><strong>Fund Officer</strong><small>Reporting · 6 ans</small></div><b>89%</b>
+</div>
+<div class="match-result-chip"><strong>3 profils</strong><span>présentés sous 48h</span></div>
+</div>
+<div class="approach-scene approach-scene-expertise" id="method-panel-1" role="tabpanel" aria-labelledby="step-1" data-method-target="visual" data-method-index="1" hidden>
+<div class="expertise-chart-wrap">
+<svg class="expertise-radar-chart" viewBox="0 0 620 330" aria-label="Cartographie des expertises mobilisées">
+<polygon class="expertise-grid-level expertise-grid-level-one" points="310,40 500,150 430,285 190,285 120,150"/>
+<polygon class="expertise-grid-level expertise-grid-level-two" points="310,78 449,158 398,255 222,255 171,158"/>
+<polygon class="expertise-grid-level expertise-grid-level-three" points="310,116 399,167 366,226 254,226 221,167"/>
+<line x1="310" y1="40" x2="310" y2="184"/><line x1="500" y1="150" x2="310" y2="184"/><line x1="430" y1="285" x2="310" y2="184"/><line x1="190" y1="285" x2="310" y2="184"/><line x1="120" y1="150" x2="310" y2="184"/>
+<polygon class="expertise-radar-value" points="310,58 470,156 390,252 220,260 145,153"/>
+<circle cx="310" cy="58" r="5"/><circle cx="470" cy="156" r="5"/><circle cx="390" cy="252" r="5"/><circle cx="220" cy="260" r="5"/><circle cx="145" cy="153" r="5"/>
+<text x="310" y="24" text-anchor="middle">Compliance</text>
+<text x="520" y="151">Finance</text>
+<text x="440" y="308">Risk</text>
+<text x="118" y="308">IT &amp; Data</text>
+<text x="24" y="151">Gouvernance</text>
+</svg>
+<div class="expertise-score-card"><span>COUVERTURE DU BESOIN</span><strong>94%</strong><p>Expertises disponibles et immédiatement mobilisables</p></div>
+<div class="expertise-legend"><span><i></i>Niveau requis</span><span><i></i>Profils disponibles</span></div>
+</div>
+</div>
+<div class="approach-scene approach-scene-process" id="method-panel-2" role="tabpanel" aria-labelledby="step-2" data-method-target="visual" data-method-index="2" hidden>
+<svg class="process-chart" viewBox="0 0 1000 330" preserveAspectRatio="none" aria-label="Progression d’une mission en quatre étapes">
+<defs><linearGradient id="process-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b8485" stop-opacity=".2"/><stop offset="1" stop-color="#0b8485" stop-opacity="0"/></linearGradient></defs>
+<line class="process-grid-line" x1="70" y1="72" x2="930" y2="72"/><line class="process-grid-line" x1="70" y1="145" x2="930" y2="145"/><line class="process-grid-line" x1="70" y1="218" x2="930" y2="218"/><line class="process-grid-line" x1="70" y1="291" x2="930" y2="291"/>
+<path class="process-area" d="M70 286 C190 274 225 240 330 218 S500 160 590 150 S735 112 810 91 S895 72 930 58 L930 291 L70 291 Z"/>
+<path class="process-line process-line-main" d="M70 286 C190 274 225 240 330 218 S500 160 590 150 S735 112 810 91 S895 72 930 58"/>
+<path class="process-line process-line-secondary" d="M70 286 C185 280 260 262 345 248 S510 217 610 205 S780 176 930 153"/>
+<line class="process-focus-line" x1="810" y1="42" x2="810" y2="291"/>
+<circle class="process-point process-point-one" cx="70" cy="286" r="5"/><circle class="process-point process-point-two" cx="330" cy="218" r="5"/><circle class="process-point process-point-three" cx="590" cy="150" r="5"/><circle class="process-point process-point-four" cx="810" cy="91" r="6"/>
+</svg>
+<div class="process-tooltip"><span>JOUR 4</span><strong>Profil validé</strong><div><p><i></i>Contrat préparé</p><b>100%</b></div><div><p><i></i>Suivi activé</p><b>En cours</b></div></div>
+<div class="process-label process-label-one"><span>01</span><p>Besoin défini</p></div>
+<div class="process-label process-label-two"><span>02</span><p>Profils reçus</p></div>
+<div class="process-label process-label-three"><span>03</span><p>Consultant choisi</p></div>
+<div class="process-label process-label-four"><span>04</span><p>Mission suivie</p></div>
+</div>
+</div>
+<div class="approach-tabs" role="tablist" aria-label="Les étapes de votre accompagnement" aria-orientation="horizontal" data-action="keydown->method#keyboard">
+<button class="approach-tab" type="button" role="tab" id="step-0" aria-selected="true" aria-controls="method-panel-0" tabindex="0" data-method-target="step" data-action="method#select" data-method-index-param="0">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-7a4 4 0 0 1 0 7"/></svg>
+<h3>Mise en relations</h3>
+<p>Nous identifions des consultants hautement qualifiés et disponibles dans les secteurs financiers.</p>
+</button>
+<button class="approach-tab" type="button" role="tab" id="step-1" aria-selected="false" aria-controls="method-panel-1" tabindex="-1" data-method-target="step" data-action="method#select" data-method-index-param="1">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 3v17h17M8 15v-4m5 4V7m5 8V5"/></svg>
+<h3>Expertise secteur</h3>
+<p>Notre connaissance du marché luxembourgeois permet une sélection précise et immédiatement opérationnelle.</p>
+</button>
+<button class="approach-tab" type="button" role="tab" id="step-2" aria-selected="false" aria-controls="method-panel-2" tabindex="-1" data-method-target="step" data-action="method#select" data-method-index-param="2">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5M4 5h3M4 19h3"/></svg>
+<h3>Processus fluide</h3>
+<p>Un accompagnement simple et transparent, de la définition du besoin au suivi de la mission.</p>
+</button>
+</div>
+</section>
+</div>
+<section class="section learning-block" data-section="formation" data-section-label="Mise en avant des formations" data-reveal-target="item">
+<div>
+<div class="eyebrow">Formation professionnelle</div>
+<h2>Formez vos équipes.<br>Suivez les compétences.<br>Gagnez en conformité.</h2>
+<p>Des formations conçues pour les professionnels du secteur financier au Luxembourg, disponibles en ligne ou animées par nos experts.</p>
+<div class="actions">
+<a class="button button-light" href="https://elearning-lesconsultants.com/" target="_blank" rel="noopener noreferrer">Découvrir l’e-learning<span class="arrow-box">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</span>
+</a>
+<a class="text-link" href="{{ path('app_contact', { expertise: 'formation' }) }}">Nous contacter <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M6 18 18 6M6 6h12v12"/>
+</svg>
+</a>
+</div>
+</div>
+<div class="learning-board">
+<div class="learning-board-header">
+<span>Les Consultants <span class="accent">Academy</span>
+</span>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M12 5C8 2 4 3 2 4v15c4-2 7-1 10 1 3-2 6-3 10-1V4c-4-2-7-1-10 1Zm0 0v15"/>
+</svg>
+</div>
+<p class="board-subtitle">EXEMPLE DE PARCOURS</p>
+<h3>La conformité commence par la connaissance.</h3>
+<p class="board-subtitle">Des sujets concrets. Un parcours à votre rythme.</p>
+<div class="lesson active">
+<span>01</span>Comprendre les enjeux AML / CFT <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m5 12 4 4L19 6"/>
+</svg>
+</div>
+<div class="lesson">
+<span>02</span>Identifier et évaluer les risques <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="m8 4 12 8-12 8V4Z"/>
+</svg>
+</div>
+<div class="lesson">
+<span>03</span>Mettre les acquis en pratique <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M6 11V7a6 6 0 0 1 12 0v4M4 11h16v11H4V11Zm8 4v3"/>
+</svg>
+</div>
+<div class="board-footer">
+<span>Formation en ligne</span>
+<span>À votre rythme ↗</span>
+</div>
+</div>
+</section>
+<div class="dark-chapter">
+<section class="section about-teaser" data-section="cabinet" data-section-label="Présentation du cabinet" data-reveal-target="item">
+<div class="about-image about-image-experts">
+<img src="{{ asset('images/experts-finance-conformite.webp') }}" alt="Trois experts en finance et conformité collaborent autour d’une mission" width="1120" height="1400" loading="lazy">
+<span class="image-specialties" aria-hidden="true"><i></i>Compliance · Finance · Risk</span>
+<span class="image-stamp">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-7a4 4 0 0 1 0 7"/>
+</svg>Un partenaire de confiance pour vos missions critiques</span>
+</div>
+<div>
+<div class="eyebrow">À propos</div>
+<h2>Experts en finance<br>&amp; conformité</h2>
+<p>Chez LES CONSULTANTS, notre mission est simple : connecter les meilleurs consultants avec les acteurs clés du secteur financier au Luxembourg.</p>
+<p>Grâce à notre expertise sectorielle pointue et à un réseau qualifié, nous vous aidons à renforcer vos équipes rapidement, efficacement et en toute confiance.</p>
+<a class="text-link" href="{{ path('app_cabinet') }}">Rencontrer le cabinet<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</div>
+</section>
+<section class="section faq-layout" data-controller="faq" data-reveal-target="item">
+<div class="faq-intro">
+<div class="eyebrow">Foire aux questions</div>
+<h2>Nos réponses<br>à vos questions</h2>
+<p>Vous ne trouvez pas la réponse à votre question ? Contactez-nous.</p>
+<a class="text-link" href="{{ path('app_contact') }}">Poser une question<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</a>
+</div>
+<div>
+<details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+<summary>Quel type de profils proposez-vous ?</summary>
+<p>Nous proposons des consultants externes expérimentés dans la finance, la conformité (compliance), la gestion des risques et la transformation digitale. Chaque profil est soigneusement sélectionné et validé avant la mise en relation.</p>
+</details>
+<details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+<summary>Sous quel délai recevrons-nous des candidatures ?</summary>
+<p>Nous nous engageons à vous présenter des profils adaptés sous 48 heures, avec un suivi personnalisé pour répondre à vos besoins spécifiques.</p>
+</details>
+<details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+<summary>Quels sont vos domaines d’expertise ?</summary>
+<p>Nos domaines couvrent la conformité, l’AML/CFT, MIFID, DORA, MICA, la cybersécurité et le digital. Nous vous accompagnons également dans le FORMATION stratégique et le développement commercial.</p>
+</details>
+<details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+<summary>Les consultants sont-ils déjà disponibles ?</summary>
+<p>Oui, nos consultants sont déjà référencés et validés. Nous nous assurons de leur disponibilité avant de vous les proposer, pour garantir un démarrage rapide de la mission.</p>
+</details>
+<details class="faq-item" data-faq-target="item" data-action="toggle->faq#toggle">
+<summary>Travaillez-vous uniquement au Luxembourg ?</summary>
+<p>Non, nous intervenons aussi en Belgique et en Europe. Nos consultants sont mobiles et habitués à travailler dans un environnement international.</p>
+</details>
+</div>
+</section>
+</div>
+<section class="section" id="ressources" data-reveal-target="item">
+<div class="section-heading">
+<div>
+<div class="eyebrow">Regards sur nos métiers</div>
+<h2>Actualités &amp; conseils<br> du secteur</h2>
+</div>
+<p>Retrouvez les analyses et éclairages publiés par notre équipe.</p>
+</div>
+<div class="insights-grid" tabindex="0" aria-label="Actualités et conseils. Faites glisser horizontalement sur mobile.">
+<a class="insight-card" href="{{ path('app_blog_show', { slug: 'freelances-entreprises-une-nouvelle-maniere-de-collaborer-avec-les-consultants' }) }}">
+<div class="insight-image">
+<img src="{{ asset('blog/01-freelances-entreprises-une-nouvelle-maniere-de-collaborer--featured.webp') }}" alt="Freelances et entreprises accompagnés par Les Consultants" width="360" height="200" loading="lazy">
+</div>
+<div class="meta">
+<span>Conseil</span>
+<time>5 août 2025</time>
+</div>
+<h3>Freelances &amp; Entreprises : une nouvelle manière de collaborer avec LES CONSULTANTS</h3>
+<span class="text-link">Lire l’analyse <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</span>
+</a>
+<a class="insight-card" href="{{ path('app_blog_show', { slug: 'mise-en-conformite-des-fonds-non-regules-raif-aif-la-fin-de-la-tolerance-administrative' }) }}">
+<div class="insight-image">
+<img src="{{ asset('blog/02-mise-en-conformite-des-fonds-non-regules-raif-aif-la-fin-d-featured.webp') }}" alt="Mise en conformité des fonds RAIF et AIF" width="360" height="200" loading="lazy">
+</div>
+<div class="meta">
+<span>Finance</span>
+<time>28 juillet 2025</time>
+</div>
+<h3>Mise en conformité des Fonds non régulés (RAIF, AIF) : la fin de la tolérance administrative ?</h3>
+<span class="text-link">Lire l’analyse <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</span>
+</a>
+<a class="insight-card" href="{{ path('app_blog_show', { slug: 'obligations-de-formation-au-luxembourg-un-enjeu-strategique-de-conformite' }) }}">
+<div class="insight-image">
+<img src="{{ asset('blog/03-obligations-de-formation-au-luxembourg-un-enjeu-strategiqu-featured.webp') }}" alt="Obligations de formation au Luxembourg" width="360" height="200" loading="lazy">
+</div>
+<div class="meta">
+<span>Formation</span>
+<time>22 juillet 2025</time>
+</div>
+<h3>Obligations de formation au Luxembourg : un enjeu stratégique de conformité</h3>
+<span class="text-link">Lire l’analyse <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</span>
+</a>
+</div>
+<div class="insights-all"><a class="button button-secondary" href="{{ path('app_blog_index') }}">Voir toutes les analyses <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</section>
+<section class="cta-section" data-reveal-target="item">
+<div class="eyebrow">Prêt à démarrer ?</div>
+<h2>Besoin d’un consultant qualifié<br><span class="accent">pour renforcer vos équipes ?</span></h2>
+<p>Parlez-nous de votre besoin, on s’occupe du reste !</p>
+<div class="actions">
+<a class="button button-primary" href="{{ path('app_deposit') }}">Commencer<span class="arrow-box">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M5 12h14m-5-5 5 5-5 5"/>
+</svg>
+</span>
+</a>
+<a class="button button-quiet" href="{{ path('app_contact', { profil: 'consultant' }) }}">Je suis consultant <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+<path d="M6 18 18 6M6 6h12v12"/>
+</svg>
+</a>
+</div>
+</section>
+</main>
+{% endblock %}
