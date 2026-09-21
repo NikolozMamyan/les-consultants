@@ -6,17 +6,17 @@
         <small>{{ field.type == 'image' ? 'Image' : (field.type == 'button' ? 'Bouton' : (field.type == 'textarea' ? 'Texte long' : 'Texte')) }}</small>
     </label>
     {% if field.type == 'textarea' %}
-        <textarea id="{{ fieldId }}" rows="4" maxlength="500" data-content-editor-target="field" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText">{{ field.value }}</textarea>
+        <textarea id="{{ fieldId }}" rows="4" maxlength="500" data-content-editor-target="field" data-field-type="{{ field.type }}" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText">{{ field.value }}</textarea>
     {% elseif field.type == 'image' %}
         <label class="admin-image-field" for="{{ fieldId }}">
             <span class="admin-image-placeholder">{{ ui.icon('image') }}</span>
-            <span><strong>{{ field.value }}</strong><small>JPG, PNG ou WebP · 5 Mo maximum</small></span>
+            <span><strong>{{ field.value|split('/')|last }}</strong><small>JPG, PNG ou WebP · 5 Mo maximum</small></span>
             <b>Remplacer</b>
         </label>
-        <input class="admin-file-input" id="{{ fieldId }}" type="file" accept="image/jpeg,image/png,image/webp" data-content-editor-target="field" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="change->content-editor#updateImage">
+        <input class="admin-file-input" id="{{ fieldId }}" type="file" accept="image/jpeg,image/png,image/webp" data-content-editor-target="field" data-field-type="{{ field.type }}" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="change->content-editor#updateImage">
     {% elseif field.type == 'button' %}
-        <span class="admin-button-field"><i>{{ ui.icon('button') }}</i><input id="{{ fieldId }}" type="text" maxlength="80" value="{{ field.value }}" data-content-editor-target="field" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText"></span>
+        <span class="admin-button-field"><i>{{ ui.icon('button') }}</i><input id="{{ fieldId }}" type="text" maxlength="80" value="{{ field.value }}" data-content-editor-target="field" data-field-type="{{ field.type }}" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText"></span>
     {% else %}
-        <input id="{{ fieldId }}" type="text" maxlength="180" value="{{ field.value }}" data-content-editor-target="field" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText">
+        <input id="{{ fieldId }}" type="text" maxlength="180" value="{{ field.value }}" data-content-editor-target="field" data-field-type="{{ field.type }}" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText">
     {% endif %}
 </div>

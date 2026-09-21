@@ -1,0 +1,33 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}{{ isEdit ? 'Modifier un administrateur' : 'Nouvel administrateur' }}{% endblock %}
+
+{% block body %}
+<header class="admin-page-heading">
+    <div>
+        <span class="admin-kicker">Accès &amp; sécurité</span>
+        <h1>{{ isEdit ? 'Modifier le compte' : 'Créer un compte' }}</h1>
+        <p>{{ isEdit ? editedUser.email : 'Ajoutez une personne autorisée à administrer le site.' }}</p>
+    </div>
+    <a class="admin-button admin-button-light" href="{{ path('admin_users') }}">Retour à la liste</a>
+</header>
+
+<section class="admin-panel admin-user-form-panel">
+    {{ form_start(form, {attr: {class: 'admin-user-form'}}) }}
+        {{ form_errors(form) }}
+        <div class="admin-form-grid">
+            {{ form_row(form.displayName) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.role) }}
+            {{ form_row(form.active) }}
+            {{ form_row(form.plainPassword.first) }}
+            {{ form_row(form.plainPassword.second) }}
+        </div>
+        <div class="admin-form-actions">
+            <a class="admin-button admin-button-light" href="{{ path('admin_users') }}">Annuler</a>
+            <button class="admin-button admin-button-primary" type="submit">{{ isEdit ? 'Enregistrer les modifications' : 'Créer le compte' }} {{ ui.icon('check') }}</button>
+        </div>
+    {{ form_end(form) }}
+</section>
+{% endblock %}

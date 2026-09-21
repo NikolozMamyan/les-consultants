@@ -15,7 +15,9 @@ export default class extends Controller {
         'outlineLabel',
         'carouselCardButton',
         'carouselCardPanel',
+        'saveButton',
     ];
+    static values = { saveUrl: String };
 
     connect() {
         const activeButton = this.sectionButtonTargets.find(button => button.classList.contains('is-active'));
@@ -180,17 +182,70 @@ export default class extends Controller {
         event.preventDefault();
         this.element.querySelector('form')?.reset();
         this.frameTarget.contentWindow?.location.reload();
-        this.statusTarget.innerHTML = '<i></i> Aperçu réinitialisé';
+        this.statusTarget.innerHTML = '<i></i> Modifications annulées';
         this.statusTarget.classList.remove('is-dirty');
     }
 
-    save(event) {
+    async save(event) {
         event.preventDefault();
-        this.statusTarget.innerHTML = '<i></i> Maquette enregistrée';
-        this.statusTarget.classList.remove('is-dirty');
-        window.dispatchEvent(new CustomEvent('admin:notice', {
-            detail: { message: 'Aperçu enregistré pour la démonstration. Aucune donnée publique n’a été modifiée.' },
-        }));
+        const form = this.element.querySelector('form');
+        if (!form || !this.hasSaveUrlValue) {
+            return;
+        }
+
+        const fields = {};
+        const body = new FormData();
+        this.fieldTargets.forEach(field => {
+            if ('file' === field.type) {
+                const file = field.files?.[0];
+                if (file) {
+                    body.append('imageSelectors[]', field.dataset.previewSelector);
+                    body.append('images[]', file, file.name);
+                }
+                return;
+            }
+            fields[field.dataset.previewSelector] = field.value;
+        });
+
+        const carousels = {};
+        this.element.querySelectorAll('.admin-carousel-editor').forEach(editor => {
+            carousels[editor.dataset.carouselRootSelector] = {
+                interval: Number(editor.querySelector('.admin-carousel-interval input')?.value),
+                mode: editor.querySelector('.admin-carousel-mode-switch input')?.checked ? 'marquee' : 'cards',
+            };
+        });
+
+        body.set('_token', form.elements.namedItem('_token')?.value || '');
+        body.set('fields', JSON.stringify(fields));
+        body.set('carousels', JSON.stringify(carousels));
+        this.saveButtonTarget.disabled = true;
+        this.statusTarget.innerHTML = '<i></i> Publication en cours…';
+
+        try {
+            const response = await fetch(this.saveUrlValue, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                body,
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                throw new Error(result.message || 'Impossible d’enregistrer les modifications.');
+            }
+
+            this.commitFormState(result.content || {});
+            this.statusTarget.innerHTML = '<i></i> Modifications publiées';
+            this.statusTarget.classList.remove('is-dirty');
+            this.frameTarget.contentWindow?.location.reload();
+            window.dispatchEvent(new CustomEvent('admin:notice', { detail: { message: result.message } }));
+        } catch (error) {
+            this.statusTarget.innerHTML = '<i></i> Échec de la publication';
+            this.statusTarget.classList.add('is-dirty');
+            window.dispatchEvent(new CustomEvent('admin:notice', {
+                detail: { message: error instanceof Error ? error.message : 'Impossible d’enregistrer les modifications.' },
+            }));
+        } finally {
+            this.saveButtonTarget.disabled = false;
+        }
     }
 
     markDirty() {
@@ -273,31 +328,28 @@ export default class extends Controller {
 
         const interval = Number(input.value);
         const marquee = modeInput.checked;
-        const track = carousel.querySelector(editor.dataset.carouselTrackSelector);
-
         carousel.dataset.carouselIntervalValue = String(interval);
         carousel.dataset.carouselModeValue = marquee ? 'marquee' : 'cards';
-        carousel.classList.toggle('is-admin-compact-marquee', marquee);
-        track?.querySelectorAll('[data-admin-carousel-clone]').forEach(clone => clone.remove());
+    }
 
-        if (track) {
-            track.style.removeProperty('--admin-marquee-duration');
-        }
-
-        if (!marquee || !track) {
-            return;
-        }
-
-        const cards = [...track.children];
-        cards.forEach(card => {
-            const clone = card.cloneNode(true);
-            clone.dataset.adminCarouselClone = 'true';
-            clone.removeAttribute('data-carousel-target');
-            clone.removeAttribute('data-admin-card-selected');
-            clone.setAttribute('aria-hidden', 'true');
-            track.append(clone);
+    commitFormState(content) {
+        this.fieldTargets.forEach(field => {
+            if ('file' === field.type) {
+                if (field.files?.[0]) {
+                    const savedPath = content[field.dataset.previewSelector];
+                    const label = field.previousElementSibling?.querySelector('strong');
+                    if (savedPath && label) {
+                        label.textContent = savedPath.split('/').pop();
+                    }
+                    field.value = '';
+                }
+                return;
+            }
+            field.defaultValue = field.value;
         });
-        track.style.setProperty('--admin-marquee-duration', `${Math.max(14, Math.min(48, interval / 220))}s`);
+
+        this.element.querySelectorAll('.admin-carousel-interval input').forEach(input => input.defaultValue = input.value);
+        this.element.querySelectorAll('.admin-carousel-mode-switch input').forEach(input => input.defaultChecked = input.checked);
     }
 
     highlightCarouselCard(button, scroll) {
@@ -335,11 +387,19 @@ export default class extends Controller {
     }
 
     replaceVisibleText(element, value) {
-        const directTextNodes = [...element.childNodes].filter(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+        const walker = element.ownerDocument.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        const textNodes = [];
+        let node = walker.nextNode();
+        while (node) {
+            if (node.textContent.trim()) {
+                textNodes.push(node);
+            }
+            node = walker.nextNode();
+        }
 
-        if (directTextNodes.length > 0 && element.children.length > 0) {
-            directTextNodes[0].textContent = `${value} `;
-            directTextNodes.slice(1).forEach(node => node.textContent = '');
+        if (textNodes.length > 0 && element.children.length > 0) {
+            textNodes[0].textContent = `${value} `;
+            textNodes.slice(1).forEach(item => item.textContent = '');
             return;
         }
 

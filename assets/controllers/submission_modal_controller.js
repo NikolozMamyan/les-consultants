@@ -1,45 +1,22 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['dialog', 'flow', 'flowOption', 'eyebrow', 'title', 'intro'];
-    static values = { open: Boolean, flow: String };
+    static targets = ['dialog', 'flow'];
+    static values = { open: Boolean };
 
     connect() {
         this.currentStep = 0;
 
         if (this.openValue) {
-            requestAnimationFrame(() => this.show(this.flowValue, true));
+            requestAnimationFrame(() => this.show(true));
         }
     }
 
-    open(event) {
-        this.show(event.params.flow, false);
+    open() {
+        this.show(false);
     }
 
-    switchFlow(event) {
-        const flow = event.params.flow === 'consultant' ? 'consultant' : 'mission';
-
-        if (this.activeFlow === flow) {
-            return;
-        }
-
-        this.show(flow, false);
-    }
-
-    show(flow, preserveErrors) {
-        const activeFlow = flow === 'consultant' ? 'consultant' : 'mission';
-
-        this.flowTargets.forEach(element => {
-            element.hidden = element.dataset.flow !== activeFlow;
-        });
-
-        this.flowOptionTargets.forEach(element => {
-            const selected = element.dataset.flow === activeFlow;
-            element.classList.toggle('is-active', selected);
-            element.setAttribute('aria-selected', selected ? 'true' : 'false');
-        });
-
-        this.updateHeading(activeFlow);
+    show(preserveErrors) {
         const form = this.activeForm;
         this.currentStep = preserveErrors ? this.errorStep(form) : 0;
         this.update(form);
@@ -136,15 +113,6 @@ export default class extends Controller {
         this.dialogTarget.querySelector('.submission-modal-body').scrollTop = 0;
     }
 
-    updateHeading(flow) {
-        const consultant = flow === 'consultant';
-        this.eyebrowTarget.textContent = consultant ? 'Votre profil' : 'Votre besoin';
-        this.titleTarget.textContent = consultant ? 'Présentez votre profil' : 'Déposez votre mission';
-        this.introTarget.textContent = consultant
-            ? 'Rejoignez notre réseau pour recevoir des missions ciblées selon votre expertise.'
-            : 'Quelques informations suffisent pour lancer la recherche du bon expert.';
-    }
-
     errorStep(form) {
         const error = form.querySelector('.field > ul, .consent > ul');
         const step = error?.closest('.submission-step');
@@ -162,10 +130,6 @@ export default class extends Controller {
     }
 
     get activeForm() {
-        return this.flowTargets.find(element => !element.hidden).querySelector('form');
-    }
-
-    get activeFlow() {
-        return this.flowTargets.find(element => !element.hidden)?.dataset.flow;
+        return this.flowTarget.querySelector('form');
     }
 }

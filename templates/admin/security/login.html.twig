@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex,nofollow">
+        <meta name="theme-color" content="#071e22">
+        <title>Connexion · Administration Les Consultants</title>
+        <link rel="icon" href="{{ asset('images/logo-original.png') }}">
+        <link rel="preload" href="{{ asset('fonts/plus-jakarta-sans.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="{{ asset('styles/admin.css') }}">
+    </head>
+    <body class="admin-login-body">
+        <main class="admin-login-shell">
+            <section class="admin-login-card" aria-labelledby="login-title">
+                <a class="admin-login-brand" href="{{ path('app_home') }}">
+                    <span><img src="{{ asset('images/logo-original.png') }}" alt="" width="48" height="48"></span>
+                    <strong>Les Consultants</strong>
+                </a>
+
+                <div class="admin-login-heading">
+                    <span class="admin-kicker">Administration</span>
+                    <h1 id="login-title">Connexion au back-office</h1>
+                    <p>Identifiez-vous pour administrer le contenu du site.</p>
+                </div>
+
+                {% if authenticationError %}
+                    <div class="admin-login-error" role="alert">Identifiant ou mot de passe incorrect.</div>
+                {% endif %}
+
+                <form method="post" action="{{ path('admin_login') }}" class="admin-login-form">
+                    <label for="login-username">Adresse e-mail</label>
+                    <input id="login-username" name="_username" type="email" value="{{ lastUsername }}" autocomplete="username" required autofocus>
+
+                    <label for="login-password">Mot de passe</label>
+                    <input id="login-password" name="_password" type="password" autocomplete="current-password" required>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button class="admin-button admin-button-primary" type="submit">Se connecter</button>
+                </form>
+
+                <a class="admin-login-return" href="{{ path('app_home') }}">← Retour au site</a>
+            </section>
+        </main>
+    </body>
+</html>

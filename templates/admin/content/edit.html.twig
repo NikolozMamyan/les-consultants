@@ -4,7 +4,7 @@
 {% block title %}Modifier {{ pageData.name }}{% endblock %}
 
 {% block body %}
-<div class="admin-editor" data-controller="content-editor">
+<div class="admin-editor" data-controller="content-editor" data-content-editor-save-url-value="{{ path('admin_content_update', {slug: pageData.slug}) }}">
     <header class="admin-editor-heading">
         <div>
             <a class="admin-back-link" href="{{ path('admin_content') }}">{{ ui.icon('arrow') }} Toutes les pages</a>
@@ -12,8 +12,8 @@
         </div>
         <div class="admin-editor-actions">
             <span class="admin-editor-status" data-content-editor-target="status"><i></i> Aperçu synchronisé</span>
-            <button class="admin-button admin-button-light" type="button" data-action="content-editor#reset">Réinitialiser</button>
-            <button class="admin-button admin-button-primary" type="button" data-action="content-editor#save">Enregistrer {{ ui.icon('check') }}</button>
+            <button class="admin-button admin-button-light" type="button" data-action="content-editor#reset">Annuler</button>
+            <button class="admin-button admin-button-primary" type="button" data-content-editor-target="saveButton" data-action="content-editor#save">Enregistrer {{ ui.icon('check') }}</button>
         </div>
     </header>
 
@@ -29,6 +29,7 @@
             </nav>
 
             <form class="admin-section-forms" data-action="submit->content-editor#save">
+                <input type="hidden" name="_token" value="{{ csrf_token('theme_page_' ~ pageData.slug) }}">
                 {% for section in pageData.sections %}
                     <section class="admin-section-form" data-content-editor-target="panel" data-section-id="{{ section.id }}"{% if not loop.first %} hidden{% endif %}>
                         <div class="admin-section-form-heading"><span>Section {{ loop.index }} · {{ section.fieldsCount }} éléments modifiables</span><h3>{{ section.label }}</h3></div>
@@ -46,7 +47,7 @@
                                 <div class="admin-carousel-settings">
                                     <label class="admin-carousel-mode-switch">
                                         <span><strong>Bandeau compact</strong><small>Défilement continu en boucle</small></span>
-                                        <input type="checkbox" data-action="change->content-editor#updateCarouselMode">
+                                        <input type="checkbox"{% if section.carousel.mode == 'marquee' %} checked{% endif %} data-action="change->content-editor#updateCarouselMode">
                                         <i aria-hidden="true"><b></b></i>
                                     </label>
                                     <label class="admin-carousel-interval">

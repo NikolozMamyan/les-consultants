@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Dto\ContactRequest as ContactData;
-use App\Dto\ConsultantApplication;
 use App\Dto\MissionRequest;
-use App\Form\ConsultantApplicationType;
 use App\Form\ContactRequestType;
 use App\Form\MissionRequestType;
 use App\Service\ContactMessageMailer;
@@ -51,20 +49,12 @@ final class ContactController extends AbstractController
     public function deposit(Request $request, SubmissionMailer $mailer): Response
     {
         $mission = new MissionRequest();
-        $consultant = new ConsultantApplication();
         $missionForm = $this->createForm(MissionRequestType::class, $mission);
-        $consultantForm = $this->createForm(ConsultantApplicationType::class, $consultant);
 
         $missionForm->handleRequest($request);
-        $consultantForm->handleRequest($request);
-
-        $activeFlow = in_array($request->query->get('form'), ['mission', 'consultant'], true)
-            ? $request->query->getString('form')
-            : 'mission';
         $autoOpen = 'GET' === $request->getMethod() && $request->query->has('form');
 
         if ($missionForm->isSubmitted()) {
-            $activeFlow = 'mission';
             $autoOpen = true;
 
             if ($missionForm->isValid()) {
@@ -75,26 +65,12 @@ final class ContactController extends AbstractController
             }
         }
 
-        if ($consultantForm->isSubmitted()) {
-            $activeFlow = 'consultant';
-            $autoOpen = true;
-
-            if ($consultantForm->isValid()) {
-                $mailer->sendConsultant($consultant);
-                $this->addFlash('success', 'Votre profil a bien été transmis. Notre équipe l’étudiera avec attention.');
-
-                return $this->redirectToRoute('app_deposit');
-            }
-        }
-
         return $this->render('pages/deposit.html.twig', [
             'page' => 'deposit',
             'missionForm' => $missionForm,
-            'consultantForm' => $consultantForm,
-            'activeFlow' => $activeFlow,
             'autoOpen' => $autoOpen,
         ], new Response(
-            status: $missionForm->isSubmitted() || $consultantForm->isSubmitted()
+            status: $missionForm->isSubmitted()
                 ? Response::HTTP_UNPROCESSABLE_ENTITY
                 : Response::HTTP_OK,
         ));

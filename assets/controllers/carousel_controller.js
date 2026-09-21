@@ -27,6 +27,7 @@ export default class extends Controller {
         this.intersectionObserver.observe(this.element);
         document.addEventListener('visibilitychange', this.visibilityListener);
         this.reducedMotion.addEventListener('change', this.motionListener);
+        this.applyPresentationMode();
         requestAnimationFrame(() => this.goTo(this.activeIndex, true));
     }
 
@@ -36,18 +37,18 @@ export default class extends Controller {
         this.intersectionObserver?.disconnect();
         document.removeEventListener('visibilitychange', this.visibilityListener);
         this.reducedMotion.removeEventListener('change', this.motionListener);
+        this.removeMarqueeClones();
     }
 
     intervalValueChanged() {
-        if (this.reducedMotion) {
-            this.syncAutoplay();
-        }
+        if (!this.reducedMotion) return;
+        this.applyPresentationMode();
+        this.syncAutoplay();
     }
 
     modeValueChanged() {
-        if (!this.reducedMotion) {
-            return;
-        }
+        if (!this.reducedMotion) return;
+        this.applyPresentationMode();
 
         if ('marquee' === this.modeValue) {
             this.stopAutoplay();
@@ -57,6 +58,28 @@ export default class extends Controller {
 
         requestAnimationFrame(() => this.goTo(this.activeIndex, true));
         this.syncAutoplay();
+    }
+
+    applyPresentationMode() {
+        const marquee = 'marquee' === this.modeValue;
+        this.removeMarqueeClones();
+        this.element.classList.toggle('is-compact-marquee', marquee);
+        this.element.style.setProperty('--carousel-marquee-duration', `${Math.max(14, Math.min(48, this.intervalValue / 220))}s`);
+
+        if (!marquee) return;
+        const track = this.cardTargets[0]?.parentElement;
+        this.cardTargets.forEach(card => {
+            const clone = card.cloneNode(true);
+            clone.dataset.carouselClone = 'true';
+            clone.removeAttribute('data-carousel-target');
+            clone.removeAttribute('data-admin-card-selected');
+            clone.setAttribute('aria-hidden', 'true');
+            track?.append(clone);
+        });
+    }
+
+    removeMarqueeClones() {
+        this.element.querySelectorAll('[data-carousel-clone]').forEach(clone => clone.remove());
     }
 
     previous() {

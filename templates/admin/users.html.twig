@@ -5,18 +5,30 @@
 
 {% block body %}
 <header class="admin-page-heading">
-    <div><span class="admin-kicker">Accès & sécurité</span><h1>Utilisateurs</h1><p>Gérez les personnes autorisées à accéder au back-office.</p></div>
-    <button class="admin-button admin-button-primary" type="button" data-action="admin-shell#demo" data-admin-shell-message-param="La création de comptes sera activée avec l’authentification.">Inviter un utilisateur {{ ui.icon('people') }}</button>
+    <div><span class="admin-kicker">Accès &amp; sécurité</span><h1>Utilisateurs</h1><p>Gérez les personnes autorisées à accéder au back-office.</p></div>
+    <a class="admin-button admin-button-primary" href="{{ path('admin_user_new') }}">Créer un administrateur {{ ui.icon('people') }}</a>
 </header>
 
-<aside class="admin-security-banner"><span>{{ ui.icon('check') }}</span><div><strong>Les rôles seront appliqués à la prochaine étape</strong><p>Super administrateur, administrateur et éditeur de contenu pourront disposer de droits distincts.</p></div></aside>
+<aside class="admin-security-banner"><span>{{ ui.icon('check') }}</span><div><strong>Les accès sont protégés par rôle</strong><p>Les administrateurs gèrent le site. Les super administrateurs peuvent également créer et modifier les comptes.</p></div></aside>
 
 <section class="admin-panel">
-    <header class="admin-panel-header admin-table-heading"><div><h2>Équipe</h2><p>{{ users|length }} utilisateurs dans la maquette</p></div><label class="admin-search">{{ ui.icon('search') }}<input type="search" placeholder="Rechercher un utilisateur" aria-label="Rechercher un utilisateur"></label></header>
+    <header class="admin-panel-header admin-table-heading"><div><h2>Équipe</h2><p>{{ users|length }} compte{{ users|length > 1 ? 's' : '' }}</p></div></header>
     <div class="admin-table-wrap">
         <table class="admin-table admin-users-table">
-            <thead><tr><th>Utilisateur</th><th>Rôle</th><th>Statut</th><th>Dernière activité</th><th></th></tr></thead>
-            <tbody>{% for user in users %}<tr><td><span class="admin-user-cell"><i>{{ user.initials }}</i><span><strong>{{ user.name }}</strong><small>{{ user.email }}</small></span></span></td><td><span class="admin-role">{{ user.role }}</span></td><td><span class="admin-published"><i></i> {{ user.status }}</span></td><td>{% if user.lastSeen == 'En ligne' %}<span class="admin-online"><i></i> En ligne</span>{% else %}{{ user.lastSeen }}{% endif %}</td><td><button class="admin-row-menu" type="button" aria-label="Actions pour {{ user.name }}" data-action="admin-shell#demo" data-admin-shell-message-param="La gestion des permissions sera activée avec l’authentification.">•••</button></td></tr>{% endfor %}</tbody>
+            <thead><tr><th>Utilisateur</th><th>Rôle</th><th>Statut</th><th>Dernière connexion</th><th></th></tr></thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><span class="admin-user-cell"><i>{{ user.initials }}</i><span><strong>{{ user.displayName }}</strong><small>{{ user.email }}</small></span></span></td>
+                    <td><span class="admin-role">{{ 'ROLE_SUPER_ADMIN' in user.roles ? 'Super administrateur' : 'Administrateur' }}</span></td>
+                    <td>{% if user.active %}<span class="admin-published"><i></i> Actif</span>{% else %}<span class="admin-user-disabled"><i></i> Désactivé</span>{% endif %}</td>
+                    <td>{{ user.lastLoginAt ? user.lastLoginAt|date('d/m/Y à H:i') : 'Jamais' }}</td>
+                    <td><a class="admin-row-menu" href="{{ path('admin_user_edit', {id: user.id}) }}" aria-label="Modifier {{ user.displayName }}">Modifier</a></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5">Aucun administrateur n’a encore été créé.</td></tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
 </section>

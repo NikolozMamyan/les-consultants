@@ -34,9 +34,11 @@
                     {{ ui.icon('briefcase') }}<span>Missions &amp; Talents</span>
                     <b class="admin-nav-count">9</b>
                 </a>
-                <a href="{{ path('admin_users') }}"{% if adminSection == 'users' %} aria-current="page"{% endif %}>
-                    {{ ui.icon('people') }}<span>Utilisateurs</span>
-                </a>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <a href="{{ path('admin_users') }}"{% if adminSection == 'users' %} aria-current="page"{% endif %}>
+                        {{ ui.icon('people') }}<span>Utilisateurs</span>
+                    </a>
+                {% endif %}
             </nav>
 
             <div class="admin-sidebar-footer">
@@ -44,9 +46,12 @@
                     {{ ui.icon('up') }} <span>Voir le site</span>
                 </a>
                 <div class="admin-profile">
-                    <span class="admin-avatar">PR</span>
-                    <span><strong>Patrick Ruffin</strong><small>Super administrateur</small></span>
-                    <button type="button" aria-label="Options du compte" data-action="admin-shell#demo" data-admin-shell-message-param="Gestion du compte disponible dans la prochaine étape.">•••</button>
+                    <span class="admin-avatar">{{ app.user.initials }}</span>
+                    <span><strong>{{ app.user.displayName }}</strong><small>{{ is_granted('ROLE_SUPER_ADMIN') ? 'Super administrateur' : 'Administrateur' }}</small></span>
+                    <form method="post" action="{{ path('admin_logout') }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                        <button type="submit" aria-label="Se déconnecter" title="Se déconnecter">{{ ui.icon('arrow') }}</button>
+                    </form>
                 </div>
             </div>
         </aside>
@@ -54,7 +59,7 @@
         <div class="admin-workspace">
             <header class="admin-topbar">
                 <div>
-                    <span class="admin-environment"><i></i> Maquette interactive</span>
+                    <span class="admin-environment"><i></i> Administration du site</span>
                 </div>
                 <div class="admin-topbar-actions">
                     <button class="admin-icon-button" type="button" aria-label="Notifications" data-action="admin-shell#demo" data-admin-shell-message-param="Vous avez 3 nouvelles notifications.">
@@ -64,6 +69,9 @@
                 </div>
             </header>
             <main class="admin-main" id="admin-content">
+                {% for message in app.flashes('success') %}
+                    <div class="admin-flash admin-flash-success" role="status">{{ ui.icon('check') }} <span>{{ message }}</span></div>
+                {% endfor %}
                 {% block body %}{% endblock %}
             </main>
         </div>

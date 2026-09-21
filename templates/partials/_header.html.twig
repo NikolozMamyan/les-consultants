@@ -10,11 +10,11 @@
             <a href="{{ path('app_expertises') }}"{% if page == 'expertises' %} aria-current="page"{% endif %} data-action="navigation#close">Nos services</a>
             <a href="{{ path('app_cabinet') }}"{% if page == 'cabinet' %} aria-current="page"{% endif %} data-action="navigation#close">À propos</a>
             <a href="{{ path('app_contact') }}"{% if page == 'contact' %} aria-current="page"{% endif %} data-action="navigation#close">Contact</a>
-            <a class="mobile-cta" href="{{ path('app_deposit') }}" data-action="navigation#close">Missions {{ ui.icon('arrow') }}</a>
+            <a class="mobile-cta" href="{{ path('app_deposit', { form: 'mission' }) }}" data-action="navigation#close">Missions {{ ui.icon('arrow') }}</a>
         </nav>
         <div class="header-actions">
             <a class="text-link" href="https://elearning-lesconsultants.com/" target="_blank" rel="noopener noreferrer">E-learning {{ ui.icon('up') }}</a>
-            <a class="button button-primary" href="{{ path('app_deposit') }}"{% if page == 'deposit' %} aria-current="page"{% endif %}>
+            <a class="button button-primary" href="{{ path('app_deposit', { form: 'mission' }) }}"{% if page == 'deposit' %} aria-current="page"{% endif %}>
                 <span class="desktop-label">Déposer une mission</span><span class="mobile-label">Missions</span>
                 <span class="arrow-box">{{ ui.icon('arrow') }}</span>
             </a>

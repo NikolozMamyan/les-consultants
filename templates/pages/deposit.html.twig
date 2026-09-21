@@ -1,48 +1,35 @@
 {% extends 'base.html.twig' %}
 {% import 'macros/ui.html.twig' as ui %}
 
-{% block title %}Déposer un besoin ou un profil | Les Consultants{% endblock %}
-{% block meta_description %}Déposez une mission ou rejoignez le réseau de consultants spécialisés de Les Consultants au Luxembourg.{% endblock %}
+{% block title %}Déposer une mission | Les Consultants{% endblock %}
+{% block meta_description %}Déposez votre mission et lancez la recherche d’un consultant spécialisé au Luxembourg.{% endblock %}
 
 {% block body %}
-<main id="contenu" class="container frame" data-controller="submission-modal" data-submission-modal-open-value="{{ autoOpen ? 'true' : 'false' }}" data-submission-modal-flow-value="{{ activeFlow }}">
+<main id="contenu" class="container frame" data-controller="submission-modal" data-submission-modal-open-value="{{ autoOpen ? 'true' : 'false' }}">
     <section class="page-intro" data-reveal-target="item">
         <nav class="breadcrumb" aria-label="Fil d’Ariane">
             <a href="{{ path('app_home') }}">Accueil</a>
             <span aria-hidden="true">/</span>
-            <span aria-current="page">Déposer un besoin / profil</span>
+            <span aria-current="page">Déposer une mission</span>
         </nav>
-        <div class="eyebrow">Missions &amp; profils</div>
+        <div class="eyebrow">Votre besoin</div>
         <h1>La bonne expertise.<br><span class="accent">Au bon endroit.</span></h1>
-        <p class="lead">Entreprise ou consultant, choisissez le parcours qui correspond à votre besoin.</p>
+        <p class="lead">Quelques informations suffisent pour lancer la recherche du bon expert.</p>
     </section>
 
     <section class="section deposit-section" data-reveal-target="item">
-        <div class="service-grid deposit-grid">
+        <div class="service-grid deposit-grid deposit-grid-single">
             <article class="service-card deposit-card">
                 <span class="service-icon">{{ ui.icon('briefcase') }}</span>
-                <div class="eyebrow">Vous êtes une entreprise ?</div>
-                <h2>Déposer votre besoin</h2>
+                <div class="eyebrow">Votre besoin</div>
+                <h2>Déposez votre mission</h2>
                 <p>Soumettez votre mission en quelques clics et trouvez rapidement le consultant adapté.</p>
                 <ul class="checklist">
                     <li>{{ ui.icon('check') }} Détaillez votre besoin et vos enjeux</li>
                     <li>{{ ui.icon('check') }} Profils disponibles en moins de 48 h</li>
                     <li>{{ ui.icon('check') }} Gestion complète de la mission</li>
                 </ul>
-                <button class="button button-primary" type="button" data-action="submission-modal#open" data-submission-modal-flow-param="mission">Déposer votre besoin <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
-            </article>
-
-            <article class="service-card deposit-card" id="consultant">
-                <span class="service-icon">{{ ui.icon('people') }}</span>
-                <div class="eyebrow">Vous êtes un consultant ?</div>
-                <h2>Déposer votre profil</h2>
-                <p>Rejoignez notre réseau pour recevoir des missions ciblées, alignées avec votre expertise.</p>
-                <ul class="checklist">
-                    <li>{{ ui.icon('check') }} Valorisez vos compétences et votre expérience</li>
-                    <li>{{ ui.icon('check') }} Mettez votre profil en avant auprès d’acteurs financiers</li>
-                    <li>{{ ui.icon('check') }} Bénéficiez d’un accompagnement sur mesure</li>
-                </ul>
-                <button class="button button-primary" type="button" data-action="submission-modal#open" data-submission-modal-flow-param="consultant">Déposer votre profil <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
+                <button class="button button-primary" type="button" data-action="submission-modal#open">Déposer votre mission <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
             </article>
         </div>
     </section>

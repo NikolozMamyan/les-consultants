@@ -85,16 +85,6 @@ final class AdminDemoDataProvider
         ];
     }
 
-    /** @return list<array<string, mixed>> */
-    public function users(): array
-    {
-        return [
-            ['name' => 'Patrick Ruffin', 'email' => 'pruffin@les-consultants.lu', 'role' => 'Super administrateur', 'status' => 'Actif', 'lastSeen' => 'En ligne', 'initials' => 'PR'],
-            ['name' => 'Marie Laurent', 'email' => 'marie@les-consultants.lu', 'role' => 'Éditeur', 'status' => 'Actif', 'lastSeen' => 'Il y a 18 min', 'initials' => 'ML'],
-            ['name' => 'Lucas Meyer', 'email' => 'lucas@les-consultants.lu', 'role' => 'Administrateur', 'status' => 'Invitation', 'lastSeen' => 'Jamais', 'initials' => 'LM'],
-        ];
-    }
-
     /** @return array<string, mixed> */
     private function pageDefinition(string $slug): array
     {
@@ -242,11 +232,11 @@ final class AdminDemoDataProvider
                     $this->section('services', 'Domaines d’intervention', '[data-section="services"]', [
                         $this->textField('Sur-titre', 'Nos expertises', '[data-section="services"] .eyebrow'),
                         $this->textField('Titre', 'Des expertises ciblées. Des réponses concrètes.', '[data-section="services"] h2'),
-                        $this->textField('Compliance — titre', 'Expertise Compliance', '[data-section="services"] .service-card:first-of-type h3'),
-                        $this->textField('Compliance — description', 'Des consultants spécialisés pour accompagner les institutions financières dans leurs obligations AML et KYC.', '[data-section="services"] .service-card:first-of-type p', true),
-                        $this->buttonField('Compliance — lien', 'Échanger sur ce besoin', '[data-section="services"] .service-card:first-of-type .text-link'),
-                        $this->textField('Finance — titre', 'Services Fund Administration', '[data-section="services"] .service-card:nth-of-type(2) h3'),
-                        $this->textField('Finance — description', 'Des consultants spécialisés en comptabilité de fonds, NAV oversight et reporting.', '[data-section="services"] .service-card:nth-of-type(2) p', true),
+                        $this->textField('Compliance — titre', 'Expertise Compliance', '#compliance h3'),
+                        $this->textField('Compliance — description', 'Des consultants spécialisés pour accompagner les institutions financières dans leurs obligations AML et KYC.', '#compliance > p', true),
+                        $this->buttonField('Compliance — lien', 'Échanger sur ce besoin', '#compliance .text-link'),
+                        $this->textField('Finance — titre', 'Services Fund Administration', '#finance h3'),
+                        $this->textField('Finance — description', 'Des consultants spécialisés en comptabilité de fonds, NAV oversight et reporting.', '#finance > p', true),
                         $this->buttonField('Carte sur mesure — bouton', 'Déposer une mission', '[data-section="services"] .service-card.custom .button'),
                     ]),
                     $this->section('plateforme', 'Plateforme e-learning', '[data-section="plateforme"]', [
@@ -291,7 +281,7 @@ final class AdminDemoDataProvider
                     $this->section('reseau', 'Rejoindre le réseau', '[data-section="reseau"]', [
                         $this->textField('Titre', 'Votre expertise mérite le bon projet.', '[data-section="reseau"] h2'),
                         $this->textField('Description', 'Rejoignez notre réseau pour recevoir des missions ciblées, alignées avec votre expertise.', '[data-section="reseau"] h2 + p', true),
-                        $this->buttonField('Bouton', 'Déposer votre profil', '[data-section="reseau"] .button'),
+                        $this->buttonField('Bouton', 'Nous contacter', '[data-section="reseau"] .button'),
                         $this->imageField('Photo du réseau', 'reseau-consultants.webp', '[data-section="reseau"] img'),
                     ]),
                     $this->section('cta', 'Appel à l’action final', '.cta-section', [
@@ -351,7 +341,7 @@ final class AdminDemoDataProvider
      */
     private function carousel(int $interval, string $viewportSelector, string $trackSelector, array $cards): array
     {
-        return compact('interval', 'viewportSelector', 'trackSelector', 'cards');
+        return ['interval' => $interval, 'mode' => 'cards', 'viewportSelector' => $viewportSelector, 'trackSelector' => $trackSelector, 'cards' => $cards];
     }
 
     /** @param list<array<string, mixed>> $fields
