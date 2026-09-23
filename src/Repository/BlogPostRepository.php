@@ -57,6 +57,43 @@ final class BlogPostRepository extends ServiceEntityRepository
     }
 
     /** @return list<BlogPost> */
+    public function findForAdmin(string $search = '', ?bool $published = null): array
+    {
+        $builder = $this->createQueryBuilder('post')
+            ->orderBy('post.updatedAt', \SortDirection::Descending);
+
+        if ('' !== $search) {
+            $builder
+                ->andWhere('LOWER(post.title) LIKE :search OR LOWER(post.category) LIKE :search OR LOWER(post.author) LIKE :search')
+                ->setParameter('search', '%'.mb_strtolower($search).'%');
+        }
+
+        if (null !== $published) {
+            $builder
+                ->andWhere('post.published = :published')
+                ->setParameter('published', $published);
+        }
+
+        return $builder->getQuery()->getResult();
+    }
+
+    public function slugExistsForAnotherPost(string $slug, ?int $postId): bool
+    {
+        $builder = $this->createQueryBuilder('post')
+            ->select('COUNT(post.id)')
+            ->andWhere('post.slug = :slug')
+            ->setParameter('slug', $slug);
+
+        if (null !== $postId) {
+            $builder
+                ->andWhere('post.id != :id')
+                ->setParameter('id', $postId);
+        }
+
+        return 0 < (int) $builder->getQuery()->getSingleScalarResult();
+    }
+
+    /** @return list<BlogPost> */
     public function findRelated(BlogPost $post, int $limit = 3): array
     {
         return $this->createQueryBuilder('related')

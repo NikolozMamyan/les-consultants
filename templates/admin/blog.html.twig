@@ -5,22 +5,48 @@
 
 {% block body %}
 <header class="admin-page-heading">
-    <div><span class="admin-kicker">Contenus éditoriaux</span><h1>Blog</h1><p>Préparez et publiez les actualités du cabinet.</p></div>
-    <button class="admin-button admin-button-primary" type="button" data-action="admin-shell#demo" data-admin-shell-message-param="L’éditeur d’article sera connecté lors de la phase back-office.">Nouvel article {{ ui.icon('edit') }}</button>
+    <div><span class="admin-kicker">Contenus éditoriaux</span><h1>Blog</h1><p>Préparez, publiez et mettez à jour les actualités du cabinet.</p></div>
+    <a class="admin-button admin-button-primary" href="{{ path('admin_blog_new') }}">Nouvel article {{ ui.icon('edit') }}</a>
 </header>
 
-<section class="admin-stat-grid admin-stat-grid-compact">
-    <article class="admin-mini-stat"><span>Articles publiés</span><strong>12</strong><small>+2 ce mois</small></article>
-    <article class="admin-mini-stat"><span>Brouillons</span><strong>3</strong><small>À finaliser</small></article>
-    <article class="admin-mini-stat"><span>Vues ce mois</span><strong>3 482</strong><small>+21 %</small></article>
+<section class="admin-stat-grid admin-stat-grid-compact" aria-label="Indicateurs du blog">
+    <article class="admin-mini-stat"><span>Total des articles</span><strong>{{ counts.all }}</strong><small>Dans la bibliothèque</small></article>
+    <article class="admin-mini-stat"><span>Articles publiés</span><strong>{{ counts.published }}</strong><small>Visibles sur le site</small></article>
+    <article class="admin-mini-stat"><span>Brouillons</span><strong>{{ counts.draft }}</strong><small>À finaliser</small></article>
+    <article class="admin-mini-stat"><span>Catégories actives</span><strong>{{ counts.categories }}</strong><small>Thématiques publiées</small></article>
 </section>
 
-<section class="admin-panel">
-    <header class="admin-panel-header admin-table-heading"><div><h2>Tous les articles</h2><p>Gérez vos publications et brouillons.</p></div><label class="admin-search">{{ ui.icon('search') }}<input type="search" placeholder="Rechercher un article" aria-label="Rechercher un article"></label></header>
+<section class="admin-panel admin-blog-panel">
+    <header class="admin-panel-header admin-table-heading admin-blog-toolbar">
+        <nav class="admin-filter-tabs" aria-label="Filtrer les articles">
+            <a class="{{ selectedStatus not in ['published', 'draft'] ? 'is-active' : '' }}" href="{{ path('admin_blog', {q: search}) }}">Tous <b>{{ counts.all }}</b></a>
+            <a class="{{ selectedStatus == 'published' ? 'is-active' : '' }}" href="{{ path('admin_blog', {status: 'published', q: search}) }}">Publiés <b>{{ counts.published }}</b></a>
+            <a class="{{ selectedStatus == 'draft' ? 'is-active' : '' }}" href="{{ path('admin_blog', {status: 'draft', q: search}) }}">Brouillons <b>{{ counts.draft }}</b></a>
+        </nav>
+        <form class="admin-search" action="{{ path('admin_blog') }}" method="get">
+            {{ ui.icon('search') }}
+            {% if selectedStatus %}<input type="hidden" name="status" value="{{ selectedStatus }}">{% endif %}
+            <input type="search" name="q" value="{{ search }}" placeholder="Titre, catégorie, auteur…" aria-label="Rechercher un article" maxlength="120">
+            {% if search %}<a href="{{ path('admin_blog', {status: selectedStatus}) }}" aria-label="Effacer la recherche">×</a>{% endif %}
+        </form>
+    </header>
     <div class="admin-table-wrap">
-        <table class="admin-table">
-            <thead><tr><th>Article</th><th>Catégorie</th><th>Date</th><th>Vues</th><th>Statut</th><th></th></tr></thead>
-            <tbody>{% for post in posts %}<tr><td><strong>{{ post.title }}</strong></td><td>{{ post.category }}</td><td>{{ post.date }}</td><td>{{ post.views }}</td><td><span class="admin-status admin-status-{{ post.status|lower }}">{{ post.status }}</span></td><td><button class="admin-row-menu" type="button" aria-label="Actions pour {{ post.title }}" data-action="admin-shell#demo" data-admin-shell-message-param="Les actions de l’article seront disponibles avec la persistance.">•••</button></td></tr>{% endfor %}</tbody>
+        <table class="admin-table admin-blog-table">
+            <thead><tr><th>Article</th><th>Catégorie</th><th>Publication</th><th>Mise à jour</th><th>Statut</th><th></th></tr></thead>
+            <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td><span class="admin-blog-article-cell">{% if post.featuredImage %}<img src="{{ asset(post.featuredImage) }}" alt="">{% else %}<i>{{ ui.icon('edit') }}</i>{% endif %}<span><strong>{{ post.title }}</strong><small>/blog/{{ post.slug }}</small></span></span></td>
+                    <td>{{ post.category }}</td>
+                    <td>{{ post.publishedAt|date('d/m/Y à H:i') }}</td>
+                    <td>{{ post.updatedAt|date('d/m/Y à H:i') }}</td>
+                    <td><span class="admin-status admin-status-{{ post.published ? 'publie' : 'brouillon' }}">{{ post.published ? 'Publié' : 'Brouillon' }}</span></td>
+                    <td><span class="admin-row-actions"><a class="admin-action-primary" href="{{ path('admin_blog_edit', {id: post.id}) }}">Modifier {{ ui.icon('arrow') }}</a>{% if post.published %}<a class="admin-action-secondary" href="{{ path('app_blog_show', {slug: post.slug}) }}" target="_blank" rel="noopener" aria-label="Voir {{ post.title }} sur le site">Voir</a>{% endif %}</span></td>
+                </tr>
+            {% else %}
+                <tr><td class="admin-empty-state" colspan="6"><strong>Aucun article trouvé</strong><span>{% if search %}Modifiez votre recherche ou effacez le filtre.{% else %}Créez votre premier article depuis le bouton ci-dessus.{% endif %}</span></td></tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
 </section>

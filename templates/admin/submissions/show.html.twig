@@ -1,0 +1,49 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}{{ submission.typeLabel }} #{{ submission.id }}{% endblock %}
+
+{% block body %}
+<header class="admin-page-heading admin-submission-heading">
+    <div>
+        <a class="admin-back-link" href="{{ path('admin_submissions') }}">{{ ui.icon('arrow') }} Retour aux dépôts</a>
+        <span class="admin-kicker">{{ submission.typeLabel }} · #{{ '%05d'|format(submission.id) }}</span>
+        <h1>{{ submission.subject }}</h1>
+        <p>Reçu le {{ submission.createdAt|date('d/m/Y à H:i') }}</p>
+    </div>
+    <span class="admin-status admin-status-{{ submission.statusTone }}">{{ submission.statusLabel }}</span>
+</header>
+
+<div class="admin-submission-detail-grid">
+    <section class="admin-panel admin-submission-detail">
+        <header class="admin-panel-header"><div><span class="admin-kicker">Demande</span><h2>Informations transmises</h2></div></header>
+        <dl class="admin-detail-list">
+            <div><dt>Contact</dt><dd>{{ submission.contactName }}</dd></div>
+            <div><dt>E-mail</dt><dd><a href="mailto:{{ submission.email }}">{{ submission.email }}</a></dd></div>
+            <div><dt>Téléphone</dt><dd>{% if submission.phone %}<a href="tel:{{ submission.phone|replace({' ': ''}) }}">{{ submission.phone }}</a>{% else %}Non renseigné{% endif %}</dd></div>
+            {% if submission.organization %}<div><dt>Entreprise</dt><dd>{{ submission.organization }}</dd></div>{% endif %}
+            {% if submission.expertise %}<div><dt>Expertise</dt><dd>{{ submission.expertise }}</dd></div>{% endif %}
+            {% if submission.startDate %}<div><dt>Début souhaité</dt><dd>{{ submission.startDate|date('d/m/Y') }}</dd></div>{% endif %}
+            {% if submission.duration %}<div><dt>Durée</dt><dd>{{ submission.duration }}</dd></div>{% endif %}
+        </dl>
+        <div class="admin-detail-message"><span>Contexte et informations</span><p>{{ submission.details|nl2br }}</p></div>
+    </section>
+
+    <aside class="admin-panel admin-submission-actions">
+        <header class="admin-panel-header"><div><span class="admin-kicker">Traitement</span><h2>Suivi du dépôt</h2></div></header>
+        <form method="post" action="{{ path('admin_submission_status', {id: submission.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('submission_status_' ~ submission.id) }}">
+            <label for="submission-status">Statut actuel</label>
+            <select id="submission-status" name="status">
+                {% for value, label in statuses %}<option value="{{ value }}"{{ submission.status == value ? ' selected' : '' }}>{{ label }}</option>{% endfor %}
+            </select>
+            <button class="admin-button admin-button-primary" type="submit">Enregistrer {{ ui.icon('check') }}</button>
+        </form>
+        <div class="admin-submission-contact-actions">
+            <a class="admin-button admin-button-light" href="mailto:{{ submission.email }}">{{ ui.icon('mail') }} Répondre par e-mail</a>
+            {% if submission.phone %}<a class="admin-button admin-button-light" href="tel:{{ submission.phone|replace({' ': ''}) }}">{{ ui.icon('phone') }} Appeler</a>{% endif %}
+        </div>
+        <small>Dernière mise à jour : {{ submission.updatedAt|date('d/m/Y à H:i') }}</small>
+    </aside>
+</div>
+{% endblock %}

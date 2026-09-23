@@ -9,6 +9,7 @@ use App\Dto\MissionRequest;
 use App\Form\ContactRequestType;
 use App\Form\MissionRequestType;
 use App\Service\ContactMessageMailer;
+use App\Service\SubmissionManager;
 use App\Service\SubmissionMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ContactController extends AbstractController
 {
     #[Route('/contact', name: 'app_contact', methods: ['GET', 'POST'])]
-    public function contact(Request $request, ContactMessageMailer $mailer): Response
+    public function contact(Request $request, ContactMessageMailer $mailer, SubmissionManager $submissions): Response
     {
         $contact = new ContactData();
         $contact->profile = 'consultant' === $request->query->get('profil') ? 'consultant' : 'entreprise';
@@ -32,6 +33,7 @@ final class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $submissions->recordProfile($contact);
             $mailer->send($contact);
             $this->addFlash('success', 'Merci pour votre message. Nous vous répondons sous 24h.');
 
@@ -46,7 +48,7 @@ final class ContactController extends AbstractController
     }
 
     #[Route('/deposer', name: 'app_deposit', methods: ['GET', 'POST'])]
-    public function deposit(Request $request, SubmissionMailer $mailer): Response
+    public function deposit(Request $request, SubmissionMailer $mailer, SubmissionManager $submissions): Response
     {
         $mission = new MissionRequest();
         $missionForm = $this->createForm(MissionRequestType::class, $mission);
@@ -58,6 +60,7 @@ final class ContactController extends AbstractController
             $autoOpen = true;
 
             if ($missionForm->isValid()) {
+                $submissions->recordMission($mission);
                 $mailer->sendMission($mission);
                 $this->addFlash('success', 'Votre mission a bien été transmise. Notre équipe revient vers vous sous 24 h.');
 

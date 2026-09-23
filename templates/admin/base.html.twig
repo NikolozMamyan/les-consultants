@@ -32,7 +32,8 @@
                 </a>
                 <a href="{{ path('admin_submissions') }}"{% if adminSection == 'submissions' %} aria-current="page"{% endif %}>
                     {{ ui.icon('briefcase') }}<span>Missions &amp; Talents</span>
-                    <b class="admin-nav-count">9</b>
+                    {% set pendingSubmissionCount = admin_pending_submission_count() %}
+                    {% if pendingSubmissionCount > 0 %}<b class="admin-nav-count">{{ pendingSubmissionCount > 99 ? '99+' : pendingSubmissionCount }}</b>{% endif %}
                 </a>
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <a href="{{ path('admin_users') }}"{% if adminSection == 'users' %} aria-current="page"{% endif %}>

@@ -6,25 +6,46 @@
 {% block body %}
 <header class="admin-page-heading">
     <div><span class="admin-kicker">Suivi commercial</span><h1>Missions &amp; Talents</h1><p>Centralisez les besoins des entreprises et les candidatures des consultants.</p></div>
-    <button class="admin-button admin-button-light" type="button" data-action="admin-shell#demo" data-admin-shell-message-param="L’export sera connecté aux données réelles.">{{ ui.icon('up') }} Exporter</button>
+    <a class="admin-button admin-button-light" href="{{ path('admin_submissions_export', {type: selectedType, q: search}) }}">{{ ui.icon('up') }} Exporter en CSV</a>
 </header>
 
-<section class="admin-stat-grid admin-stat-grid-compact">
-    <article class="admin-mini-stat"><span>Nouvelles demandes</span><strong>9</strong><small>Aujourd’hui</small></article>
-    <article class="admin-mini-stat"><span>Missions ouvertes</span><strong>14</strong><small>6 prioritaires</small></article>
-    <article class="admin-mini-stat"><span>Profils à qualifier</span><strong>21</strong><small>Cette semaine</small></article>
-    <article class="admin-mini-stat"><span>Matchs potentiels</span><strong>38</strong><small>Score supérieur à 80 %</small></article>
+<section class="admin-stat-grid admin-stat-grid-compact" aria-label="Indicateurs des dépôts">
+    {% for stat in stats %}
+        <article class="admin-mini-stat"><span>{{ stat.label }}</span><strong>{{ stat.value }}</strong><small>{{ stat.detail }}</small></article>
+    {% endfor %}
 </section>
 
-<section class="admin-panel">
-    <header class="admin-panel-header admin-table-heading">
-        <div class="admin-filter-tabs"><button class="is-active" type="button">Tous <b>{{ submissions|length }}</b></button><button type="button">Missions</button><button type="button">Profils</button></div>
-        <label class="admin-search">{{ ui.icon('search') }}<input type="search" placeholder="Rechercher" aria-label="Rechercher un dépôt"></label>
+<section class="admin-panel admin-submissions-panel">
+    <header class="admin-panel-header admin-table-heading admin-submissions-toolbar">
+        <nav class="admin-filter-tabs" aria-label="Filtrer les dépôts">
+            <a class="{{ selectedType is null ? 'is-active' : '' }}" href="{{ path('admin_submissions', {q: search}) }}">Tous <b>{{ counts.all }}</b></a>
+            <a class="{{ selectedType == 'mission' ? 'is-active' : '' }}" href="{{ path('admin_submissions', {type: 'mission', q: search}) }}">Missions <b>{{ counts.mission }}</b></a>
+            <a class="{{ selectedType == 'profile' ? 'is-active' : '' }}" href="{{ path('admin_submissions', {type: 'profile', q: search}) }}">Profils <b>{{ counts.profile }}</b></a>
+        </nav>
+        <form class="admin-search" action="{{ path('admin_submissions') }}" method="get">
+            {{ ui.icon('search') }}
+            {% if selectedType %}<input type="hidden" name="type" value="{{ selectedType }}">{% endif %}
+            <input type="search" name="q" value="{{ search }}" placeholder="Nom, entreprise, expertise…" aria-label="Rechercher un dépôt" maxlength="120">
+            {% if search %}<a href="{{ path('admin_submissions', {type: selectedType}) }}" aria-label="Effacer la recherche">×</a>{% endif %}
+        </form>
     </header>
     <div class="admin-table-wrap">
         <table class="admin-table admin-submission-table">
             <thead><tr><th>Type</th><th>Dépôt</th><th>Entreprise / spécialité</th><th>Reçu</th><th>Statut</th><th></th></tr></thead>
-            <tbody>{% for item in submissions %}<tr><td><span class="admin-type-label admin-type-{{ item.type|lower }}">{{ ui.icon(item.type == 'Mission' ? 'briefcase' : 'people') }} {{ item.type }}</span></td><td><strong>{{ item.name }}</strong>{% if item.priority %}<small class="admin-priority">Prioritaire</small>{% endif %}</td><td>{{ item.contact }}</td><td>{{ item.date }}</td><td><span class="admin-status admin-status-{{ item.status|lower|replace({' ': '-', 'à': 'a'}) }}">{{ item.status }}</span></td><td><button class="admin-row-menu" type="button" aria-label="Ouvrir le dépôt" data-action="admin-shell#demo" data-admin-shell-message-param="La fiche détaillée sera connectée aux dépôts enregistrés.">•••</button></td></tr>{% endfor %}</tbody>
+            <tbody>
+            {% for item in submissions %}
+                <tr>
+                    <td><span class="admin-type-label admin-type-{{ item.type }}">{{ ui.icon(item.type == 'mission' ? 'briefcase' : 'people') }} {{ item.typeLabel }}</span></td>
+                    <td><strong>{{ item.subject }}</strong><small class="admin-submission-contact">{{ item.contactName }}</small></td>
+                    <td>{{ item.type == 'mission' ? item.organization : item.expertise }}</td>
+                    <td><time datetime="{{ item.createdAt|date('c') }}">{{ item.createdAt|date('d/m/Y à H:i') }}</time></td>
+                    <td><span class="admin-status admin-status-{{ item.statusTone }}">{{ item.statusLabel }}</span></td>
+                    <td><a class="admin-action-primary" href="{{ path('admin_submission_show', {id: item.id}) }}" aria-label="Consulter {{ item.subject }}">Consulter {{ ui.icon('arrow') }}</a></td>
+                </tr>
+            {% else %}
+                <tr><td class="admin-empty-state" colspan="6"><strong>Aucun dépôt trouvé</strong><span>{% if search %}Modifiez votre recherche ou effacez le filtre.{% else %}Les nouvelles demandes apparaîtront automatiquement ici.{% endif %}</span></td></tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
 </section>

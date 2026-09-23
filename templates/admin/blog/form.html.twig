@@ -1,0 +1,101 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}{{ isNew ? 'Nouvel article' : 'Modifier l’article' }}{% endblock %}
+
+{% block body %}
+<header class="admin-page-heading admin-blog-form-heading">
+    <div>
+        <a class="admin-back-link" href="{{ path('admin_blog') }}">{{ ui.icon('arrow') }} Retour au blog</a>
+        <span class="admin-kicker">{{ isNew ? 'Création' : 'Édition' }}</span>
+        <h1>{{ isNew ? 'Nouvel article' : post.title }}</h1>
+        <p>{{ isNew ? 'Rédigez puis publiez une nouvelle analyse.' : 'Mettez à jour le contenu, les médias et le référencement.' }}</p>
+    </div>
+    {% if not isNew %}
+        <div class="admin-heading-actions">
+            {% if post.published %}<a class="admin-button admin-button-light" href="{{ path('app_blog_show', {slug: post.slug}) }}" target="_blank" rel="noopener">Voir l’article {{ ui.icon('up') }}</a>{% endif %}
+            <form method="post" action="{{ path('admin_blog_delete', {id: post.id}) }}" data-action="submit->admin-shell#confirm" data-admin-shell-message-param="Supprimer définitivement cet article ?">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete_blog_post_' ~ post.id) }}">
+                <button class="admin-button admin-button-danger" type="submit">Supprimer</button>
+            </form>
+        </div>
+    {% endif %}
+</header>
+
+{{ form_start(form, {attr: {class: 'admin-blog-form', novalidate: 'novalidate'}}) }}
+    {{ form_errors(form) }}
+    <div class="admin-blog-form-grid">
+        <div class="admin-blog-form-main">
+            <section class="admin-panel admin-blog-form-section">
+                <header><span class="admin-kicker">Contenu</span><h2>Article</h2></header>
+                <div class="admin-blog-field">
+                    {{ form_label(form.title, 'Titre de l’article') }}
+                    {{ form_widget(form.title, {attr: {placeholder: 'Le titre affiché sur le site'}}) }}
+                    {{ form_errors(form.title) }}
+                </div>
+                <div class="admin-blog-field">
+                    {{ form_label(form.slug, 'Adresse URL') }}
+                    <div class="admin-slug-field"><span>/blog/</span>{{ form_widget(form.slug, {attr: {placeholder: 'générée automatiquement'}}) }}</div>
+                    <small>Laissez vide pour générer l’adresse depuis le titre.</small>
+                    {{ form_errors(form.slug) }}
+                </div>
+                <div class="admin-blog-field">
+                    {{ form_label(form.excerpt, 'Introduction') }}
+                    {{ form_widget(form.excerpt, {attr: {rows: 4, placeholder: 'Résumé visible dans les cartes du blog'}}) }}
+                    {{ form_errors(form.excerpt) }}
+                </div>
+                <div class="admin-blog-field admin-blog-content-field">
+                    {{ form_label(form.content, 'Contenu de l’article') }}
+                    {{ form_widget(form.content, {attr: {rows: 22, placeholder: '<h2>Votre intertitre</h2>\n<p>Votre contenu…</p>'}}) }}
+                    <small>Le contenu accepte les balises HTML éditoriales : titres, paragraphes, listes et liens.</small>
+                    {{ form_errors(form.content) }}
+                </div>
+            </section>
+
+            <section class="admin-panel admin-blog-form-section">
+                <header><span class="admin-kicker">Référencement</span><h2>SEO</h2></header>
+                <div class="admin-blog-field">{{ form_label(form.metaTitle, 'Titre SEO') }}{{ form_widget(form.metaTitle, {attr: {placeholder: 'Utilise le titre si ce champ reste vide'}}) }}{{ form_errors(form.metaTitle) }}</div>
+                <div class="admin-blog-field">{{ form_label(form.metaDescription, 'Description SEO') }}{{ form_widget(form.metaDescription, {attr: {rows: 3, placeholder: 'Utilise l’introduction si ce champ reste vide'}}) }}{{ form_errors(form.metaDescription) }}</div>
+            </section>
+        </div>
+
+        <aside class="admin-blog-form-sidebar">
+            <section class="admin-panel admin-blog-form-section">
+                <header><span class="admin-kicker">Publication</span><h2>Paramètres</h2></header>
+                <div class="admin-blog-field">{{ form_label(form.category, 'Catégorie') }}{{ form_widget(form.category, {attr: {placeholder: 'Conformité, Finance…'}}) }}{{ form_errors(form.category) }}</div>
+                <div class="admin-blog-field">{{ form_label(form.author, 'Auteur') }}{{ form_widget(form.author) }}{{ form_errors(form.author) }}</div>
+                <div class="admin-blog-field">{{ form_label(form.publishedAt, 'Date de publication') }}{{ form_widget(form.publishedAt) }}{{ form_errors(form.publishedAt) }}</div>
+                <label class="admin-blog-publish-toggle">{{ form_widget(form.published) }}<span><strong>Publier l’article</strong><small>Visible immédiatement sur le site</small></span><i><b></b></i></label>
+            </section>
+
+            <section class="admin-panel admin-blog-form-section">
+                <header><span class="admin-kicker">Médias locaux</span><h2>Image principale</h2></header>
+                {% if post.featuredImage %}<figure class="admin-blog-image-preview"><img src="{{ asset(post.featuredImage) }}" alt="{{ post.featuredImageAlt }}"><figcaption>{{ post.featuredImage }}</figcaption></figure>{% endif %}
+                <div class="admin-blog-field admin-blog-file-field">{{ form_label(form.featuredImageFile, post.featuredImage ? 'Remplacer l’image' : 'Ajouter une image') }}{{ form_widget(form.featuredImageFile, {attr: {accept: 'image/jpeg,image/png,image/webp'}}) }}<small>JPG, PNG ou WebP · 8 Mo maximum. Conversion automatique en WebP.</small>{{ form_errors(form.featuredImageFile) }}</div>
+                {% if post.featuredImage %}<label class="admin-blog-remove-toggle">{{ form_widget(form.featuredImageRemove) }} Retirer l’image principale</label>{% else %}{{ form_widget(form.featuredImageRemove, {attr: {hidden: 'hidden'}}) }}{% endif %}
+                <div class="admin-blog-field">{{ form_label(form.featuredImageAlt, 'Texte alternatif') }}{{ form_widget(form.featuredImageAlt, {attr: {placeholder: 'Décrivez brièvement l’image'}}) }}{{ form_errors(form.featuredImageAlt) }}</div>
+            </section>
+
+            <section class="admin-panel admin-blog-form-section">
+                <header><span class="admin-kicker">Galerie</span><h2>Images dans l’article</h2></header>
+                {% if form.removeContentImages|length %}
+                    <div class="admin-blog-gallery-admin">
+                        {% for choice in form.removeContentImages %}
+                            <label><img src="{{ asset(choice.vars.value) }}" alt=""><span>{{ form_widget(choice) }} Retirer</span></label>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form_widget(form.removeContentImages) }}
+                {% endif %}
+                <div class="admin-blog-field admin-blog-file-field">{{ form_label(form.contentImageFiles, 'Ajouter des images') }}{{ form_widget(form.contentImageFiles, {attr: {accept: 'image/jpeg,image/png,image/webp'}}) }}<small>Vous pouvez sélectionner plusieurs fichiers.</small>{{ form_errors(form.contentImageFiles) }}</div>
+            </section>
+        </aside>
+    </div>
+
+    <div class="admin-blog-savebar">
+        <span><i></i> {{ post.published ? 'Article publié' : 'Brouillon' }}</span>
+        <div><a class="admin-button admin-button-light" href="{{ path('admin_blog') }}">Annuler</a><button class="admin-button admin-button-primary" type="submit">{{ isNew ? 'Créer l’article' : 'Enregistrer les modifications' }} {{ ui.icon('check') }}</button></div>
+    </div>
+    {{ form_rest(form) }}
+{{ form_end(form, {render_rest: false}) }}
+{% endblock %}

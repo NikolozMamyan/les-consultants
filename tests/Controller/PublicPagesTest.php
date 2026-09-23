@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\User;
+use App\Entity\Submission;
+use App\Repository\BlogPostRepository;
+use App\Repository\SubmissionRepository;
 use App\Repository\UserRepository;
 use App\Service\AdminDemoDataProvider;
 use App\Service\AdminUserManager;
@@ -195,32 +198,77 @@ final class PublicPagesTest extends WebTestCase
         self::assertSelectorTextContains('.flash-message', 'Nous vous répondons sous 24h.');
     }
 
+    public function testConsultantContactIsSavedAsTalentProfile(): void
+    {
+        $client = self::createClient();
+        self::getContainer()->get(Connection::class)->executeStatement('DELETE FROM lead_submission WHERE email = ?', ['talent@example.com']);
+
+        try {
+            $crawler = $client->request('GET', '/contact?profil=consultant&expertise=risques');
+            $form = $crawler->selectButton('Envoyer')->form([
+                'contact_request[profile]' => 'consultant',
+                'contact_request[name]' => 'Talent Exemple',
+                'contact_request[email]' => 'talent@example.com',
+                'contact_request[phone]' => '+352 111 222',
+                'contact_request[subject]' => 'risques',
+                'contact_request[message]' => 'Consultant senior disponible pour des missions en gestion des risques.',
+                'contact_request[consent]' => true,
+            ]);
+
+            $client->submit($form);
+            self::assertResponseRedirects('/contact');
+
+            $submission = self::getContainer()->get(SubmissionRepository::class)->findOneBy(['email' => 'talent@example.com']);
+            self::assertInstanceOf(Submission::class, $submission);
+            self::assertSame(Submission::TYPE_PROFILE, $submission->getType());
+            self::assertSame('Risques & gouvernance', $submission->getExpertise());
+        } finally {
+            self::getContainer()->get(Connection::class)->executeStatement('DELETE FROM lead_submission WHERE email = ?', ['talent@example.com']);
+        }
+    }
+
     public function testMissionRequestCanBeSubmitted(): void
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', '/deposer');
-        self::assertSelectorNotExists('.submission-flow-option');
-        self::assertSelectorNotExists('form[name="consultant_application"]');
-        self::assertSelectorTextSame('#submission-modal-title', 'Déposez votre mission');
-        self::assertSelectorNotExists('[name="mission_request[workMode]"]');
+        self::getContainer()->get(Connection::class)->executeStatement('DELETE FROM lead_submission WHERE email = ?', ['marie@example.com']);
 
-        $form = $crawler->selectButton('Envoyer la mission')->form([
-            'mission_request[missionTitle]' => 'Renfort Compliance AML/KYC',
-            'mission_request[expertise]' => 'Compliance & réglementation',
-            'mission_request[duration]' => '3 à 6 mois',
-            'mission_request[company]' => 'Exemple SA',
-            'mission_request[contactName]' => 'Marie Exemple',
-            'mission_request[email]' => 'marie@example.com',
-            'mission_request[phone]' => '+352 000 000',
-            'mission_request[description]' => 'Nous recherchons un renfort expérimenté pour accompagner notre équipe conformité.',
-            'mission_request[consent]' => true,
-        ]);
+        try {
+            $crawler = $client->request('GET', '/deposer');
+            self::assertSelectorNotExists('.submission-flow-option');
+            self::assertSelectorNotExists('form[name="consultant_application"]');
+            self::assertSelectorTextSame('#submission-modal-title', 'Déposez votre mission');
+            self::assertSelectorNotExists('[name="mission_request[workMode]"]');
 
-        $client->submit($form);
+            $form = $crawler->selectButton('Envoyer la mission')->form([
+                'mission_request[missionTitle]' => 'Renfort Compliance AML/KYC',
+                'mission_request[expertise]' => 'Compliance & réglementation',
+                'mission_request[duration]' => '3 à 6 mois',
+                'mission_request[company]' => 'Exemple SA',
+                'mission_request[contactName]' => 'Marie Exemple',
+                'mission_request[email]' => 'marie@example.com',
+                'mission_request[phone]' => '+352 000 000',
+                'mission_request[description]' => 'Nous recherchons un renfort expérimenté pour accompagner notre équipe conformité.',
+                'mission_request[consent]' => true,
+            ]);
 
-        self::assertResponseRedirects('/deposer');
-        $client->followRedirect();
-        self::assertSelectorTextContains('.flash-message', 'Votre mission a bien été transmise.');
+            $client->submit($form);
+
+            self::assertResponseRedirects('/deposer');
+            $client->followRedirect();
+            self::assertSelectorTextContains('.flash-message', 'Votre mission a bien été transmise.');
+
+            $submission = self::getContainer()->get(SubmissionRepository::class)->findOneBy(['email' => 'marie@example.com']);
+            self::assertInstanceOf(Submission::class, $submission);
+            self::assertSame(Submission::TYPE_MISSION, $submission->getType());
+            self::assertSame('Renfort Compliance AML/KYC', $submission->getSubject());
+
+            $this->loginAdmin($client);
+            $client->request('GET', '/admin/missions-talents?q=Renfort+Compliance');
+            self::assertResponseIsSuccessful();
+            self::assertSelectorTextContains('.admin-submission-table', 'Renfort Compliance AML/KYC');
+        } finally {
+            self::getContainer()->get(Connection::class)->executeStatement('DELETE FROM lead_submission WHERE email = ?', ['marie@example.com']);
+        }
     }
 
     public function testInvalidMissionRequestUsesTurboValidationStatus(): void
@@ -256,6 +304,59 @@ final class PublicPagesTest extends WebTestCase
         self::assertResponseRedirects('/');
         $client->request('GET', '/admin');
         self::assertResponseRedirects('/admin/connexion');
+    }
+
+    public function testAdminCanCreatePublishEditAndDeleteBlogPost(): void
+    {
+        $client = self::createClient();
+        $this->loginAdmin($client);
+        $slug = 'article-test-back-office';
+
+        try {
+            $crawler = $client->request('GET', '/admin/blog/nouveau');
+            $client->submit($crawler->selectButton('Créer l’article')->form([
+                'blog_post[title]' => 'Article de test du back-office',
+                'blog_post[slug]' => $slug,
+                'blog_post[excerpt]' => 'Une introduction suffisamment complète pour valider le nouvel article.',
+                'blog_post[content]' => '<h2>Premier chapitre</h2><p>Un contenu de test publié depuis le back-office.</p>',
+                'blog_post[category]' => 'Conseil',
+                'blog_post[author]' => 'Les Consultants',
+                'blog_post[featuredImageAlt]' => '',
+                'blog_post[metaTitle]' => '',
+                'blog_post[metaDescription]' => '',
+                'blog_post[publishedAt]' => '2026-09-23T12:00',
+                'blog_post[published]' => true,
+            ]));
+
+            self::assertResponseRedirects();
+            $client->followRedirect();
+            self::assertSelectorTextContains('h1', 'Article de test du back-office');
+
+            $client->request('GET', '/blog/'.$slug);
+            self::assertResponseIsSuccessful();
+            self::assertSelectorTextContains('h1', 'Article de test du back-office');
+
+            $post = self::getContainer()->get(BlogPostRepository::class)->findOneBy(['slug' => $slug]);
+            self::assertNotNull($post);
+
+            $crawler = $client->request('GET', '/admin/blog/'.$post->getId());
+            $client->submit($crawler->selectButton('Enregistrer les modifications')->form([
+                'blog_post[title]' => 'Article de test mis à jour',
+            ]));
+            self::assertResponseRedirects('/admin/blog/'.$post->getId());
+
+            $crawler = $client->request('GET', '/admin/blog/'.$post->getId());
+            $client->submit($crawler->selectButton('Supprimer')->form());
+            self::assertResponseRedirects('/admin/blog');
+            self::assertNull(self::getContainer()->get(BlogPostRepository::class)->find($post->getId()));
+        } finally {
+            $post = self::getContainer()->get(BlogPostRepository::class)->findOneBy(['slug' => $slug]);
+            if (null !== $post) {
+                $entityManager = self::getContainer()->get(EntityManagerInterface::class);
+                $entityManager->remove($post);
+                $entityManager->flush();
+            }
+        }
     }
 
     public function testSuperAdminCanCreateAnAdminWithRestrictedAccess(): void

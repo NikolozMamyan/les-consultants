@@ -16,6 +16,12 @@ export default class extends Controller {
         this.show(event.detail?.message || 'Action effectuée dans la maquette.');
     }
 
+    confirm(event) {
+        if (!window.confirm(event.params.message || 'Confirmer cette action ?')) {
+            event.preventDefault();
+        }
+    }
+
     show(message) {
         window.clearTimeout(this.toastTimer);
         this.toastTarget.textContent = message;
