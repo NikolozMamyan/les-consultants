@@ -4,7 +4,8 @@
 {% block meta_description %}{{ post.metaDescription }}{% endblock %}
 {% block canonical_url %}{{ url('app_blog_show', { slug: post.slug }) }}{% endblock %}
 {% block og_type %}article{% endblock %}
-{% block og_image %}{% if post.featuredImage %}{{ absolute_url(asset(post.featuredImage)) }}{% endif %}{% endblock %}
+{% block og_image %}{{ post.featuredImage ? absolute_url(asset(post.featuredImage)) : absolute_url(asset('images/logo-original.png')) }}{% endblock %}
+{% block og_image_alt %}{{ post.featuredImageAlt ?: post.title }}{% endblock %}
 
 {% block structured_data %}
     {% set articleSchema = post.featuredImage ? structuredData|merge({ image: absolute_url(asset(post.featuredImage)) }) : structuredData %}

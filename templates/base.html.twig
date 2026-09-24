@@ -1,24 +1,60 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr-LU">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="{% block meta_description %}Les Consultants accompagne les acteurs de la finance au Luxembourg avec des consultants externes spécialisés et des formations dédiées aux métiers régulés.{% endblock %}">
+        <meta name="robots" content="{% block robots %}index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1{% endblock %}">
+        <meta name="referrer" content="strict-origin-when-cross-origin">
         <meta name="theme-color" content="#0b8485">
         <title>{% block title %}Les Consultants{% endblock %}</title>
         <link rel="canonical" href="{% block canonical_url %}{{ app.request.schemeAndHttpHost ~ app.request.baseUrl ~ app.request.pathInfo }}{% endblock %}">
-        <meta property="og:locale" content="fr_FR">
+        <meta property="og:locale" content="fr_LU">
         <meta property="og:site_name" content="Les Consultants">
         <meta property="og:type" content="{% block og_type %}website{% endblock %}">
         <meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
         <meta property="og:description" content="{% block og_description %}{{ block('meta_description') }}{% endblock %}">
         <meta property="og:url" content="{{ block('canonical_url') }}">
         <meta property="og:image" content="{% block og_image %}{{ absolute_url(asset('images/logo-original.png')) }}{% endblock %}">
+        <meta property="og:image:alt" content="{% block og_image_alt %}Les Consultants, conseil et formation au Luxembourg{% endblock %}">
         <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ block('og_title') }}">
+        <meta name="twitter:description" content="{{ block('og_description') }}">
+        <meta name="twitter:image" content="{{ block('og_image') }}">
         <link rel="icon" href="{{ asset('images/logo-original.png') }}">
         <link rel="preload" href="{{ asset('fonts/plus-jakarta-sans.woff2') }}" as="font" type="font/woff2" crossorigin>
         <link rel="stylesheet" href="{{ asset('styles/site.css') }}">
         <link rel="stylesheet" href="{{ asset('styles/community-feed.css') }}">
+        {% set websiteSchema = {
+            '@context': 'https://schema.org',
+            '@graph': [
+                {
+                    '@type': 'Organization',
+                    '@id': url('app_home') ~ '#organization',
+                    'name': 'Les Consultants',
+                    'url': url('app_home'),
+                    'logo': absolute_url(asset('images/logo-original.png')),
+                    'email': 'pruffin@les-consultants.lu',
+                    'telephone': '+352621735201',
+                    'address': {
+                        '@type': 'PostalAddress',
+                        'streetAddress': '1 Simmerfarm',
+                        'postalCode': '8363',
+                        'addressLocality': 'Simmerfarm',
+                        'addressCountry': 'LU'
+                    }
+                },
+                {
+                    '@type': 'WebSite',
+                    '@id': url('app_home') ~ '#website',
+                    'name': 'Les Consultants',
+                    'url': url('app_home'),
+                    'inLanguage': 'fr-LU',
+                    'publisher': {'@id': url('app_home') ~ '#organization'}
+                }
+            ]
+        } %}
+        <script type="application/ld+json">{{ websiteSchema|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE'))|raw }}</script>
         {% block structured_data %}{% endblock %}
         {% block javascripts %}{{ importmap('app') }}{% endblock %}
     </head>

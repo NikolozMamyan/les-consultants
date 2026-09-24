@@ -61,7 +61,9 @@ final class BlogController extends AbstractController
             'headline' => $post->getTitle(),
             'description' => $post->getExcerpt(),
             'datePublished' => $post->getPublishedAt()->format(DATE_ATOM),
+            'inLanguage' => 'fr-LU',
             'author' => ['@type' => 'Person', 'name' => $post->getAuthorName()],
+            'publisher' => ['@id' => $this->generateUrl('app_home', [], UrlGeneratorInterface::ABSOLUTE_URL).'#organization'],
             'mainEntityOfPage' => $this->generateUrl(
                 'app_community_post_show',
                 ['slug' => $post->getSlug()],
@@ -107,8 +109,9 @@ final class BlogController extends AbstractController
             'description' => $post->getMetaDescription(),
             'datePublished' => $post->getPublishedAt()->format(DATE_ATOM),
             'dateModified' => $post->getUpdatedAt()->format(DATE_ATOM),
+            'inLanguage' => 'fr-LU',
             'author' => ['@type' => 'Organization', 'name' => $post->getAuthor()],
-            'publisher' => ['@type' => 'Organization', 'name' => 'Les Consultants'],
+            'publisher' => ['@id' => $this->generateUrl('app_home', [], UrlGeneratorInterface::ABSOLUTE_URL).'#organization'],
             'mainEntityOfPage' => $this->generateUrl(
                 'app_blog_show',
                 ['slug' => $post->getSlug()],

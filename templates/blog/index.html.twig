@@ -3,6 +3,7 @@
 {% block title %}Actualités finance & conformité au Luxembourg | Les Consultants{% endblock %}
 {% block meta_description %}Analyses et conseils sur la conformité, la finance, la gestion des risques, la transformation digitale et la formation au Luxembourg.{% endblock %}
 {% block canonical_url %}{{ url('app_blog_index') }}{% endblock %}
+{% block robots %}{% if search or selectedCategory %}noindex,follow{% else %}index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1{% endif %}{% endblock %}
 
 {% block body %}
 <main id="contenu" class="container frame blog-index">

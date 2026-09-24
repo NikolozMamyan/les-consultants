@@ -30,4 +30,13 @@ final class CommunityPostRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['slug' => $slug]);
     }
+
+    /** @return list<CommunityPost> */
+    public function findForSitemap(): array
+    {
+        return $this->createQueryBuilder('post')
+            ->orderBy('post.publishedAt', \SortDirection::Descending)
+            ->getQuery()
+            ->getResult();
+    }
 }
