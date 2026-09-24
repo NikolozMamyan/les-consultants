@@ -86,7 +86,8 @@
                     {% for post in communityPosts %}
                         <article class="community-feed-card" data-controller="community-feed" data-community-feed-registration-url-value="{{ post.registrationUrl }}">
                             <header class="community-feed-author">
-                                {% if post.authorAvatarUrl %}<img src="{{ post.authorAvatarUrl }}" alt="" loading="lazy">{% else %}<span>{{ post.authorName|slice(0, 1)|upper }}</span>{% endif %}
+                                {% set usesDefaultAvatar = not post.authorAvatarUrl or post.authorAvatarUrl ends with '/images/User.svg' %}
+                                <img src="{{ usesDefaultAvatar ? asset('images/User.svg') : post.authorAvatarUrl }}" class="{{ usesDefaultAvatar ? 'community-avatar-default' : '' }}" alt="" loading="lazy">
                                 <div>
                                     <strong>{{ post.authorName }}</strong>
                                     <small>Publié dans la communauté · <time datetime="{{ post.publishedAt|date('c') }}">{{ post.publishedAt|date('d.m.Y à H:i') }}</time></small>

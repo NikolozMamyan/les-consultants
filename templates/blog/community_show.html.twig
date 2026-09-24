@@ -28,7 +28,8 @@
     <div class="container frame community-publication-layout">
         <article class="community-publication-card">
             <header class="community-publication-author">
-                {% if post.authorAvatarUrl %}<img src="{{ post.authorAvatarUrl }}" alt="" loading="lazy">{% else %}<span>{{ post.authorName|slice(0, 1)|upper }}</span>{% endif %}
+                {% set usesDefaultAvatar = not post.authorAvatarUrl or post.authorAvatarUrl ends with '/images/User.svg' %}
+                <img src="{{ usesDefaultAvatar ? asset('images/User.svg') : post.authorAvatarUrl }}" class="{{ usesDefaultAvatar ? 'community-avatar-default' : '' }}" alt="" loading="lazy">
                 <div><strong>{{ post.authorName }}</strong><small>Membre de la communauté · <time datetime="{{ post.publishedAt|date('c') }}">{{ post.publishedAt|date('d.m.Y à H:i') }}</time></small></div>
                 <span>Les Consultants<br>E-learning</span>
             </header>
