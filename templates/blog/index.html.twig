@@ -72,6 +72,82 @@
         </section>
     {% endif %}
 
+    {% if communityPosts %}
+        <section class="community-network" aria-labelledby="community-network-title" data-reveal-target="item">
+            <header class="community-network-heading">
+                <div>
+                    <span>En direct de la plateforme</span>
+                    <h2 id="community-network-title">Le fil de notre communauté.</h2>
+                </div>
+                <p>Lisez librement les publications de nos membres. Un compte e-learning est demandé uniquement pour réagir ou commenter.</p>
+            </header>
+            <div class="community-network-layout">
+                <div class="community-feed" role="feed" aria-label="Publications de la communauté">
+                    {% for post in communityPosts %}
+                        <article class="community-feed-card" data-controller="community-feed" data-community-feed-registration-url-value="{{ post.registrationUrl }}">
+                            <header class="community-feed-author">
+                                {% if post.authorAvatarUrl %}<img src="{{ post.authorAvatarUrl }}" alt="" loading="lazy">{% else %}<span>{{ post.authorName|slice(0, 1)|upper }}</span>{% endif %}
+                                <div>
+                                    <strong>{{ post.authorName }}</strong>
+                                    <small>Publié dans la communauté · <time datetime="{{ post.publishedAt|date('c') }}">{{ post.publishedAt|date('d.m.Y à H:i') }}</time></small>
+                                </div>
+                                <span class="community-feed-origin">E-learning</span>
+                            </header>
+                            <div class="community-feed-copy">
+                                {% set hasMoreContent = post.content|striptags|length > post.excerpt|length %}
+                                <h3><a href="{{ path('app_community_post_show', {slug: post.slug}) }}">{{ post.title }}</a></h3>
+                                <div data-community-feed-target="summary"><p>{{ post.excerpt }}</p></div>
+                                {% if hasMoreContent %}
+                                    <div class="community-feed-full" data-community-feed-target="content" hidden>{{ post.content|raw }}</div>
+                                    <button type="button" class="community-feed-more" data-community-feed-target="moreButton" data-action="community-feed#toggleContent" aria-expanded="false">Voir plus</button>
+                                {% endif %}
+                            </div>
+                            {% if post.mediaUrl %}
+                                <a href="{{ path('app_community_post_show', {slug: post.slug}) }}" class="community-feed-media" aria-label="Lire la publication {{ post.title }}">
+                                    {% if post.mediaType == 'video' %}
+                                        <video muted playsinline preload="metadata"><source src="{{ post.mediaUrl }}"></video><span>Voir la vidéo</span>
+                                    {% else %}
+                                        <img src="{{ post.mediaUrl }}" alt="{{ post.title }}" loading="lazy">
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                            <div class="community-feed-summary">
+                                <span><b>{{ post.likesCount }}</b> réaction{{ post.likesCount > 1 ? 's' }}</span>
+                                <span><b>{{ post.commentsCount }}</b> commentaire{{ post.commentsCount > 1 ? 's' }}</span>
+                            </div>
+                            <footer class="community-feed-actions">
+                                <a href="{{ post.registrationUrl }}" rel="nofollow"><span aria-hidden="true">♡</span> J’aime</a>
+                                <button type="button" data-community-feed-target="commentsButton" data-action="community-feed#toggleComments" aria-expanded="false"><span aria-hidden="true">◌</span> Commenter</button>
+                                <a href="{{ path('app_community_post_show', {slug: post.slug}) }}">Lire <span aria-hidden="true">→</span></a>
+                            </footer>
+                            <section class="community-feed-comments" data-community-feed-target="comments" aria-label="Commentaires de la publication" hidden>
+                                <header><strong>Commentaires</strong><span>{{ post.commentsCount }}</span></header>
+                                {% if post.latestComments %}
+                                    <div class="community-feed-comments-list">
+                                        {% for comment in post.latestComments %}
+                                            <article>
+                                                <span>{{ comment.author|slice(0, 1)|upper }}</span>
+                                                <div><strong>{{ comment.author }}</strong><p>{{ comment.content }}</p></div>
+                                                {% if comment.likes %}<small>♡ {{ comment.likes }}</small>{% endif %}
+                                            </article>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="community-feed-no-comment">Aucun commentaire pour le moment. Lancez la discussion.</p>
+                                {% endif %}
+                                <form class="community-feed-comment-form" data-action="submit->community-feed#join">
+                                    <span aria-hidden="true">LC</span>
+                                    <label><span class="sr-only">Ajouter un commentaire</span><input type="text" placeholder="Ajouter un commentaire…" required></label>
+                                    <button type="submit">Publier</button>
+                                </form>
+                            </section>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
     <section class="blog-feed" aria-labelledby="blog-feed-title" data-reveal-target="item">
         <header class="blog-feed-heading">
             <div><span>Perspectives</span><h2 id="blog-feed-title">Toutes nos analyses</h2></div>

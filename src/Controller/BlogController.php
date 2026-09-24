@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Repository\BlogPostRepository;
+use App\Repository\CommunityPostRepository;
+use App\Service\CommunityFeedSynchronizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +18,12 @@ final class BlogController extends AbstractController
     private const RBA_SLUG = 'la-risk-based-approach-rba-un-principe-fondamental-souvent-mal-compris';
 
     #[Route('/blog', name: 'app_blog_index', methods: ['GET'])]
-    public function index(Request $request, BlogPostRepository $posts): Response
+    public function index(
+        Request $request,
+        BlogPostRepository $posts,
+        CommunityPostRepository $communityPosts,
+        CommunityFeedSynchronizer $communityFeed,
+    ): Response
     {
         $search = mb_substr(trim($request->query->getString('q')), 0, 100);
         $category = mb_substr(trim($request->query->getString('category')), 0, 80);
@@ -27,6 +34,7 @@ final class BlogController extends AbstractController
 
         $results = $posts->findPublished($search, $category);
         $featured = '' === $search && '' === $category ? array_shift($results) : null;
+        $communityFeed->synchronizeIfDue();
 
         return $this->render('blog/index.html.twig', [
             'page' => 'blog',
@@ -35,6 +43,52 @@ final class BlogController extends AbstractController
             'categories' => $categories,
             'search' => $search,
             'selectedCategory' => $category,
+            'communityPosts' => $communityPosts->findRecent(6),
+        ]);
+    }
+
+    #[Route('/blog/communaute/{slug}', name: 'app_community_post_show', methods: ['GET'], priority: 20)]
+    public function communityPost(string $slug, CommunityPostRepository $posts): Response
+    {
+        $post = $posts->findBySlug($slug);
+        if (null === $post) {
+            throw $this->createNotFoundException('Publication introuvable.');
+        }
+
+        $structuredData = [
+            '@context' => 'https://schema.org',
+            '@type' => 'SocialMediaPosting',
+            'headline' => $post->getTitle(),
+            'description' => $post->getExcerpt(),
+            'datePublished' => $post->getPublishedAt()->format(DATE_ATOM),
+            'author' => ['@type' => 'Person', 'name' => $post->getAuthorName()],
+            'mainEntityOfPage' => $this->generateUrl(
+                'app_community_post_show',
+                ['slug' => $post->getSlug()],
+                UrlGeneratorInterface::ABSOLUTE_URL,
+            ),
+            'interactionStatistic' => [
+                [
+                    '@type' => 'InteractionCounter',
+                    'interactionType' => 'https://schema.org/LikeAction',
+                    'userInteractionCount' => $post->getLikesCount(),
+                ],
+                [
+                    '@type' => 'InteractionCounter',
+                    'interactionType' => 'https://schema.org/CommentAction',
+                    'userInteractionCount' => $post->getCommentsCount(),
+                ],
+            ],
+        ];
+
+        if ('image' === $post->getMediaType() && $post->getMediaUrl()) {
+            $structuredData['image'] = $post->getMediaUrl();
+        }
+
+        return $this->render('blog/community_show.html.twig', [
+            'page' => 'blog',
+            'post' => $post,
+            'structuredData' => $structuredData,
         ]);
     }
 

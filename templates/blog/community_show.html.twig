@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }} | Communauté Les Consultants{% endblock %}
+{% block meta_description %}{{ post.excerpt|slice(0, 155) }}{% endblock %}
+{% block canonical_url %}{{ url('app_community_post_show', {slug: post.slug}) }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{{ post.mediaType == 'image' and post.mediaUrl ? post.mediaUrl : absolute_url(asset('images/logo-original.png')) }}{% endblock %}
+
+{% block structured_data %}
+    <script type="application/ld+json">{{ structuredData|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE'))|raw }}</script>
+{% endblock %}
+
+{% block body %}
+<main id="contenu" class="community-publication-page">
+    <header class="container frame community-publication-hero">
+        <nav class="breadcrumb breadcrumb-on-dark" aria-label="Fil d’Ariane">
+            <a href="{{ path('app_home') }}">Accueil</a><span aria-hidden="true">/</span>
+            <a href="{{ path('app_blog_index') }}">Blog</a><span aria-hidden="true">/</span>
+            <span aria-current="page">Communauté</span>
+        </nav>
+        <div>
+            <span class="eyebrow">Elearning-feed</span>
+            <h1>Publication de la communauté</h1>
+            <p>Un échange issu de la plateforme e-learning Les Consultants.</p>
+        </div>
+    </header>
+
+    <div class="container frame community-publication-layout">
+        <article class="community-publication-card">
+            <header class="community-publication-author">
+                {% if post.authorAvatarUrl %}<img src="{{ post.authorAvatarUrl }}" alt="" loading="lazy">{% else %}<span>{{ post.authorName|slice(0, 1)|upper }}</span>{% endif %}
+                <div><strong>{{ post.authorName }}</strong><small>Membre de la communauté · <time datetime="{{ post.publishedAt|date('c') }}">{{ post.publishedAt|date('d.m.Y à H:i') }}</time></small></div>
+                <span>Les Consultants<br>E-learning</span>
+            </header>
+
+            <div class="community-publication-content">{{ post.content|raw }}</div>
+
+            {% if post.mediaUrl %}
+                <figure class="community-publication-media">
+                    {% if post.mediaType == 'video' %}
+                        <video controls playsinline preload="metadata"><source src="{{ post.mediaUrl }}"></video>
+                    {% else %}
+                        <img src="{{ post.mediaUrl }}" alt="{{ post.title }}">
+                    {% endif %}
+                </figure>
+            {% endif %}
+
+            <div class="community-publication-engagement">
+                <span><b>{{ post.likesCount }}</b> réaction{{ post.likesCount > 1 ? 's' }}</span>
+                <span><b>{{ post.commentsCount }}</b> commentaire{{ post.commentsCount > 1 ? 's' }}</span>
+            </div>
+
+            <div class="community-publication-actions" aria-label="Interagir avec cette publication">
+                <a href="{{ post.registrationUrl }}" rel="nofollow"><span aria-hidden="true">♡</span><b>J’aime</b><small>Créer un compte pour réagir</small></a>
+                <a href="{{ post.registrationUrl }}" rel="nofollow"><span aria-hidden="true">◌</span><b>Commenter</b><small>Rejoindre la conversation</small></a>
+                <a href="{{ post.sourceUrl }}"><span aria-hidden="true">↗</span><b>Voir sur la plateforme</b><small>Accéder à l’espace e-learning</small></a>
+            </div>
+
+            {% if post.latestComments %}
+                <section class="community-publication-comments" aria-labelledby="community-comments-title">
+                    <header><span>Discussion</span><h2 id="community-comments-title">Derniers commentaires</h2></header>
+                    {% for comment in post.latestComments %}
+                        <article>
+                            <span>{{ comment.author|slice(0, 1)|upper }}</span>
+                            <div><strong>{{ comment.author }}</strong><p>{{ comment.content }}</p></div>
+                            {% if comment.likes %}<small>♡ {{ comment.likes }}</small>{% endif %}
+                        </article>
+                    {% endfor %}
+                    <a href="{{ post.registrationUrl }}" class="community-comments-cta">Afficher toute la discussion et répondre <span aria-hidden="true">→</span></a>
+                </section>
+            {% endif %}
+        </article>
+
+        <aside class="community-publication-aside">
+            <div>
+                <span class="community-network-live"><i></i> Rejoindre le réseau</span>
+                <h2>Votre expertise mérite d’être partagée.</h2>
+                <p>Créez gratuitement votre compte pour réagir, commenter et publier auprès de la communauté.</p>
+                <a href="{{ post.registrationUrl }}" class="button button-primary">Créer mon compte <span class="arrow-box">↗</span></a>
+            </div>
+            <a href="{{ path('app_blog_index') }}" class="community-publication-back">← Retour au blog</a>
+        </aside>
+    </div>
+</main>
+{% endblock %}
