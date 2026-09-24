@@ -21,7 +21,7 @@
         {% block structured_data %}{% endblock %}
         {% block javascripts %}{{ importmap('app') }}{% endblock %}
     </head>
-    <body data-page="{{ page|default('') }}" data-controller="navigation reveal" data-action="keydown.esc@window->navigation#close resize@window->navigation#resize click@window->navigation#outside">
+    <body data-page="{{ page|default('') }}" data-controller="navigation reveal visitor-activity" data-visitor-activity-url-value="{{ path('app_visitor_activity') }}" data-action="keydown.esc@window->navigation#close resize@window->navigation#resize click@window->navigation#outside">
         <a class="skip-link" href="#contenu">Aller au contenu</a>
         {% include 'partials/_page_transition.html.twig' %}
         {% include 'partials/_header.html.twig' %}

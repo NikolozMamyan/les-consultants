@@ -71,4 +71,36 @@ final class SubmissionRepository extends ServiceEntityRepository
     {
         return $this->count(['status' => Submission::STATUS_NEW]);
     }
+
+    public function countByTypeSince(string $type, \DateTimeImmutable $since): int
+    {
+        return (int) $this->createQueryBuilder('submission')
+            ->select('COUNT(submission.id)')
+            ->andWhere('submission.type = :type')
+            ->andWhere('submission.createdAt >= :since')
+            ->setParameter('type', $type)
+            ->setParameter('since', $since)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countProcessed(): int
+    {
+        return (int) $this->createQueryBuilder('submission')
+            ->select('COUNT(submission.id)')
+            ->andWhere('submission.status != :new')
+            ->setParameter('new', Submission::STATUS_NEW)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /** @return list<Submission> */
+    public function findRecent(int $limit = 5): array
+    {
+        return $this->createQueryBuilder('submission')
+            ->orderBy('submission.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

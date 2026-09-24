@@ -10,6 +10,7 @@
         <link rel="icon" href="{{ asset('images/logo-original.png') }}">
         <link rel="preload" href="{{ asset('fonts/plus-jakarta-sans.woff2') }}" as="font" type="font/woff2" crossorigin>
         <link rel="stylesheet" href="{{ asset('styles/admin.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles/admin-online.css') }}">
         {{ importmap('app') }}
     </head>
     <body class="admin-body" data-controller="admin-shell" data-action="admin:notice@window->admin-shell#notice">
@@ -23,6 +24,9 @@
             <nav class="admin-nav" aria-label="Navigation de l’administration">
                 <a href="{{ path('admin_dashboard') }}"{% if adminSection == 'dashboard' %} aria-current="page"{% endif %}>
                     {{ ui.icon('home') }}<span>Dashboard</span>
+                </a>
+                <a href="{{ path('admin_online') }}"{% if adminSection == 'online' %} aria-current="page"{% endif %}>
+                    {{ ui.icon('activity') }}<span>Audience en direct</span>
                 </a>
                 <a href="{{ path('admin_content') }}"{% if adminSection == 'content' %} aria-current="page"{% endif %}>
                     {{ ui.icon('services') }}<span>Constructeur de thème</span>

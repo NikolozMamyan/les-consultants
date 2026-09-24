@@ -68,6 +68,7 @@ final class PublicPagesTest extends WebTestCase
 
         foreach ([
             '/admin',
+            '/admin/audience-en-direct',
             '/admin/contenus',
             '/admin/contenus/home',
             '/admin/blog',
@@ -304,6 +305,48 @@ final class PublicPagesTest extends WebTestCase
         self::assertResponseRedirects('/');
         $client->request('GET', '/admin');
         self::assertResponseRedirects('/admin/connexion');
+    }
+
+    public function testVisitorActivityIsTrackedAndDisplayedInAdmin(): void
+    {
+        $client = self::createClient();
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->executeStatement('DELETE FROM visitor_page_view');
+        $connection->executeStatement('DELETE FROM online_visitor');
+
+        try {
+            $client->request('POST', '/activite-visiteur', [], [], [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_USER_AGENT' => 'Mozilla/5.0 (iPhone) AppleWebKit/605.1.15 Version/17.0 Mobile Safari/604.1',
+                'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
+            ], json_encode([
+                'path' => '/test-audience-directe',
+                'title' => 'Page test · Les Consultants',
+                'referrer' => 'https://www.google.com/search?q=consultants',
+            ], JSON_THROW_ON_ERROR));
+
+            self::assertResponseIsSuccessful();
+            self::assertSame(1, (int) $connection->fetchOne('SELECT COUNT(*) FROM online_visitor'));
+            self::assertSame(1, (int) $connection->fetchOne('SELECT COUNT(*) FROM visitor_page_view'));
+
+            $this->loginAdmin($client);
+            $client->request('GET', '/admin/audience-en-direct');
+            self::assertResponseIsSuccessful();
+            self::assertSelectorTextSame('.admin-live-number-row strong', '1');
+            self::assertSelectorTextContains('.admin-live-visitors', 'Page test');
+            self::assertSelectorTextContains('.admin-live-visitors', 'google.com');
+
+            $client->request('GET', '/admin');
+            self::assertResponseIsSuccessful();
+            self::assertSelectorTextSame('.admin-stat-live > strong', '1');
+            self::assertSelectorTextSame('.admin-stat-grid .admin-stat-card:nth-child(2) > strong', (string) $connection->fetchOne("SELECT COUNT(*) FROM lead_submission WHERE type = 'mission'"));
+            self::assertSelectorTextSame('.admin-stat-grid .admin-stat-card:nth-child(3) > strong', (string) $connection->fetchOne("SELECT COUNT(*) FROM lead_submission WHERE type = 'profile'"));
+            self::assertSelectorTextSame('.admin-traffic-summary > strong', '1');
+            self::assertSelectorTextContains('.admin-popular-list', 'Page test');
+        } finally {
+            $connection->executeStatement('DELETE FROM visitor_page_view');
+            $connection->executeStatement('DELETE FROM online_visitor');
+        }
     }
 
     public function testAdminCanCreatePublishEditAndDeleteBlogPost(): void

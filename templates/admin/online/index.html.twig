@@ -1,0 +1,142 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}Audience en direct{% endblock %}
+
+{% block body %}
+<div class="admin-live-dashboard"
+     data-controller="online-dashboard"
+     data-online-dashboard-url-value="{{ path('admin_online_data') }}"
+     data-online-dashboard-snapshot-value="{{ snapshot|json_encode|e('html_attr') }}">
+    <header class="admin-page-heading admin-live-heading">
+        <div>
+            <span class="admin-kicker">Analyse temps réel</span>
+            <h1>Qui consulte le site maintenant ?</h1>
+            <p>Une lecture claire de l’activité des deux dernières minutes, actualisée automatiquement.</p>
+        </div>
+        <div class="admin-live-heading-actions">
+            <span class="admin-live-status" data-online-dashboard-target="status"><i></i>Données en direct</span>
+            <button class="admin-button admin-button-light" type="button" data-action="online-dashboard#refresh">
+                {{ ui.icon('activity') }} Actualiser
+            </button>
+        </div>
+    </header>
+
+    <section class="admin-live-hero" aria-label="Audience actuellement en ligne">
+        <div class="admin-live-hero-copy">
+            <span class="admin-live-eyebrow"><i></i> En ligne maintenant</span>
+            <div class="admin-live-number-row">
+                <strong data-online-dashboard-target="count">{{ snapshot.onlineCount }}</strong>
+                <span data-online-dashboard-target="countLabel">visiteur{{ snapshot.onlineCount == 1 ? '' : 's' }} actif{{ snapshot.onlineCount == 1 ? '' : 's' }}</span>
+            </div>
+            <p>Chaque navigateur actif envoie un signal anonyme. Après deux minutes sans activité, il quitte automatiquement ce compteur.</p>
+            <small data-online-dashboard-target="updatedAt">Actualisé à {{ snapshot.generatedAt|date('H:i:s') }}</small>
+        </div>
+        <div class="admin-live-radar" aria-hidden="true">
+            <span class="admin-live-radar-ring admin-live-radar-ring-one"></span>
+            <span class="admin-live-radar-ring admin-live-radar-ring-two"></span>
+            <span class="admin-live-radar-ring admin-live-radar-ring-three"></span>
+            <span class="admin-live-radar-sweep"></span>
+            <i class="admin-live-radar-core">{{ ui.icon('activity') }}</i>
+            <b class="admin-live-radar-dot admin-live-radar-dot-one"></b>
+            <b class="admin-live-radar-dot admin-live-radar-dot-two"></b>
+            <b class="admin-live-radar-dot admin-live-radar-dot-three"></b>
+        </div>
+    </section>
+
+    <section class="admin-live-kpis" aria-label="Indicateurs d’audience">
+        <article>
+            <span class="admin-live-kpi-icon">{{ ui.icon('people') }}</span>
+            <div><small>Actifs sur 15 minutes</small><strong data-online-dashboard-target="activeLast15">{{ snapshot.activeLast15 }}</strong></div>
+            <em>Visiteurs récents</em>
+        </article>
+        <article>
+            <span class="admin-live-kpi-icon">{{ ui.icon('chart') }}</span>
+            <div><small>Sessions aujourd’hui</small><strong data-online-dashboard-target="sessionsToday">{{ snapshot.sessionsToday }}</strong></div>
+            <em>Depuis minuit</em>
+        </article>
+        <article>
+            <span class="admin-live-kpi-icon">{{ ui.icon('activity') }}</span>
+            <div><small>Durée moyenne active</small><strong data-online-dashboard-target="averageSession">{{ snapshot.averageSession }}</strong></div>
+            <em>Sessions en cours</em>
+        </article>
+    </section>
+
+    <div class="admin-live-grid admin-live-grid-main">
+        <section class="admin-panel admin-live-activity-panel">
+            <header class="admin-panel-header">
+                <div><span class="admin-kicker">Rythme</span><h2>Activité des 60 dernières minutes</h2></div>
+                <span class="admin-live-legend"><i></i> Sessions observées</span>
+            </header>
+            <div class="admin-live-chart" data-online-dashboard-target="timeline" aria-label="Activité sur les 60 dernières minutes">
+                {% for point in snapshot.timeline %}
+                    <div class="admin-live-chart-column"><span>{{ point.count }}</span><i></i><small>{{ point.label }}</small></div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="admin-panel admin-live-device-panel">
+            <header class="admin-panel-header"><div><span class="admin-kicker">Supports</span><h2>Appareils utilisés</h2></div></header>
+            <div class="admin-device-overview">
+                <div class="admin-device-ring" data-online-dashboard-target="deviceRing">
+                    <span><strong data-online-dashboard-target="count">{{ snapshot.onlineCount }}</strong><small>en ligne</small></span>
+                </div>
+                <div class="admin-device-list" data-online-dashboard-target="devices">
+                    {% for device in snapshot.devices %}
+                        <div class="admin-device-row admin-device-{{ device.key }}"><span><i></i>{{ device.label }}</span><strong>{{ device.count }}</strong><small>{{ device.share }} %</small></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="admin-live-grid admin-live-grid-insights">
+        <section class="admin-panel">
+            <header class="admin-panel-header"><div><span class="admin-kicker">Navigation</span><h2>Pages consultées maintenant</h2></div></header>
+            <div class="admin-live-pages" data-online-dashboard-target="pages">
+                {% for page in snapshot.pages %}
+                    <article><span><strong>{{ page.title }}</strong><small>{{ page.path }}</small></span><i><b></b></i><em>{{ page.count }}</em></article>
+                {% else %}
+                    <p class="admin-live-empty">Les pages actives apparaîtront ici.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="admin-panel">
+            <header class="admin-panel-header"><div><span class="admin-kicker">Acquisition</span><h2>Origine des visiteurs actifs</h2></div></header>
+            <div class="admin-live-sources" data-online-dashboard-target="sources">
+                {% for source in snapshot.sources %}
+                    <article><span>{{ '%02d'|format(loop.index) }}</span><strong>{{ source.label }}</strong><b>{{ source.count }}</b></article>
+                {% else %}
+                    <p class="admin-live-empty">Aucune source active.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+    <section class="admin-panel admin-live-visitors-panel">
+        <header class="admin-panel-header">
+            <div><span class="admin-kicker">Sessions actives</span><h2>Visiteurs présents sur le site</h2><p>Aucune donnée personnelle ni adresse IP n’est conservée.</p></div>
+            <span class="admin-live-window">Fenêtre active · 2 min</span>
+        </header>
+        <div class="admin-live-visitor-head" aria-hidden="true"><span>Visiteur</span><span>Page actuelle</span><span>Session</span><span>Source & activité</span></div>
+        <div class="admin-live-visitors" data-online-dashboard-target="visitors">
+            {% for visitor in snapshot.visitors %}
+                <article class="admin-live-visitor">
+                    <span class="admin-live-identity"><i class="admin-live-device admin-live-device-{{ visitor.device }}"></i><span><strong>Visiteur {{ visitor.id }}</strong><small>{{ visitor.browser }} · {{ visitor.device }}</small></span></span>
+                    <span class="admin-live-page"><strong>{{ visitor.pageTitle }}</strong><small>{{ visitor.pagePath }}</small></span>
+                    <span class="admin-live-session"><strong>En cours</strong><small>{{ visitor.pageViews }} page{{ visitor.pageViews > 1 ? 's' : '' }}</small></span>
+                    <span class="admin-live-source"><strong>{{ visitor.source }}</strong><small>À l’instant</small></span>
+                </article>
+            {% else %}
+                <p class="admin-live-empty admin-live-empty-large">Aucun visiteur actif dans les deux dernières minutes.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <aside class="admin-live-privacy">
+        <span>{{ ui.icon('lock') }}</span>
+        <div><strong>Mesure respectueuse de la vie privée</strong><p>Le suivi repose sur un identifiant anonyme conservé dans un cookie technique. Les adresses IP, noms et coordonnées ne sont pas enregistrés.</p></div>
+    </aside>
+</div>
+{% endblock %}

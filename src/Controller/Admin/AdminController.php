@@ -6,7 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Submission;
 use App\Repository\SubmissionRepository;
-use App\Service\AdminDemoDataProvider;
+use App\Service\AdminDashboardDataProvider;
 use App\Service\SubmissionManager;
 use App\Service\ThemePageManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AdminController extends AbstractController
 {
     public function __construct(
-        private readonly AdminDemoDataProvider $data,
+        private readonly AdminDashboardDataProvider $dashboardData,
         private readonly ThemePageManager $themePages,
         private readonly SubmissionManager $submissionManager,
         private readonly SubmissionRepository $submissions,
@@ -32,7 +32,7 @@ final class AdminController extends AbstractController
     #[Route('', name: 'dashboard', methods: ['GET'])]
     public function dashboard(): Response
     {
-        return $this->render('admin/dashboard.html.twig', $this->data->dashboard() + ['adminSection' => 'dashboard']);
+        return $this->render('admin/dashboard.html.twig', $this->dashboardData->dashboard() + ['adminSection' => 'dashboard']);
     }
 
     #[Route('/contenus', name: 'content', methods: ['GET'])]
