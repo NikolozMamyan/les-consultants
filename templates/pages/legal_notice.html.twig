@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentions légales | Les Consultants{% endblock %}
+{% block meta_description %}Consultez les mentions légales du site Les Consultants, cabinet de conseil et de formation au Luxembourg.{% endblock %}
+
+{% block body %}
+<main id="contenu" class="container frame legal-page">
+    <header class="legal-hero" data-reveal-target="item">
+        <nav class="breadcrumb" aria-label="Fil d’Ariane">
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Mentions légales</span>
+        </nav>
+        <div class="eyebrow">Informations légales</div>
+        <h1>Mentions <span class="accent">légales.</span></h1>
+        <p class="legal-updated">Dernière mise à jour : janvier 2026</p>
+    </header>
+
+    <article class="legal-content" data-reveal-target="item">
+        <section>
+            <span class="legal-number">01</span>
+            <div>
+                <h2>Éditeur du site</h2>
+                <p><strong>LES CONSULTANTS SARL</strong><br>
+                    1 Simmerfarm, L-8363 Simmerfarm, Luxembourg<br>
+                    RCS Luxembourg : B264 431<br>
+                    TVA intracommunautaire : LU33807452<br>
+                    Email : <a href="mailto:pruffin@les-consultants.lu">pruffin@les-consultants.lu</a>
+                </p>
+                <p>Directeur de la publication : Pascal Ruffin</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">02</span>
+            <div>
+                <h2>Hébergement</h2>
+                <p><strong>o2switch</strong><br>
+                Chemin des Pardiaux
+                    <br>
+                    63000 Clermont-Ferrand, France<br>
+                    Site web : <a href="https://www.o2switch.fr/" target="_blank" rel="noopener noreferrer">https://www.o2switch.fr/ ↗</a>
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">03</span>
+            <div>
+                <h2>Propriété intellectuelle</h2>
+                <p>L’ensemble des contenus (textes, images, logo, structure…) présents sur ce site relèvent de la propriété exclusive de LES CONSULTANTS, sauf mention contraire. Toute reproduction, même partielle, sans autorisation écrite préalable est interdite.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">04</span>
+            <div>
+                <h2>Protection des données personnelles</h2>
+                <p>Les informations collectées via les formulaires sont destinées uniquement à répondre aux demandes des utilisateurs. Aucun partage à des tiers n’est effectué.</p>
+                <p>Pour exercer vos droits d’accès, de rectification ou de suppression, vous pouvez contacter : <a href="mailto:pruffin@les-consultants.lu">pruffin@les-consultants.lu</a>.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">05</span>
+            <div>
+                <h2>Responsabilité</h2>
+                <p>LES CONSULTANTS s’efforce de fournir des informations aussi précises que possible. Toutefois, il ne pourra être tenu responsable des omissions, inexactitudes ou carences dans la mise à jour.</p>
+                <p>Les liens hypertextes présents sur le site peuvent renvoyer vers d’autres sites dont LES CONSULTANTS ne contrôle pas le contenu. L’éditeur décline donc toute responsabilité quant aux contenus de ces sites tiers.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">06</span>
+            <div>
+                <h2>Loi applicable</h2>
+                <p>Le site et ses contenus sont soumis au droit luxembourgeois. Tout litige relatif à l’utilisation du site relèvera de la compétence exclusive des juridictions du Grand-Duché de Luxembourg.</p>
+            </div>
+        </section>
+    </article>
+</main>
+{% endblock %}

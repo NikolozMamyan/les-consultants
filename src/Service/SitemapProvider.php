@@ -53,7 +53,7 @@ final readonly class SitemapProvider
         }
 
         $entries = [];
-        foreach (['app_home', 'app_expertises', 'app_cabinet', 'app_contact', 'app_deposit'] as $route) {
+        foreach (['app_home', 'app_expertises', 'app_cabinet', 'app_contact', 'app_deposit', 'app_legal_notice', 'app_privacy_policy'] as $route) {
             $entries[] = $this->entry($route);
         }
         $entries[] = $this->entry('app_blog_index', [], $latestModification);

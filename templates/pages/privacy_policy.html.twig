@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de confidentialité | Les Consultants{% endblock %}
+{% block meta_description %}Découvrez comment Les Consultants collecte, utilise et protège vos données personnelles conformément au RGPD.{% endblock %}
+
+{% block body %}
+<main id="contenu" class="container frame legal-page">
+    <header class="legal-hero" data-reveal-target="item">
+        <nav class="breadcrumb" aria-label="Fil d’Ariane">
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Politique de confidentialité</span>
+        </nav>
+        <div class="eyebrow">Données personnelles</div>
+        <h1>Politique de <span class="accent">confidentialité.</span></h1>
+        <p class="legal-updated">Dernière mise à jour : mai 2025</p>
+    </header>
+
+    <article class="legal-content" data-reveal-target="item">
+        <section>
+            <span class="legal-number">01</span>
+            <div>
+                <h2>Responsable du traitement</h2>
+                <p>Le responsable du traitement des données personnelles collectées sur ce site est :</p>
+                <p><strong>LES CONSULTANTS SARL</strong><br>
+                    1 Simmerfarm, L-8363 Simmerfarm, Luxembourg<br>
+                    Email : <a href="mailto:pruffin@les-consultants.lu">pruffin@les-consultants.lu</a>
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">02</span>
+            <div>
+                <h2>Données collectées</h2>
+                <p>Le site collecte des données personnelles uniquement via ses formulaires :</p>
+                <ul>
+                    <li>Nom</li>
+                    <li>Adresse e-mail</li>
+                    <li>Numéro de téléphone, le cas échéant</li>
+                    <li>Informations relatives à la demande ou à la mission</li>
+                    <li>Message libre</li>
+                </ul>
+                <p>Ces données sont fournies volontairement par l’utilisateur.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">03</span>
+            <div>
+                <h2>Finalités du traitement</h2>
+                <p>Les données collectées sont traitées dans les buts suivants :</p>
+                <ul>
+                    <li>Répondre aux demandes envoyées via les formulaires</li>
+                    <li>Traiter les demandes de mission et les profils de consultants</li>
+                    <li>Réaliser des statistiques d’audience</li>
+                </ul>
+                <p>Aucune donnée n’est cédée, vendue ou transmise à des tiers.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">04</span>
+            <div>
+                <h2>Durée de conservation</h2>
+                <p>Les données transmises via les formulaires sont conservées pendant une durée maximale de 12 mois, sauf obligation légale contraire.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">05</span>
+            <div>
+                <h2>Cookies et mesure d’audience</h2>
+                <p>Le site utilise un cookie technique permettant d’établir des statistiques de fréquentation anonymisées et de suivre l’activité globale du site. Les informations enregistrées concernent notamment les pages consultées, le type d’appareil, le navigateur et, le cas échéant, le site référent.</p>
+                <p>L’utilisateur peut désactiver les cookies via les paramètres de son navigateur.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">06</span>
+            <div>
+                <h2>Droits des utilisateurs</h2>
+                <p>Conformément au Règlement général sur la protection des données (RGPD), vous disposez des droits suivants :</p>
+                <ul>
+                    <li>Droit d’accès</li>
+                    <li>Droit de rectification</li>
+                    <li>Droit à l’effacement</li>
+                    <li>Droit à la limitation du traitement</li>
+                    <li>Droit d’opposition</li>
+                </ul>
+                <p>Vous pouvez exercer ces droits en écrivant à : <a href="mailto:pruffin@les-consultants.lu">pruffin@les-consultants.lu</a>.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">07</span>
+            <div>
+                <h2>Sécurité</h2>
+                <p>LES CONSULTANTS met en œuvre les mesures techniques et organisationnelles nécessaires pour assurer la sécurité des données personnelles traitées sur le site.</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="legal-number">08</span>
+            <div>
+                <h2>Loi applicable</h2>
+                <p>La présente politique de confidentialité est régie par le droit luxembourgeois. Tout litige relèvera de la compétence exclusive des juridictions du Grand-Duché de Luxembourg.</p>
+            </div>
+        </section>
+    </article>
+</main>
+{% endblock %}

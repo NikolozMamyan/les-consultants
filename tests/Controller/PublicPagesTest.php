@@ -24,7 +24,7 @@ final class PublicPagesTest extends WebTestCase
     {
         $client = self::createClient();
 
-        foreach (['/', '/expertises', '/a-propos', '/contact', '/deposer'] as $path) {
+        foreach (['/', '/expertises', '/a-propos', '/contact', '/deposer', '/mentions-legales', '/politique-de-confidentialite'] as $path) {
             $client->request('GET', $path);
             self::assertResponseIsSuccessful($path);
         }

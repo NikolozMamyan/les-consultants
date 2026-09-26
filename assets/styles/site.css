@@ -158,6 +158,26 @@ body.modal-open{overflow:hidden}.submission-modal{width:min(850px,calc(100% - 34
 @media(max-width:800px){.digital-platform-section{grid-template-columns:1fr;gap:57px;padding:75px 35px 80px}.platform-copy{max-width:640px}.platform-benefits{grid-template-columns:repeat(3,1fr)}.platform-benefit{align-items:flex-start}.platform-benefit small{font-size:12px}.store-badges{grid-template-columns:repeat(2,minmax(0,1fr))}.platform-showcase{width:100%;height:560px}.platform-browser{left:3%;width:94%;transform:rotateZ(-.5deg)}.digital-platform-section:hover .platform-browser{transform:rotateZ(0) translateY(-4px)}.platform-floating-modules{left:0}.platform-floating-progress{right:0}.digital-platform-section::after{font-size:42px}}
 @media(max-width:650px){.digital-platform-section{gap:45px;padding:66px 24px 70px}.digital-platform-section h2{font-size:37px}.platform-lead{font-size:16px}.platform-benefits{grid-template-columns:1fr;gap:8px}.platform-benefit{align-items:center}.platform-benefit small{font-size:11px}.platform-main-link{width:100%;justify-content:space-between}.store-badges{grid-template-columns:1fr}.store-badge{min-height:66px;padding-inline:15px}.store-logo{margin-right:2px}.store-badge strong{font-size:16px}.platform-showcase{height:425px}.platform-browser{top:15px;left:0;width:100%;border-radius:15px}.platform-browser-bar{height:35px}.platform-browser-bar>div{max-width:180px;font-size:10px}.platform-screen{height:355px}.platform-screen img{min-height:0}.platform-floating-card{padding:11px 13px}.platform-floating-card strong{font-size:14px}.platform-floating-modules{top:62px;left:-5px}.platform-floating-progress{display:none}.platform-device-chip{top:0;right:8px;font-size:10px}.digital-platform-section::after{display:none}}
 @media(max-width:370px){.digital-platform-section{padding-inline:20px}.digital-platform-section h2{font-size:32px}.platform-benefit{padding-inline:10px}.platform-showcase{height:385px}.platform-screen{height:320px}.platform-floating-modules{top:52px}.platform-device-chip{display:none}}
+
+/* Legal pages */
+.legal-page{background:radial-gradient(ellipse at 85% 8%,#d6efe248,transparent 34%)}
+.legal-hero{padding:39px 48px 72px;border-bottom:1px solid var(--line)}
+.legal-hero .breadcrumb{margin-bottom:58px}
+.legal-hero h1{max-width:850px;font-size:clamp(44px,5.1vw,68px)}
+.legal-updated{margin-top:24px;color:#738683;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.legal-content{width:min(900px,calc(100% - 96px));margin-inline:auto;padding:26px 0 92px}
+.legal-content section{display:grid;grid-template-columns:54px minmax(0,1fr);gap:28px;padding:44px 0;border-bottom:1px solid var(--line)}
+.legal-content section:last-child{border-bottom:0}
+.legal-number{padding-top:6px;color:var(--teal);font-size:12px;font-weight:700;letter-spacing:.12em}
+.legal-content h2{margin-bottom:20px;color:var(--ink);font-size:clamp(25px,2.5vw,34px)}
+.legal-content p,.legal-content li{color:var(--muted);font-size:16px;line-height:1.85}
+.legal-content p+p{margin-top:16px}
+.legal-content strong{color:var(--ink);font-weight:650}
+.legal-content a{color:var(--teal-dark);font-weight:600;text-decoration:underline;text-decoration-color:#82bfb0;text-underline-offset:4px}
+.legal-content ul{display:grid;gap:8px;margin:17px 0 20px;padding-left:22px;list-style:disc}
+.legal-content li::marker{color:var(--teal)}
+@media(max-width:800px){.legal-hero{padding:29px 29px 58px}.legal-hero .breadcrumb{margin-bottom:44px}.legal-content{width:calc(100% - 58px)}}
+@media(max-width:520px){.legal-hero{padding:25px 21px 48px}.legal-hero .breadcrumb{margin-bottom:36px}.legal-hero h1{font-size:39px}.legal-content{width:calc(100% - 42px);padding-bottom:60px}.legal-content section{grid-template-columns:1fr;gap:10px;padding:34px 0}.legal-number{padding:0}.legal-content h2{margin-bottom:16px;font-size:27px}.legal-content p,.legal-content li{font-size:15px}}
 @media(prefers-reduced-motion:reduce){.platform-browser,.platform-screen img,.platform-benefit,.platform-main-link,.store-badge,.store-badge::before{transition:none}.digital-platform-section:hover .platform-browser,.digital-platform-section:hover .platform-screen img,.platform-benefit:hover,.platform-main-link:hover,.store-badge:hover{transform:none}.store-badge::before{display:none}}
 
 /* Stable app-store hover area */

@@ -31,8 +31,8 @@
     <div class="footer-bottom">
         <span>© {{ 'now'|date('Y') }} LES CONSULTANTS — Tous droits réservés</span>
         <div>
-            <a href="https://les-consultants.com/mentions-legales/" target="_blank" rel="noopener noreferrer">Mentions légales ↗</a>
-            <a href="https://les-consultants.com/politique-confidentialite/" target="_blank" rel="noopener noreferrer">Politique de confidentialité ↗</a>
+            <a href="{{ path('app_legal_notice') }}">Mentions légales</a>
+            <a href="{{ path('app_privacy_policy') }}">Politique de confidentialité</a>
             <a href="{{ path('app_contact') }}">Contact</a>
         </div>
     </div>
