@@ -54,6 +54,7 @@ final class PublicPagesTest extends WebTestCase
         $client = self::createClient();
         $this->ensureAdminUser();
         $crawler = $client->request('GET', '/admin/connexion');
+        self::assertSelectorExists('input[name="_remember_me"][checked]');
         $client->submit($crawler->selectButton('Se connecter')->form([
             '_username' => 'admin@les-consultants.lu',
             '_password' => 'wrong-password',

@@ -35,6 +35,12 @@
                     <label for="login-password">Mot de passe</label>
                     <input id="login-password" name="_password" type="password" autocomplete="current-password" required>
 
+                    <label class="admin-login-remember" for="login-remember">
+                        <input id="login-remember" name="_remember_me" type="checkbox" value="1" checked>
+                        <span aria-hidden="true"><i></i></span>
+                        <span><strong>Rester connecté</strong><small>Conserver la connexion pendant 30 jours sur cet appareil.</small></span>
+                    </label>
+
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <button class="admin-button admin-button-primary" type="submit">Se connecter</button>
                 </form>

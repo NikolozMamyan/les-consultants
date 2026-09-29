@@ -27,6 +27,14 @@ security:
                 check_path: admin_login
                 enable_csrf: true
                 default_target_path: admin_dashboard
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 2592000
+                path: /
+                secure: auto
+                httponly: true
+                samesite: lax
+                name: LC_ADMIN_REMEMBER
             logout:
                 path: admin_logout
                 target: app_home
