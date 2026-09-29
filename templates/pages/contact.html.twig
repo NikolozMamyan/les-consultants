@@ -14,7 +14,7 @@
         </nav>
     </div>
 
-    <section class="contact-layout" data-reveal-target="item">
+    <section class="contact-layout" data-section="contact" data-section-label="Introduction et formulaire" data-reveal-target="item">
         <div class="contact-copy">
             <div class="eyebrow">Contact</div>
             <h1>Un besoin, une question ?<br><span class="accent">Contactez-nous.</span></h1>
@@ -37,7 +37,14 @@
             </div>
         </div>
 
-        <div class="contact-form-wrap" data-controller="contact-form" data-contact-form-profile-value="{{ selectedProfile }}">
+        <div class="contact-form-wrap"
+             data-controller="contact-form"
+             data-action="theme:refresh-labels->contact-form#refreshLabels"
+             data-contact-form-profile-value="{{ selectedProfile }}"
+             data-contact-form-enterprise-subject-label-value="Sujet *"
+             data-contact-form-consultant-subject-label-value="Votre domaine d’expertise *"
+             data-contact-form-enterprise-message-label-value="Votre message *"
+             data-contact-form-consultant-message-label-value="Votre parcours et vos disponibilités *">
             <div class="eyebrow">Envoyez-nous un message</div>
             <h2>Nous vous répondons sous 24h.</h2>
             <div class="format-switch" role="tablist" aria-label="Votre profil">
@@ -90,7 +97,7 @@
         </div>
     </section>
 
-    <section class="contact-map-section" aria-labelledby="contact-map-title" data-reveal-target="item">
+    <section class="contact-map-section" data-section="map" data-section-label="Adresse et carte" aria-labelledby="contact-map-title" data-reveal-target="item">
         <div class="contact-map-card">
             <div class="contact-map-copy">
                 <div class="eyebrow">Notre adresse</div>

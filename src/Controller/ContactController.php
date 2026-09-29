@@ -60,8 +60,8 @@ final class ContactController extends AbstractController
             $autoOpen = true;
 
             if ($missionForm->isValid()) {
-                $submissions->recordMission($mission);
-                $mailer->sendMission($mission);
+                $submission = $submissions->recordMission($mission);
+                $mailer->sendMission($submission);
                 $this->addFlash('success', 'Votre mission a bien été transmise. Notre équipe revient vers vous sous 24 h.');
 
                 return $this->redirectToRoute('app_deposit');

@@ -3,7 +3,7 @@
     <div class="container header-inner">
         <a class="brand" href="{{ path('app_home') }}" aria-label="Les Consultants — Accueil">
             <span class="brand-symbol"><img src="{{ asset('images/logo-original.png') }}" alt="" width="94" height="94"></span>
-            <span class="brand-name">les consultants<small>CONSEIL &amp; FORMATION</small></span>
+            <span class="brand-name"><span class="brand-title">les consultants</span><small>CONSEIL &amp; FORMATION</small></span>
         </a>
         <nav class="main-nav" id="navigation" aria-label="Navigation principale" data-navigation-target="menu">
             <a href="{{ path('app_home') }}"{% if page == 'home' %} aria-current="page"{% endif %} data-action="navigation#close">Accueil</a>

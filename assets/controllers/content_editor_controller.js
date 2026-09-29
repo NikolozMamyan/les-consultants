@@ -127,7 +127,12 @@ export default class extends Controller {
         const element = this.previewElement(field.dataset.previewSelector);
 
         if (element) {
-            this.replaceVisibleText(element, field.value);
+            if (field.dataset.previewAttribute) {
+                element.setAttribute(field.dataset.previewAttribute, field.value);
+                element.dispatchEvent(new element.ownerDocument.defaultView.CustomEvent('theme:refresh-labels'));
+            } else {
+                this.replaceVisibleText(element, field.value);
+            }
         }
 
         this.markDirty();
@@ -298,7 +303,9 @@ export default class extends Controller {
                 return;
             }
 
-            field.value = element.textContent.replace(/\s+/g, ' ').trim();
+            field.value = field.dataset.previewAttribute
+                ? element.getAttribute(field.dataset.previewAttribute) || ''
+                : element.textContent.replace(/\s+/g, ' ').trim();
         });
     }
 

@@ -13,6 +13,7 @@ use App\Service\AdminDemoDataProvider;
 use App\Service\AdminUserManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -20,6 +21,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class PublicPagesTest extends WebTestCase
 {
+    use MailerAssertionsTrait;
+
     public function testPublicPagesAreAvailable(): void
     {
         $client = self::createClient();
@@ -71,6 +74,8 @@ final class PublicPagesTest extends WebTestCase
             '/admin/audience-en-direct',
             '/admin/contenus',
             '/admin/contenus/home',
+            '/admin/contenus/header',
+            '/admin/contenus/footer',
             '/admin/blog',
             '/admin/missions-talents',
             '/admin/utilisateurs',
@@ -81,6 +86,7 @@ final class PublicPagesTest extends WebTestCase
 
         $client->request('GET', '/admin/contenus');
         self::assertSelectorCount(4, '.admin-pages-table tbody tr');
+        self::assertSelectorCount(2, '.admin-components-table tbody tr');
         self::assertSelectorTextContains('.admin-nav', 'Missions & Talents');
     }
 
@@ -119,7 +125,7 @@ final class PublicPagesTest extends WebTestCase
         $client = self::createClient();
         $definitions = self::getContainer()->get(AdminDemoDataProvider::class);
 
-        foreach ($definitions->pages() as $page) {
+        foreach ([...$definitions->pages(), ...$definitions->components()] as $page) {
             $crawler = $client->request('GET', $page['path']);
             self::assertResponseIsSuccessful($page['path']);
 
@@ -262,6 +268,15 @@ final class PublicPagesTest extends WebTestCase
             self::assertInstanceOf(Submission::class, $submission);
             self::assertSame(Submission::TYPE_MISSION, $submission->getType());
             self::assertSame('Renfort Compliance AML/KYC', $submission->getSubject());
+
+            self::assertEmailCount(1);
+            $email = self::getMailerMessage();
+            self::assertNotNull($email);
+            self::assertEmailAddressContains($email, 'To', 'pruffin@les-consultants.lu');
+            self::assertEmailAddressContains($email, 'Reply-To', 'marie@example.com');
+            self::assertEmailSubjectContains($email, 'Nouvelle mission');
+            self::assertEmailHtmlBodyContains($email, 'Renfort Compliance AML/KYC');
+            self::assertEmailHtmlBodyContains($email, 'Ouvrir la mission dans le back-office');
 
             $this->loginAdmin($client);
             $client->request('GET', '/admin/missions-talents?q=Renfort+Compliance');

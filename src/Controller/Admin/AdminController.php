@@ -41,10 +41,11 @@ final class AdminController extends AbstractController
         return $this->render('admin/content/index.html.twig', [
             'adminSection' => 'content',
             'pages' => $this->themePages->pages(),
+            'components' => $this->themePages->components(),
         ]);
     }
 
-    #[Route('/contenus/{slug}', name: 'content_edit', methods: ['GET'], requirements: ['slug' => 'home|services|about|contact'])]
+    #[Route('/contenus/{slug}', name: 'content_edit', methods: ['GET'], requirements: ['slug' => 'home|services|about|contact|header|footer'])]
     public function editContent(string $slug): Response
     {
         $page = $this->themePages->page($slug);
@@ -59,7 +60,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/contenus/{slug}', name: 'content_update', methods: ['POST'], requirements: ['slug' => 'home|services|about|contact'])]
+    #[Route('/contenus/{slug}', name: 'content_update', methods: ['POST'], requirements: ['slug' => 'home|services|about|contact|header|footer'])]
     public function updateContent(string $slug, Request $request): JsonResponse
     {
         if (!$this->isCsrfTokenValid('theme_page_'.$slug, $request->request->getString('_token'))) {

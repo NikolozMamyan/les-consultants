@@ -33,6 +33,12 @@ final class ThemePageManager
         return array_map($this->hydrateDefinition(...), $this->definitions->pages());
     }
 
+    /** @return list<array<string, mixed>> */
+    public function components(): array
+    {
+        return array_map($this->hydrateDefinition(...), $this->definitions->components());
+    }
+
     /** @return array<string, mixed>|null */
     public function page(string $slug): ?array
     {

@@ -66,6 +66,7 @@ body[data-page=home] main.container{width:100%;max-width:none;border:0}body[data
 .admin-editor-preview .is-admin-compact-marquee .carousel-controls{display:none!important}
 @keyframes admin-carousel-marquee{to{transform:translateX(calc(-50% - (var(--admin-marquee-gap)/2)))}}
 @media(prefers-reduced-motion:reduce){.admin-editor-preview .is-admin-compact-marquee .carousel-track,.admin-editor-preview .is-admin-compact-marquee .expertise-grid{animation-play-state:paused!important}}
+.lesson>.lesson-title{display:inline;width:auto;height:auto;border:0;border-radius:0;background:none;color:inherit;font:inherit}
 .is-compact-marquee [data-carousel-target=viewport]{overflow:hidden!important;scroll-snap-type:none!important;cursor:default!important;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)!important}
 .is-compact-marquee .carousel-track,.is-compact-marquee .expertise-grid{--admin-marquee-gap:18px;display:flex!important;width:max-content!important;min-width:0!important;margin:0!important;padding:24px 0!important;gap:var(--admin-marquee-gap)!important;animation:admin-carousel-marquee var(--carousel-marquee-duration,22s) linear infinite!important;will-change:transform}
 .is-compact-marquee .sector-card,.is-compact-marquee .expertise-card{width:292px!important;min-height:250px!important;flex:0 0 292px!important;padding:23px!important;opacity:1!important;transform:none!important;scroll-snap-align:none!important}

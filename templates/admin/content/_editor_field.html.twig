@@ -3,7 +3,7 @@
 <div class="admin-editor-field" data-field-kind="{{ field.type }}">
     <label for="{{ fieldId }}">
         <span>{{ field.label }}</span>
-        <small>{{ field.type == 'image' ? 'Image' : (field.type == 'button' ? 'Bouton' : (field.type == 'textarea' ? 'Texte long' : 'Texte')) }}</small>
+        <small>{{ field.type == 'image' ? 'Image' : (field.type == 'button' ? 'Bouton' : (field.type == 'textarea' ? 'Texte long' : (field.type == 'attribute' ? 'Champ' : 'Texte'))) }}</small>
     </label>
     {% if field.type == 'textarea' %}
         <textarea id="{{ fieldId }}" rows="4" maxlength="500" data-content-editor-target="field" data-field-type="{{ field.type }}" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText">{{ field.value }}</textarea>
@@ -17,6 +17,6 @@
     {% elseif field.type == 'button' %}
         <span class="admin-button-field"><i>{{ ui.icon('button') }}</i><input id="{{ fieldId }}" type="text" maxlength="80" value="{{ field.value }}" data-content-editor-target="field" data-field-type="{{ field.type }}" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText"></span>
     {% else %}
-        <input id="{{ fieldId }}" type="text" maxlength="180" value="{{ field.value }}" data-content-editor-target="field" data-field-type="{{ field.type }}" data-preview-selector="{{ field.selector|e('html_attr') }}" data-action="input->content-editor#updateText">
+        <input id="{{ fieldId }}" type="text" maxlength="180" value="{{ field.value }}" data-content-editor-target="field" data-field-type="{{ field.type }}" data-preview-selector="{{ field.selector|e('html_attr') }}"{% if field.attribute|default(null) %} data-preview-attribute="{{ field.attribute|e('html_attr') }}"{% endif %} data-action="input->content-editor#updateText">
     {% endif %}
 </div>

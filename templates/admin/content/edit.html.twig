@@ -1,5 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 {% import 'macros/ui.html.twig' as ui %}
+{% set isComponent = pageData.kind|default('page') == 'component' %}
 
 {% block title %}Modifier {{ pageData.name }}{% endblock %}
 
@@ -7,8 +8,8 @@
 <div class="admin-editor" data-controller="content-editor" data-content-editor-save-url-value="{{ path('admin_content_update', {slug: pageData.slug}) }}">
     <header class="admin-editor-heading">
         <div>
-            <a class="admin-back-link" href="{{ path('admin_content') }}">{{ ui.icon('arrow') }} Toutes les pages</a>
-            <span class="admin-editor-title"><i>{{ ui.icon(pageData.icon) }}</i><span><strong>{{ pageData.name }}</strong><small>{{ pageData.path }}</small></span></span>
+            <a class="admin-back-link" href="{{ path('admin_content') }}">{{ ui.icon('arrow') }} Tous les contenus</a>
+            <span class="admin-editor-title"><i>{{ ui.icon(pageData.icon) }}</i><span><strong>{{ pageData.name }}</strong><small>{{ pageData.scope|default(pageData.path) }}</small></span></span>
         </div>
         <div class="admin-editor-actions">
             <span class="admin-editor-status" data-content-editor-target="status"><i></i> Aperçu synchronisé</span>
@@ -19,8 +20,8 @@
 
     <div class="admin-editor-layout">
         <aside class="admin-editor-panel">
-            <header><span class="admin-kicker">Contenu de la page</span><h2>Sections</h2><p>Sélectionnez une section puis modifiez uniquement son contenu.</p></header>
-            <nav class="admin-section-nav" aria-label="Sections de la page">
+            <header><span class="admin-kicker">{{ isComponent ? 'Composant global' : 'Contenu de la page' }}</span><h2>{{ isComponent ? 'Zones éditables' : 'Sections' }}</h2><p>{{ isComponent ? 'Chaque modification sera visible sur toutes les pages du site.' : 'Sélectionnez une section puis modifiez uniquement son contenu.' }}</p></header>
+            <nav class="admin-section-nav" aria-label="{{ isComponent ? 'Zones du composant' : 'Sections de la page' }}">
                 {% for section in pageData.sections %}
                     <button type="button" class="admin-section-button{% if loop.first %} is-active{% endif %}" data-content-editor-target="sectionButton" data-section-id="{{ section.id }}" data-section-selector="{{ section.selector|e('html_attr') }}" data-action="content-editor#selectSection">
                         <span>{{ loop.index < 10 ? '0' ~ loop.index : loop.index }}</span><span><strong>{{ section.label }}</strong><small>{{ section.fieldsCount }} éléments{% if section.carousel %} · {{ section.carousel.cards|length }} cartes{% endif %}</small></span>{{ ui.icon('arrow') }}
@@ -102,7 +103,7 @@
             </header>
             <div class="admin-preview-stage" data-content-editor-target="preview" data-zoom="85">
                 <div class="admin-preview-frame" data-content-editor-target="frameShell">
-                    <iframe src="{{ path(pageData.route) }}" title="Aperçu non navigable de la page {{ pageData.name }}" tabindex="-1" data-content-editor-target="frame" data-action="load->content-editor#previewReady"></iframe>
+                    <iframe src="{{ path(pageData.route) }}" title="Aperçu non navigable de {{ pageData.name }}" tabindex="-1" data-content-editor-target="frame" data-action="load->content-editor#previewReady"></iframe>
                     <div class="admin-section-outline" data-content-editor-target="outline" hidden>
                         <span data-content-editor-target="outlineLabel">Section</span><i aria-hidden="true">•••</i>
                     </div>

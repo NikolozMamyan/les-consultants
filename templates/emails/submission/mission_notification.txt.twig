@@ -1,0 +1,23 @@
+NOUVELLE MISSION · #{{ '%05d'|format(submission.id) }}
+
+{{ submission.subject }}
+Déposée par {{ submission.organization }} le {{ submission.createdAt|date('d/m/Y à H:i', 'Europe/Paris') }}
+
+MISSION
+Expertise : {{ submission.expertise ?: 'À préciser' }}
+Début souhaité : {{ submission.startDate ? submission.startDate|date('d/m/Y') : 'À définir' }}
+Durée : {{ submission.duration ?: 'À définir' }}
+
+CONTACT ENTREPRISE
+Entreprise : {{ submission.organization }}
+Interlocuteur : {{ submission.contactName }}
+E-mail : {{ submission.email }}
+Téléphone : {{ submission.phone ?: 'Non renseigné' }}
+
+CONTEXTE ET OBJECTIFS
+{{ submission.details }}
+
+Ouvrir la mission dans le back-office :
+{{ adminUrl }}
+
+Notification automatique envoyée par Les Consultants.

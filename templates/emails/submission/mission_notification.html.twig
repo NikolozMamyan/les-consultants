@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nouvelle mission #{{ '%05d'|format(submission.id) }}</title>
+    <style>
+        body{margin:0;padding:0;background:#edf4f1;color:#102c30;font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+        table{border-collapse:collapse}
+        .preheader{display:none!important;overflow:hidden;width:0;height:0;max-height:0;color:transparent;opacity:0}
+        .email-page{width:100%;table-layout:fixed;background:radial-gradient(circle at 50% 0,#d9eee7 0,#edf4f1 38%,#edf4f1 100%)}
+        .email-shell{box-sizing:border-box;max-width:680px;margin:0 auto;padding:38px 18px}
+        .email-card{box-sizing:border-box;width:100%;overflow:hidden;border:1px solid #d5e4de;border-radius:22px;background:#fff;box-shadow:0 20px 55px rgba(8,55,51,.11)}
+        .email-header{padding:25px 32px;background:#071f23;color:#fff}
+        .brand-mark{display:inline-block;width:38px;height:38px;border-radius:12px;background:#8ee0c3;color:#073c38;font-size:13px;font-weight:800;line-height:38px;text-align:center}
+        .brand-copy{padding-left:11px;color:#fff;font-size:16px;font-weight:700;letter-spacing:-.3px}
+        .brand-copy small{display:block;margin-top:2px;color:#8fc9bc;font-size:8px;font-weight:600;letter-spacing:1.7px}
+        .header-state{text-align:right}
+        .header-state span{display:inline-block;padding:8px 12px;border:1px solid rgba(142,224,195,.25);border-radius:20px;background:rgba(142,224,195,.09);color:#a5e5ce;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+        .email-hero{padding:38px 38px 31px;background:linear-gradient(145deg,#fbfefd,#f3faf6)}
+        .eyebrow{margin:0 0 12px;color:#0b8485;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+        h1{margin:0;color:#0a292d;font-size:31px;line-height:1.2;letter-spacing:-1.1px}
+        .hero-meta{margin:13px 0 0;color:#708480;font-size:12px;line-height:1.6}
+        .hero-meta strong{color:#365f58}
+        .email-content{padding:0 38px 39px}
+        .summary-table{width:100%;margin:0 0 28px;border:1px solid #dce9e4;border-radius:15px;background:#fff}
+        .summary-cell{width:33.33%;padding:18px 17px;border-right:1px solid #e3ece8;vertical-align:top}
+        .summary-cell:last-child{border-right:0}
+        .summary-label{display:block;margin-bottom:7px;color:#83958f;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+        .summary-value{display:block;color:#153b3e;font-size:13px;font-weight:700;line-height:1.45}
+        .section{margin-top:26px}
+        .section-title{margin:0 0 13px;color:#0b8485;font-size:10px;font-weight:800;letter-spacing:1.25px;text-transform:uppercase}
+        .contact-card{width:100%;border:1px solid #dce9e4;border-radius:15px;background:#f8fbf9}
+        .contact-cell{width:50%;padding:15px 17px;border-bottom:1px solid #e3ece8;vertical-align:top}
+        .contact-cell:nth-child(odd){border-right:1px solid #e3ece8}
+        .contact-row:last-child .contact-cell{border-bottom:0}
+        .contact-label{display:block;margin-bottom:5px;color:#849690;font-size:10px;font-weight:700}
+        .contact-value,.contact-value a{color:#193f42;font-size:13px;font-weight:700;line-height:1.45;text-decoration:none}
+        .message-card{padding:21px 22px;border-left:3px solid #4dc59b;border-radius:4px 14px 14px 4px;background:#f2f8f5;color:#3f5f5b;font-size:13px;line-height:1.75}
+        .actions{padding-top:30px;text-align:center}
+        .primary-action{display:inline-block;padding:15px 23px;border-radius:11px;background:#0b8485;color:#fff!important;font-size:13px;font-weight:800;text-decoration:none;box-shadow:0 8px 22px rgba(11,132,133,.22)}
+        .secondary-action{display:block;margin-top:15px;color:#0b7778!important;font-size:12px;font-weight:700;text-decoration:none}
+        .email-footer{padding:21px 32px;border-top:1px solid #dfe9e5;background:#f8fbf9;color:#7a8e89;font-size:10px;line-height:1.65;text-align:center}
+        .email-footer strong{color:#365e58}
+        @media(max-width:620px){.email-shell{padding:16px 8px}.email-card{border-radius:16px}.email-header,.email-hero,.email-content{padding-right:22px;padding-left:22px}.header-state{display:none}.summary-cell,.contact-cell{display:block;width:auto;border-right:0!important;border-bottom:1px solid #e3ece8}.summary-cell:last-child,.contact-row:last-child .contact-cell:last-child{border-bottom:0}.primary-action{display:block;max-width:100%;padding-right:16px;padding-left:16px;line-height:1.45;white-space:normal}h1{font-size:26px}}
+    </style>
+</head>
+<body>
+<div class="preheader">Une nouvelle mission vient d’être déposée par {{ submission.organization }}.</div>
+<table class="email-page" role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td align="center">
+            <div class="email-shell">
+                <table class="email-card" role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                        <td class="email-header">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td><table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr><td><span class="brand-mark">LC</span></td><td class="brand-copy">les consultants<small>CONSEIL &amp; FORMATION</small></td></tr></table></td>
+                                    <td class="header-state"><span>Action requise</span></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="email-hero">
+                            <p class="eyebrow">Nouvelle mission · #{{ '%05d'|format(submission.id) }}</p>
+                            <h1>{{ submission.subject }}</h1>
+                            <p class="hero-meta">Déposée par <strong>{{ submission.organization }}</strong> le {{ submission.createdAt|date('d/m/Y à H:i', 'Europe/Paris') }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="email-content">
+                            <table class="summary-table" role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td class="summary-cell"><span class="summary-label">Expertise</span><span class="summary-value">{{ submission.expertise ?: 'À préciser' }}</span></td>
+                                    <td class="summary-cell"><span class="summary-label">Début souhaité</span><span class="summary-value">{{ submission.startDate ? submission.startDate|date('d/m/Y') : 'À définir' }}</span></td>
+                                    <td class="summary-cell"><span class="summary-label">Durée</span><span class="summary-value">{{ submission.duration ?: 'À définir' }}</span></td>
+                                </tr>
+                            </table>
+
+                            <div class="section">
+                                <p class="section-title">Contact entreprise</p>
+                                <table class="contact-card" role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tr class="contact-row">
+                                        <td class="contact-cell"><span class="contact-label">Entreprise</span><span class="contact-value">{{ submission.organization }}</span></td>
+                                        <td class="contact-cell"><span class="contact-label">Interlocuteur</span><span class="contact-value">{{ submission.contactName }}</span></td>
+                                    </tr>
+                                    <tr class="contact-row">
+                                        <td class="contact-cell"><span class="contact-label">E-mail</span><span class="contact-value"><a href="mailto:{{ submission.email }}">{{ submission.email }}</a></span></td>
+                                        <td class="contact-cell"><span class="contact-label">Téléphone</span><span class="contact-value">{% if submission.phone %}<a href="tel:{{ submission.phone|replace({' ': ''}) }}">{{ submission.phone }}</a>{% else %}Non renseigné{% endif %}</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="section">
+                                <p class="section-title">Contexte et objectifs</p>
+                                <div class="message-card">{{ submission.details|nl2br }}</div>
+                            </div>
+
+                            <div class="actions">
+                                <a class="primary-action" href="{{ adminUrl }}">Ouvrir la mission dans le back-office →</a>
+                                <a class="secondary-action" href="mailto:{{ submission.email }}">Répondre directement à {{ submission.contactName }}</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="email-footer">Notification automatique envoyée par <strong>les consultants</strong>.<br>Le dépôt est enregistré et disponible dans l’espace d’administration.</td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

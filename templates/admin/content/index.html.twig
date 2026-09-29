@@ -7,11 +7,39 @@
 <header class="admin-page-heading">
     <div>
         <span class="admin-kicker">Constructeur de thème</span>
-        <h1>Pages du site</h1>
-        <p>Modifiez les textes et les visuels, section par section.</p>
+        <h1>Contenus du site</h1>
+        <p>Modifiez les composants globaux, les textes et les visuels depuis un seul espace.</p>
     </div>
     <div class="admin-heading-actions"><span class="admin-content-health"><i></i> Toutes les pages sont publiées</span></div>
 </header>
+
+<section class="admin-panel admin-components-panel">
+    <header class="admin-panel-header admin-table-heading">
+        <div><span class="admin-global-label">Structure globale</span><h2>Menu & pied de page</h2><p>Ces contenus sont partagés automatiquement sur tout le site.</p></div>
+        <span class="admin-global-scope">{{ ui.icon('activity') }} Toutes les pages</span>
+    </header>
+    <div class="admin-table-wrap">
+        <table class="admin-table admin-components-table">
+            <thead><tr><th>Composant</th><th>Zones</th><th>Portée</th><th>Dernière modification</th><th>Actions</th></tr></thead>
+            <tbody>
+            {% for component in components %}
+                <tr>
+                    <td><span class="admin-page-cell admin-component-cell"><i>{{ ui.icon(component.icon) }}</i><span><strong>{{ component.name }}</strong><small>{{ component.description }}</small></span></span></td>
+                    <td><strong>{{ component.sectionsCount }}</strong> zones</td>
+                    <td><span class="admin-global-status"><i></i> Site entier</span></td>
+                    <td>{{ component.updated }}</td>
+                    <td>
+                        <span class="admin-row-actions">
+                            <a class="admin-action-secondary" href="{{ path(component.route) }}" target="_blank" rel="noopener">{{ ui.icon('eye') }} Aperçu</a>
+                            <a class="admin-action-primary" href="{{ path('admin_content_edit', {slug: component.slug}) }}">{{ ui.icon('edit') }} Modifier</a>
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 
 <section class="admin-panel admin-pages-panel">
     <header class="admin-panel-header admin-table-heading">
@@ -43,6 +71,6 @@
 
 <aside class="admin-info-banner">
     <span>{{ ui.icon('check') }}</span>
-    <div><strong>Un éditeur volontairement simple</strong><p>Les administrateurs peuvent modifier les contenus existants sans toucher à la structure ni au code du site.</p></div>
+    <div><strong>Un éditeur centralisé et sécurisé</strong><p>Les administrateurs gardent la main sur tous les contenus visibles sans toucher à la structure ni au code du site.</p></div>
 </aside>
 {% endblock %}
