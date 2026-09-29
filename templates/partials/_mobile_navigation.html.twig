@@ -1,10 +1,10 @@
 {% import 'macros/ui.html.twig' as ui %}
 
-<nav class="mobile-bottom-nav" aria-label="Navigation mobile">
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
     <div class="mobile-bottom-nav-inner">
         <a class="mobile-nav-item" href="{{ path('app_home') }}"{% if page == 'home' %} aria-current="page"{% endif %}>
             {{ ui.icon('home') }}
-            <span>Accueil</span>
+            <span>Home</span>
         </a>
         <a class="mobile-nav-item" href="{{ path('app_expertises') }}"{% if page == 'expertises' %} aria-current="page"{% endif %}>
             {{ ui.icon('services') }}
@@ -16,7 +16,7 @@
         </a>
         <a class="mobile-nav-item" href="{{ path('app_cabinet') }}"{% if page == 'cabinet' %} aria-current="page"{% endif %}>
             {{ ui.icon('people') }}
-            <span>À propos</span>
+            <span>About</span>
         </a>
         <a class="mobile-nav-item" href="{{ path('app_contact') }}"{% if page == 'contact' %} aria-current="page"{% endif %}>
             {{ ui.icon('mail') }}

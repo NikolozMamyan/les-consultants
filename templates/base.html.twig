@@ -1,22 +1,22 @@
 <!doctype html>
-<html lang="fr-LU">
+<html lang="en-LU">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="{% block meta_description %}Les Consultants accompagne les acteurs de la finance au Luxembourg avec des consultants externes spécialisés et des formations dédiées aux métiers régulés.{% endblock %}">
+        <meta name="description" content="{% block meta_description %}Les Consultants supports financial-sector organisations in Luxembourg with specialised external consultants and training for regulated professions.{% endblock %}">
         <meta name="robots" content="{% block robots %}index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1{% endblock %}">
         <meta name="referrer" content="strict-origin-when-cross-origin">
         <meta name="theme-color" content="#0b8485">
         <title>{% block title %}Les Consultants{% endblock %}</title>
         <link rel="canonical" href="{% block canonical_url %}{{ app.request.schemeAndHttpHost ~ app.request.baseUrl ~ app.request.pathInfo }}{% endblock %}">
-        <meta property="og:locale" content="fr_LU">
+        <meta property="og:locale" content="en_LU">
         <meta property="og:site_name" content="Les Consultants">
         <meta property="og:type" content="{% block og_type %}website{% endblock %}">
         <meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
         <meta property="og:description" content="{% block og_description %}{{ block('meta_description') }}{% endblock %}">
         <meta property="og:url" content="{{ block('canonical_url') }}">
         <meta property="og:image" content="{% block og_image %}{{ absolute_url(asset('images/logo-original.png')) }}{% endblock %}">
-        <meta property="og:image:alt" content="{% block og_image_alt %}Les Consultants, conseil et formation au Luxembourg{% endblock %}">
+        <meta property="og:image:alt" content="{% block og_image_alt %}Les Consultants, consulting and training in Luxembourg{% endblock %}">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="{{ block('og_title') }}">
         <meta name="twitter:description" content="{{ block('og_description') }}">
@@ -49,7 +49,7 @@
                     '@id': url('app_home') ~ '#website',
                     'name': 'Les Consultants',
                     'url': url('app_home'),
-                    'inLanguage': 'fr-LU',
+                    'inLanguage': 'en-LU',
                     'publisher': {'@id': url('app_home') ~ '#organization'}
                 }
             ]
@@ -59,7 +59,7 @@
         {% block javascripts %}{{ importmap('app') }}{% endblock %}
     </head>
     <body data-page="{{ page|default('') }}" data-controller="navigation reveal visitor-activity" data-visitor-activity-url-value="{{ path('app_visitor_activity') }}" data-action="keydown.esc@window->navigation#close resize@window->navigation#resize click@window->navigation#outside">
-        <a class="skip-link" href="#contenu">Aller au contenu</a>
+        <a class="skip-link" href="#contenu">Skip to content</a>
         {% include 'partials/_page_transition.html.twig' %}
         {% include 'partials/_header.html.twig' %}
 

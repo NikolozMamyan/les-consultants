@@ -4,10 +4,10 @@ export default class extends Controller {
     static targets = ['tab', 'profile', 'subjectLabel', 'messageLabel'];
     static values = {
         profile: String,
-        enterpriseSubjectLabel: { type: String, default: 'Sujet *' },
-        consultantSubjectLabel: { type: String, default: 'Votre domaine d’expertise *' },
-        enterpriseMessageLabel: { type: String, default: 'Votre message *' },
-        consultantMessageLabel: { type: String, default: 'Votre parcours et vos disponibilités *' },
+        enterpriseSubjectLabel: { type: String, default: 'Subject *' },
+        consultantSubjectLabel: { type: String, default: 'Your area of expertise *' },
+        enterpriseMessageLabel: { type: String, default: 'Your message *' },
+        consultantMessageLabel: { type: String, default: 'Your background and availability *' },
     };
 
     connect() {

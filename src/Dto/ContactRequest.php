@@ -31,6 +31,6 @@ final class ContactRequest
     #[Assert\Choice(choices: ['entreprise', 'consultant'])]
     public string $profile = 'entreprise';
 
-    #[Assert\IsTrue(message: 'Vous devez accepter la politique de confidentialité.')]
+    #[Assert\IsTrue(message: 'You must accept the privacy policy.')]
     public bool $consent = false;
 }

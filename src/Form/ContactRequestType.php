@@ -27,15 +27,15 @@ final class ContactRequestType extends AbstractType
             ->add('phone', TelType::class, ['required' => false])
             ->add('subject', ChoiceType::class, [
                 'empty_data' => '',
-                'placeholder' => 'Choisir un sujet',
+                'placeholder' => 'Choose a subject',
                 'choices' => [
-                    'Compliance & réglementation' => 'compliance',
-                    'Finance & fonds' => 'finance',
-                    'Risques & gouvernance' => 'risques',
-                    'Juridique & réglementaire' => 'juridique',
+                    'Compliance & regulation' => 'compliance',
+                    'Finance & funds' => 'finance',
+                    'Risk & governance' => 'risques',
+                    'Legal & regulatory' => 'juridique',
                     'Transformation & IT' => 'digital',
-                    'Formation' => 'formation',
-                    'Autre besoin' => 'autre',
+                    'Training' => 'formation',
+                    'Other requirement' => 'autre',
                 ],
             ])
             ->add('message', TextareaType::class, ['empty_data' => ''])

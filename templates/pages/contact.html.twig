@@ -1,25 +1,25 @@
 {% extends 'base.html.twig' %}
 {% import 'macros/ui.html.twig' as ui %}
 
-{% block title %}Contact | Cabinet de conseil au Luxembourg | Les Consultants{% endblock %}
-{% block meta_description %}Contactez notre cabinet au Luxembourg pour trouver un consultant, renforcer vos équipes ou échanger en toute confidentialité sur vos enjeux métiers.{% endblock %}
+{% block title %}Contact | Consulting firm in Luxembourg | Les Consultants{% endblock %}
+{% block meta_description %}Contact our Luxembourg firm to find a consultant, strengthen your teams or discuss your business challenges in confidence.{% endblock %}
 
 {% block body %}
 <main id="contenu" class="container frame">
     <div class="page-intro page-intro-compact" data-reveal-target="item">
-        <nav class="breadcrumb" aria-label="Fil d’Ariane">
-            <a href="{{ path('app_home') }}">Accueil</a>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="{{ path('app_home') }}">Home</a>
             <span aria-hidden="true">/</span>
             <span aria-current="page">Contact</span>
         </nav>
     </div>
 
-    <section class="contact-layout" data-section="contact" data-section-label="Introduction et formulaire" data-reveal-target="item">
+    <section class="contact-layout" data-section="contact" data-section-label="Introduction and form" data-reveal-target="item">
         <div class="contact-copy">
             <div class="eyebrow">Contact</div>
-            <h1>Un besoin, une question ?<br><span class="accent">Contactez-nous.</span></h1>
-            <p class="lead">Notre équipe est à votre disposition pour toute demande d’information, besoin de renfort ou échange confidentiel sur vos enjeux métiers.</p>
-            <span class="pill green">{{ ui.icon('people') }} Un échange direct avec notre équipe</span>
+            <h1>A requirement or a question?<br><span class="accent">Contact us.</span></h1>
+            <p class="lead">Our team is available for information requests, additional support or a confidential discussion about your business challenges.</p>
+            <span class="pill green" data-theme-static>{{ ui.icon('people') }} A direct conversation with our team</span>
 
             <div class="contact-details">
                 <div class="contact-detail">
@@ -28,11 +28,11 @@
                 </div>
                 <div class="contact-detail">
                     {{ ui.icon('phone') }}
-                    <div><small>Téléphone</small><a href="tel:+352621735201">+352 621 735 201</a><br><a href="tel:+33766501444">+33 7 66 50 14 44</a></div>
+                    <div><small data-theme-static>Phone</small><a href="tel:+352621735201">+352 621 735 201</a><br><a href="tel:+33766501444">+33 7 66 50 14 44</a></div>
                 </div>
                 <div class="contact-detail">
                     {{ ui.icon('pin') }}
-                    <div><small>Adresse</small><p>1 Simmerfarm<br>L-8363 Simmerfarm, Luxembourg</p></div>
+                    <div><small>Address</small><p>1 Simmerfarm<br>L-8363 Simmerfarm, Luxembourg</p></div>
                 </div>
             </div>
         </div>
@@ -41,15 +41,15 @@
              data-controller="contact-form"
              data-action="theme:refresh-labels->contact-form#refreshLabels"
              data-contact-form-profile-value="{{ selectedProfile }}"
-             data-contact-form-enterprise-subject-label-value="Sujet *"
-             data-contact-form-consultant-subject-label-value="Votre domaine d’expertise *"
-             data-contact-form-enterprise-message-label-value="Votre message *"
-             data-contact-form-consultant-message-label-value="Votre parcours et vos disponibilités *">
-            <div class="eyebrow">Envoyez-nous un message</div>
-            <h2>Nous vous répondons sous 24h.</h2>
-            <div class="format-switch" role="tablist" aria-label="Votre profil">
-                <button type="button" role="tab" aria-controls="contact-panel" data-contact-form-target="tab" data-action="contact-form#select" data-contact-form-profile-param="entreprise">Je suis une entreprise</button>
-                <button type="button" role="tab" aria-controls="contact-panel" data-contact-form-target="tab" data-action="contact-form#select" data-contact-form-profile-param="consultant">Je suis consultant</button>
+             data-contact-form-enterprise-subject-label-value="Subject *"
+             data-contact-form-consultant-subject-label-value="Your area of expertise *"
+             data-contact-form-enterprise-message-label-value="Your message *"
+             data-contact-form-consultant-message-label-value="Your background and availability *">
+            <div class="eyebrow">Send us a message</div>
+            <h2>We will reply within 24 hours.</h2>
+            <div class="format-switch" role="tablist" aria-label="Your profile">
+                <button type="button" role="tab" aria-controls="contact-panel" data-contact-form-target="tab" data-action="contact-form#select" data-contact-form-profile-param="entreprise">I represent a company</button>
+                <button type="button" role="tab" aria-controls="contact-panel" data-contact-form-target="tab" data-action="contact-form#select" data-contact-form-profile-param="consultant">I am a consultant</button>
             </div>
 
             <div role="tabpanel" id="contact-panel">
@@ -58,38 +58,38 @@
                     {{ form_errors(contactForm) }}
                     <div class="form-grid">
                         <div class="field full">
-                            {{ form_label(contactForm.name, 'Nom *') }}
-                            {{ form_widget(contactForm.name, { attr: { autocomplete: 'name', placeholder: 'Votre nom', maxlength: 160 } }) }}
+                            {{ form_label(contactForm.name, 'Name *') }}
+                            {{ form_widget(contactForm.name, { attr: { autocomplete: 'name', placeholder: 'Your name', maxlength: 160 } }) }}
                             {{ form_errors(contactForm.name) }}
                         </div>
-                        <div class="field">
+                        <div class="field" data-theme-static>
                             {{ form_label(contactForm.email, 'Email *') }}
-                            {{ form_widget(contactForm.email, { attr: { autocomplete: 'email', placeholder: 'vous@entreprise.com', maxlength: 180 } }) }}
+                            {{ form_widget(contactForm.email, { attr: { autocomplete: 'email', placeholder: 'you@company.com', maxlength: 180 } }) }}
                             {{ form_errors(contactForm.email) }}
                         </div>
-                        <div class="field">
-                            {{ form_label(contactForm.phone, 'Téléphone') }}
+                        <div class="field" data-theme-static>
+                            {{ form_label(contactForm.phone, 'Phone') }}
                             {{ form_widget(contactForm.phone, { attr: { autocomplete: 'tel', placeholder: '+352 …', maxlength: 35 } }) }}
                             {{ form_errors(contactForm.phone) }}
                         </div>
                         <div class="field full">
-                            {{ form_label(contactForm.subject, 'Sujet *', { label_attr: { 'data-contact-form-target': 'subjectLabel' } }) }}
+                            {{ form_label(contactForm.subject, 'Subject *', { label_attr: { 'data-contact-form-target': 'subjectLabel' } }) }}
                             {{ form_widget(contactForm.subject) }}
                             {{ form_errors(contactForm.subject) }}
                         </div>
                         <div class="field full">
-                            {{ form_label(contactForm.message, 'Votre message *', { label_attr: { 'data-contact-form-target': 'messageLabel' } }) }}
-                            {{ form_widget(contactForm.message, { attr: { rows: 6, placeholder: 'Votre besoin, le contexte et votre calendrier…', maxlength: 3000 } }) }}
+                            {{ form_label(contactForm.message, 'Your message *', { label_attr: { 'data-contact-form-target': 'messageLabel' } }) }}
+                            {{ form_widget(contactForm.message, { attr: { rows: 6, placeholder: 'Your requirements, context and timeline…', maxlength: 3000 } }) }}
                             {{ form_errors(contactForm.message) }}
                         </div>
                     </div>
                     <div class="consent">
                         {{ form_widget(contactForm.consent) }}
-                        {{ form_label(contactForm.consent, 'J’accepte que mes informations soient utilisées pour répondre à ma demande. *') }}
+                        {{ form_label(contactForm.consent, 'I agree that my information may be used to respond to my request. *') }}
                         {{ form_errors(contactForm.consent) }}
                     </div>
                     <div class="contact-submit">
-                        <button class="button button-primary" type="submit">Envoyer <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
+                        <button class="button button-primary" type="submit">Send <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
                     </div>
                     {{ form_rest(contactForm) }}
                 {{ form_end(contactForm, { render_rest: false }) }}
@@ -97,16 +97,16 @@
         </div>
     </section>
 
-    <section class="contact-map-section" data-section="map" data-section-label="Adresse et carte" aria-labelledby="contact-map-title" data-reveal-target="item">
+    <section class="contact-map-section" data-section="map" data-section-label="Address and map" aria-labelledby="contact-map-title" data-reveal-target="item">
         <div class="contact-map-card">
             <div class="contact-map-copy">
-                <div class="eyebrow">Notre adresse</div>
-                <h2 id="contact-map-title">Retrouvez-nous<br><span class="accent">au Luxembourg.</span></h2>
-                <p>Au cœur de notre écosystème, à proximité directe de nos clients et de nos consultants.</p>
+                <div class="eyebrow">Our address</div>
+                <h2 id="contact-map-title">Find us<br><span class="accent">in Luxembourg.</span></h2>
+                <p>At the heart of our ecosystem, close to our clients and consultants.</p>
                 <address>1 Simmerfarm<br>L-8363 Simmerfarm, Luxembourg</address>
-                <a class="text-link" href="https://www.google.com/maps/search/?api=1&amp;query=1%20Simmerfarm%2C%20L-8363%20Simmerfarm%2C%20Luxembourg" target="_blank" rel="noopener noreferrer">Ouvrir dans Google Maps {{ ui.icon('up') }}</a>
+                <a class="text-link" href="https://www.google.com/maps/search/?api=1&amp;query=1%20Simmerfarm%2C%20L-8363%20Simmerfarm%2C%20Luxembourg" target="_blank" rel="noopener noreferrer">Open in Google Maps {{ ui.icon('up') }}</a>
             </div>
-            <div class="contact-map" role="img" aria-label="Carte stylisée situant Les Consultants à Simmerfarm au Luxembourg">
+            <div class="contact-map" role="img" aria-label="Stylised map showing Les Consultants in Simmerfarm, Luxembourg">
                 <svg class="contact-map-art" aria-hidden="true" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid slice">
                     <path class="map-water" d="M-40 438C90 376 165 474 286 415c89-44 127-132 241-131 123 1 192 80 413 23V570H-40Z"/>
                     <path class="map-road map-road-primary" d="M-36 116C129 165 178 251 351 248c177-3 293-177 592-162"/>

@@ -23,8 +23,8 @@ export default class extends Controller {
     toggle() {
         const paused = document.body.classList.toggle('motion-paused');
         this.toggleTarget.setAttribute('aria-pressed', String(paused));
-        this.toggleTarget.setAttribute('aria-label', paused ? 'Reprendre l’animation du radar' : 'Mettre l’animation du radar en pause');
-        this.labelTarget.textContent = paused ? 'Animer' : 'Pause';
+        this.toggleTarget.setAttribute('aria-label', paused ? 'Resume radar animation' : 'Pause radar animation');
+        this.labelTarget.textContent = paused ? 'Animate' : 'Pause';
         this.iconTarget.setAttribute('d', paused ? 'm8 4 12 8-12 8V4Z' : 'M8 5v14M16 5v14');
     }
 

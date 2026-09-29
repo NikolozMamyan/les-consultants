@@ -1,35 +1,35 @@
 {% extends 'base.html.twig' %}
 {% import 'macros/ui.html.twig' as ui %}
 
-{% block title %}Déposer une mission de conseil au Luxembourg | Les Consultants{% endblock %}
-{% block meta_description %}Déposez votre mission de conseil au Luxembourg et recevez rapidement des profils de consultants spécialisés adaptés à vos besoins.{% endblock %}
+{% block title %}Submit a consulting assignment in Luxembourg | Les Consultants{% endblock %}
+{% block meta_description %}Submit your consulting assignment in Luxembourg and quickly receive specialised consultant profiles tailored to your needs.{% endblock %}
 
 {% block body %}
 <main id="contenu" class="container frame" data-controller="submission-modal" data-submission-modal-open-value="{{ autoOpen ? 'true' : 'false' }}">
     <section class="page-intro" data-reveal-target="item">
-        <nav class="breadcrumb" aria-label="Fil d’Ariane">
-            <a href="{{ path('app_home') }}">Accueil</a>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="{{ path('app_home') }}">Home</a>
             <span aria-hidden="true">/</span>
-            <span aria-current="page">Déposer une mission</span>
+            <span aria-current="page">Submit a mission</span>
         </nav>
-        <div class="eyebrow">Votre besoin</div>
-        <h1>La bonne expertise.<br><span class="accent">Au bon endroit.</span></h1>
-        <p class="lead">Quelques informations suffisent pour lancer la recherche du bon expert.</p>
+        <div class="eyebrow">Your requirements</div>
+        <h1>The right expertise.<br><span class="accent">In the right place.</span></h1>
+        <p class="lead">A few details are all we need to start finding the right expert.</p>
     </section>
 
     <section class="section deposit-section" data-reveal-target="item">
         <div class="service-grid deposit-grid deposit-grid-single">
             <article class="service-card deposit-card">
                 <span class="service-icon">{{ ui.icon('briefcase') }}</span>
-                <div class="eyebrow">Votre besoin</div>
-                <h2>Déposez votre mission</h2>
-                <p>Soumettez votre mission en quelques clics et trouvez rapidement le consultant adapté.</p>
+                <div class="eyebrow">Your requirements</div>
+                <h2>Submit your mission</h2>
+                <p>Tell us about your assignment in a few clicks and quickly find the right consultant.</p>
                 <ul class="checklist">
-                    <li>{{ ui.icon('check') }} Détaillez votre besoin et vos enjeux</li>
-                    <li>{{ ui.icon('check') }} Profils disponibles en moins de 48 h</li>
-                    <li>{{ ui.icon('check') }} Gestion complète de la mission</li>
+                    <li>{{ ui.icon('check') }} Describe your requirements and priorities</li>
+                    <li>{{ ui.icon('check') }} Profiles available within 48 hours</li>
+                    <li>{{ ui.icon('check') }} End-to-end assignment management</li>
                 </ul>
-                <button class="button button-primary" type="button" data-action="submission-modal#open">Déposer votre mission <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
+                <button class="button button-primary" type="button" data-action="submission-modal#open">Submit your mission <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
             </article>
         </div>
     </section>

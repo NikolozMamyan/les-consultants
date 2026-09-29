@@ -14,21 +14,21 @@ final class MissionRequest
 
     #[Assert\NotBlank]
     #[Assert\Choice(choices: [
-        'Compliance & réglementation',
-        'Contrôle interne & gouvernance',
-        'Services juridiques & réglementaires',
+        'Compliance & regulation',
+        'Internal control & governance',
+        'Legal & regulatory services',
         'Fund Administration',
-        'Transformation digitale (IT)',
-        'Formation',
-        'Autre',
+        'Digital transformation (IT)',
+        'Training',
+        'Other',
     ])]
     public ?string $expertise = null;
 
-    #[Assert\GreaterThanOrEqual('today', message: 'La date de début doit être aujourd’hui ou ultérieure.')]
+    #[Assert\GreaterThanOrEqual('today', message: 'The start date must be today or later.')]
     public ?\DateTimeImmutable $startDate = null;
 
     #[Assert\NotBlank]
-    #[Assert\Choice(choices: ['Moins de 3 mois', '3 à 6 mois', 'Plus de 6 mois', 'À définir'])]
+    #[Assert\Choice(choices: ['Less than 3 months', '3 to 6 months', 'More than 6 months', 'To be confirmed'])]
     public ?string $duration = null;
 
     #[Assert\NotBlank]
@@ -51,6 +51,6 @@ final class MissionRequest
     #[Assert\Length(min: 20, max: 4000)]
     public ?string $description = null;
 
-    #[Assert\IsTrue(message: 'Vous devez accepter la politique de confidentialité.')]
+    #[Assert\IsTrue(message: 'You must accept the privacy policy.')]
     public bool $consent = false;
 }

@@ -35,7 +35,7 @@ final class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $submissions->recordProfile($contact);
             $mailer->send($contact);
-            $this->addFlash('success', 'Merci pour votre message. Nous vous répondons sous 24h.');
+            $this->addFlash('success', 'Thank you for your message. We will reply within 24 hours.');
 
             return $this->redirectToRoute('app_contact');
         }
@@ -62,7 +62,7 @@ final class ContactController extends AbstractController
             if ($missionForm->isValid()) {
                 $submission = $submissions->recordMission($mission);
                 $mailer->sendMission($submission);
-                $this->addFlash('success', 'Votre mission a bien été transmise. Notre équipe revient vers vous sous 24 h.');
+                $this->addFlash('success', 'Your assignment has been submitted. Our team will get back to you within 24 hours.');
 
                 return $this->redirectToRoute('app_deposit');
             }

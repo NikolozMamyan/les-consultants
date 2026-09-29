@@ -15,21 +15,21 @@
 {% block body %}
 <main id="contenu" class="blog-article">
     <header class="container frame blog-article-hero" data-reveal-target="item">
-        <nav class="breadcrumb" aria-label="Fil d’Ariane">
-            <a href="{{ path('app_home') }}">Accueil</a><span aria-hidden="true">/</span>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="{{ path('app_home') }}">Home</a><span aria-hidden="true">/</span>
             <a href="{{ path('app_blog_index') }}">Blog</a><span aria-hidden="true">/</span>
             <span aria-current="page">{{ post.category }}</span>
         </nav>
         <div class="blog-article-heading">
-            <div class="blog-article-kicker"><span>{{ post.category }}</span><span>Analyse</span></div>
+            <div class="blog-article-kicker"><span>{{ post.category }}</span><span>Analysis</span></div>
             <h1>{{ post.title }}</h1>
             <p>{{ post.excerpt }}</p>
             <div class="blog-article-meta">
                 <span class="blog-author-mark">LC</span>
-                <div><strong>{{ post.author }}</strong><small>Expertises finance &amp; conformité</small></div>
+                <div><strong>{{ post.author }}</strong><small>Finance &amp; compliance expertise</small></div>
                 <i aria-hidden="true"></i>
                 <time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time>
-                <span>{{ post.readingTime }} min de lecture</span>
+                <span>{{ post.readingTime }} min read</span>
             </div>
         </div>
         {% if post.featuredImage %}
@@ -41,20 +41,20 @@
     </header>
 
     <div class="container frame blog-article-layout">
-        <aside class="blog-article-aside" aria-label="Informations sur l’article">
+        <aside class="blog-article-aside" aria-label="Article information">
             <div class="blog-aside-card">
-                <span>Dans cette analyse</span>
+                <span>In this analysis</span>
                 <strong>{{ post.category }}</strong>
-                <p>Un éclairage préparé par l’équipe Les Consultants pour les professionnels des métiers régulés.</p>
+                <p>Insights prepared by the Les Consultants team for professionals in regulated sectors.</p>
             </div>
-            <a class="blog-back-link" href="{{ path('app_blog_index', { category: post.category }) }}">Voir les articles similaires <span aria-hidden="true">→</span></a>
+            <a class="blog-back-link" href="{{ path('app_blog_index', { category: post.category }) }}">View similar articles <span aria-hidden="true">→</span></a>
         </aside>
 
         <article class="blog-prose">
             {{ post.content|raw }}
 
             {% if post.contentImages %}
-                <div class="blog-article-gallery" aria-label="Illustrations de l’article">
+                <div class="blog-article-gallery" aria-label="Article illustrations">
                     {% for image in post.contentImages %}
                         <figure><img src="{{ asset(image.path) }}" alt="{{ image.alt }}" loading="lazy"></figure>
                     {% endfor %}
@@ -63,14 +63,14 @@
 
             <footer class="blog-article-signature">
                 <span class="blog-author-mark">LC</span>
-                <div><strong>Les Consultants</strong><p>Conseil et formation pour les métiers régulés au Luxembourg.</p></div>
+                <div><strong>Les Consultants</strong><p>Consulting and training for regulated professions in Luxembourg.</p></div>
             </footer>
         </article>
     </div>
 
     {% if relatedPosts %}
         <section class="container frame blog-related" aria-labelledby="related-title" data-reveal-target="item">
-            <header><div><span>Pour aller plus loin</span><h2 id="related-title">À lire ensuite</h2></div><a href="{{ path('app_blog_index') }}">Toutes les analyses →</a></header>
+            <header><div><span>Explore further</span><h2 id="related-title">Read next</h2></div><a href="{{ path('app_blog_index') }}">All insights →</a></header>
             <div class="blog-grid blog-grid-related">
                 {% for related in relatedPosts %}{% include 'blog/_card.html.twig' with { post: related } only %}{% endfor %}
             </div>
@@ -78,8 +78,8 @@
     {% endif %}
 
     <section class="container frame blog-article-cta" data-reveal-target="item">
-        <div><span class="eyebrow">Votre contexte est unique</span><h2>Parlons de vos enjeux.</h2></div>
-        <div><p>Nos consultants vous accompagnent sur vos problématiques réglementaires, financières et opérationnelles.</p><a class="button button-primary" href="{{ path('app_contact') }}">Échanger avec nous <span class="arrow-box">↗</span></a></div>
+        <div><span class="eyebrow">Your context is unique</span><h2>Let’s discuss your challenges.</h2></div>
+        <div><p>Our consultants support your regulatory, financial and operational challenges.</p><a class="button button-primary" href="{{ path('app_contact') }}">Talk to us <span class="arrow-box">↗</span></a></div>
     </section>
 </main>
 {% endblock %}

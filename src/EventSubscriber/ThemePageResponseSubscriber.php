@@ -95,6 +95,9 @@ final class ThemePageResponseSubscriber implements EventSubscriberInterface
                     if (!$element instanceof \DOMElement) {
                         continue;
                     }
+                    if ($this->isThemeStatic($element)) {
+                        continue;
+                    }
                     if ('img' === strtolower($element->tagName)) {
                         $element->setAttribute('src', $value);
                         continue;
@@ -177,6 +180,19 @@ final class ThemePageResponseSubscriber implements EventSubscriberInterface
         }
 
         return $fields;
+    }
+
+    private function isThemeStatic(\DOMElement $element): bool
+    {
+        $node = $element;
+        while ($node instanceof \DOMElement) {
+            if ($node->hasAttribute('data-theme-static')) {
+                return true;
+            }
+            $node = $node->parentNode;
+        }
+
+        return false;
     }
 
     /** @return list<\DOMText> */

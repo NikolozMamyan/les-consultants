@@ -109,7 +109,7 @@ export default class extends Controller {
         form.querySelector('[data-role="previous"]').hidden = this.currentStep === 0;
         form.querySelector('[data-role="next"]').hidden = this.currentStep === steps.length - 1;
         form.querySelector('[data-role="submit"]').hidden = this.currentStep !== steps.length - 1;
-        form.querySelector('.submission-step-count').textContent = `Étape ${this.currentStep + 1} sur ${steps.length}`;
+        form.querySelector('.submission-step-count').textContent = `Step ${this.currentStep + 1} of ${steps.length}`;
         this.dialogTarget.querySelector('.submission-modal-body').scrollTop = 0;
     }
 

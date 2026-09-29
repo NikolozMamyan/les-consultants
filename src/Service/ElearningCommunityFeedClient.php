@@ -115,7 +115,7 @@ final readonly class ElearningCommunityFeedClient
             'content' => is_string($item['content'] ?? null) ? $item['content'] : '',
             'publishedAt' => $this->date($item['publishedAt'] ?? null),
             'author' => [
-                'name' => $this->text($author['name'] ?? null, 80) ?: 'Membre de la communauté',
+                'name' => $this->text($author['name'] ?? null, 80) ?: 'Community member',
                 'avatarUrl' => $this->absoluteUrl($author['avatarUrl'] ?? null),
             ],
             'media' => $media ? [

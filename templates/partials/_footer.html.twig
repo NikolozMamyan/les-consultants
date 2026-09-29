@@ -1,24 +1,24 @@
 <footer class="site-footer container frame">
     <div class="footer-top">
         <div class="footer-brand">
-            <a class="brand" href="{{ path('app_home') }}" aria-label="Les Consultants — Accueil">
+            <a class="brand" href="{{ path('app_home') }}" aria-label="Les Consultants — Home">
                 <span class="brand-symbol"><img src="{{ asset('images/logo-original.png') }}" alt="" width="94" height="94"></span>
-                <span class="brand-name"><span class="brand-title">les consultants</span><small>CONSEIL &amp; FORMATION</small></span>
+                <span class="brand-name"><span class="brand-title">les consultants</span><small>CONSULTING &amp; TRAINING</small></span>
             </a>
-            <p>Conseil & FORMATION au Luxembourg</p>
+            <p>Consulting & training in Luxembourg</p>
         </div>
         <div class="footer-column">
-            <h3>Nos services</h3>
-            <a href="{{ path('app_expertises') }}">Conseil</a>
+            <h3>Our services</h3>
+            <a href="{{ path('app_expertises') }}">Consulting</a>
             <a href="https://elearning-lesconsultants.com/" target="_blank" rel="noopener noreferrer">E-Learning ↗</a>
         </div>
         <div class="footer-column">
-            <h3>Liens utiles</h3>
-            <a href="{{ path('app_home') }}">Accueil</a>
-            <a href="{{ path('app_cabinet') }}">Qui sommes-nous</a>
-            <a href="{{ path('app_expertises') }}">Nos expertises</a>
+            <h3>Useful links</h3>
+            <a href="{{ path('app_home') }}">Home</a>
+            <a href="{{ path('app_cabinet') }}">About us</a>
+            <a href="{{ path('app_expertises') }}">Our expertise</a>
             <a href="{{ path('app_blog_index') }}">Blog</a>
-            <a href="{{ path('app_deposit', { form: 'mission' }) }}">Déposer une mission</a>
+            <a href="{{ path('app_deposit', { form: 'mission' }) }}">Submit a mission</a>
         </div>
         <div class="footer-column">
             <h3>Contact</h3>
@@ -29,10 +29,10 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <span>© {{ 'now'|date('Y') }} <span class="footer-copyright-label">LES CONSULTANTS — Tous droits réservés</span></span>
+        <span>© {{ 'now'|date('Y') }} <span class="footer-copyright-label">LES CONSULTANTS — All rights reserved</span></span>
         <div>
-            <a href="{{ path('app_legal_notice') }}">Mentions légales</a>
-            <a href="{{ path('app_privacy_policy') }}">Politique de confidentialité</a>
+            <a href="{{ path('app_legal_notice') }}">Legal notice</a>
+            <a href="{{ path('app_privacy_policy') }}">Privacy policy</a>
             <a href="{{ path('app_contact') }}">Contact</a>
         </div>
     </div>

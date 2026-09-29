@@ -9,7 +9,7 @@ export default class extends Controller {
 
         this.contentTarget.hidden = !expanded;
         this.summaryTarget.hidden = expanded;
-        this.moreButtonTarget.textContent = expanded ? 'Réduire' : 'Voir plus';
+        this.moreButtonTarget.textContent = expanded ? 'Show less' : 'Read more';
         this.moreButtonTarget.setAttribute('aria-expanded', String(expanded));
     }
 

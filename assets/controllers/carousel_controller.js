@@ -194,7 +194,7 @@ export default class extends Controller {
         this.dotTargets.forEach((dot, dotIndex) => dot.toggleAttribute('aria-current', dotIndex === index));
         this.previousTarget.disabled = index === 0;
         this.nextTarget.disabled = index === this.cardTargets.length - 1;
-        this.statusTarget.textContent = `${this.cardTargets[index].querySelector('h3').textContent}, ${index + 1} sur ${this.cardTargets.length}`;
+        this.statusTarget.textContent = `${this.cardTargets[index].querySelector('h3').textContent}, ${index + 1} of ${this.cardTargets.length}`;
     }
 
     syncAutoplay() {

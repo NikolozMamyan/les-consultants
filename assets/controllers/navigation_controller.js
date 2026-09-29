@@ -23,6 +23,6 @@ export default class extends Controller {
     setOpen(open) {
         this.menuTarget.classList.toggle('open', open);
         this.buttonTarget.setAttribute('aria-expanded', String(open));
-        this.buttonTarget.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+        this.buttonTarget.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     }
 }

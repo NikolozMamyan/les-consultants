@@ -21,20 +21,20 @@ final class MissionRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $expertises = [
-            'Compliance & réglementation',
-            'Contrôle interne & gouvernance',
-            'Services juridiques & réglementaires',
+            'Compliance & regulation',
+            'Internal control & governance',
+            'Legal & regulatory services',
             'Fund Administration',
-            'Transformation digitale (IT)',
-            'Formation',
-            'Autre',
+            'Digital transformation (IT)',
+            'Training',
+            'Other',
         ];
 
         $builder
             ->add('missionTitle', TextType::class, ['empty_data' => ''])
             ->add('expertise', ChoiceType::class, [
                 'empty_data' => '',
-                'placeholder' => 'Choisir une expertise',
+                'placeholder' => 'Choose an area of expertise',
                 'choices' => array_combine($expertises, $expertises),
             ])
             ->add('startDate', DateType::class, [
@@ -44,10 +44,10 @@ final class MissionRequestType extends AbstractType
             ])
             ->add('duration', ChoiceType::class, [
                 'empty_data' => '',
-                'placeholder' => 'Choisir une durée',
+                'placeholder' => 'Choose a duration',
                 'choices' => array_combine(
-                    ['Moins de 3 mois', '3 à 6 mois', 'Plus de 6 mois', 'À définir'],
-                    ['Moins de 3 mois', '3 à 6 mois', 'Plus de 6 mois', 'À définir'],
+                    ['Less than 3 months', '3 to 6 months', 'More than 6 months', 'To be confirmed'],
+                    ['Less than 3 months', '3 to 6 months', 'More than 6 months', 'To be confirmed'],
                 ),
             ])
             ->add('company', TextType::class, ['empty_data' => ''])

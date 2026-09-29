@@ -11,6 +11,6 @@ export default class extends Controller {
             card.hidden = category !== 'all' && card.dataset.category !== category && card.dataset.category !== 'all';
             if (!card.hidden && card.dataset.category !== 'all') count += 1;
         });
-        this.statusTarget.textContent = `${count} domaine${count > 1 ? 's' : ''} d’expertise`;
+        this.statusTarget.textContent = `${count} area${count !== 1 ? 's' : ''} of expertise`;
     }
 }
