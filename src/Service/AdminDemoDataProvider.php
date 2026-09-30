@@ -319,10 +319,10 @@ final class AdminDemoDataProvider
             ],
             'services' => [
                 'slug' => 'services', 'name' => 'Nos services', 'route' => 'app_expertises', 'path' => '/expertises', 'icon' => 'services',
-                'description' => 'Expertises métier, solutions et plateforme e-learning.', 'sectionsCount' => 4, 'updated' => 'Hier, 16:08',
+                'description' => 'Expertises métier, solutions et plateforme e-learning.', 'sectionsCount' => 5, 'updated' => 'Hier, 16:08',
                 'sections' => [
                     $this->section('hero', 'Introduction', '[data-section="hero"]', [
-                        $this->textField('Sur-titre', 'Conseil', '[data-section="hero"] .eyebrow'),
+                        $this->textField('Chapitre', 'Consulting', '[data-section="hero"] .service-chapter-divider strong'),
                         $this->textField('Titre', 'Des consultants externes spécialisés.', '[data-section="hero"] h1'),
                         $this->textField('Introduction', 'Des expertises ciblées pour vos fonctions réglementées.', '[data-section="hero"] .lead', true),
                         $this->buttonField('Bouton principal', 'Déposer une mission', '[data-section="hero"] .button-primary'),
@@ -369,6 +369,9 @@ final class AdminDemoDataProvider
                         $this->textField('Carte sur mesure — titre', 'Votre besoin ne rentre pas dans une case ?', '[data-section="services"] .service-card.custom h3'),
                         $this->textField('Carte sur mesure — description', 'Nous construisons des solutions sur mesure pour vos besoins non standards ou multisectoriels.', '[data-section="services"] .service-card.custom p', true),
                         $this->buttonField('Carte sur mesure — bouton', 'Déposer une mission', '[data-section="services"] .service-card.custom .button'),
+                    ]),
+                    $this->section('training-divider', 'Séparateur formation', '[data-section="training-divider"]', [
+                        $this->textField('Chapitre', 'Training', '[data-section="training-divider"] .service-chapter-divider strong'),
                     ]),
                     $this->section('plateforme', 'Plateforme e-learning', '[data-section="plateforme"]', [
                         $this->textField('Sur-titre', 'Notre solution digitale', '[data-section="plateforme"] .eyebrow'),
