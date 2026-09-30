@@ -33,12 +33,12 @@ final class PublicPagesTest extends WebTestCase
         }
     }
 
-    public function testFormationPageHasBeenRemoved(): void
+    public function testUnknownPublicPageRedirectsToHomepage(): void
     {
         $client = self::createClient();
         $client->request('GET', '/formations');
 
-        self::assertResponseStatusCodeSame(404);
+        self::assertResponseRedirects('/');
     }
 
     public function testAdminRequiresAuthentication(): void

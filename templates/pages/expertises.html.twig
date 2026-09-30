@@ -6,7 +6,7 @@
 {% block og_image_alt %}Finance and compliance experts brought together by Les Consultants{% endblock %}
 
 {% block body %}
-<main id="contenu" class="container frame">
+<main id="contenu" class="container frame expertises-page">
 <section class="page-intro" data-section="hero" data-section-label="Expertise introduction" data-reveal-target="item">
 <nav class="breadcrumb" aria-label="Breadcrumb">
 <a href="{{ path('app_home') }}">Home</a>
@@ -15,7 +15,7 @@
 </nav>
 <div class="intro-grid">
 <div>
-<div class="eyebrow" data-theme-static>Consulting</div>
+<div class="eyebrow prominent-eyebrow" data-theme-static>Consulting</div>
 <h1>External consultants<br>
 <span class="accent">for your business challenges.</span>
 </h1>
@@ -158,12 +158,11 @@
 </a>
 </article>
 </div>
-<p class="contact-note" aria-live="polite" id="filter-status" data-filter-target="status">5 areas of expertise</p>
 </section>
 <section class="digital-platform-section" data-section="plateforme" data-section-label="E-learning platform" data-reveal-target="item">
 <div class="platform-ambient" aria-hidden="true"></div>
 <div class="platform-copy">
-<div class="eyebrow">Our digital solution</div>
+<div class="eyebrow prominent-eyebrow">Our digital solution</div>
 <h2>Regulatory training.<br><span>Available everywhere.</span></h2>
 <p class="platform-lead">An e-learning platform designed for professionals and regulated teams in Luxembourg. Deploy training, monitor progress and centralise certificates in one clear, secure space.</p>
 
@@ -233,12 +232,15 @@
 <div class="platform-device-chip"><span></span> Available on all your devices</div>
 </div>
 </section>
+<section class="catalogue-bridge" aria-label="Training catalogue">
+<button class="button button-primary catalogue-button" type="button">Catalogue</button>
+</section>
 <section class="cta-section" data-reveal-target="item">
 <div class="eyebrow">Ready to get started?</div>
 <h2>Need a qualified consultant<br><span class="accent">to strengthen your team?</span></h2>
 <p>Tell us what you need and we’ll take care of the rest.</p>
 <div class="actions">
-<a class="button button-primary" href="{{ path('app_deposit', { form: 'mission' }) }}">Get started<span class="arrow-box">
+<a class="button button-primary" href="https://elearning-lesconsultants.com">Get started<span class="arrow-box">
 <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
 <path d="M5 12h14m-5-5 5 5-5 5"/>
 </svg>
