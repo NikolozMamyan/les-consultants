@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 final readonly class CatalogManager
 {
     private const MAX_IMAGE_SIZE = 15 * 1024 * 1024;
-    private const MAX_PDF_SIZE = 60 * 1024 * 1024;
+    private const MAX_PDF_SIZE = 90 * 1024 * 1024;
     private const MAX_PDF_PAGES = 200;
     private const UPLOAD_PREFIX = '/uploads/catalogue/';
 
@@ -208,7 +208,7 @@ final readonly class CatalogManager
     private function storePdf(UploadedFile $file): string
     {
         if (!$file->isValid() || ($file->getSize() ?? 0) > self::MAX_PDF_SIZE || !$this->isPdf($file)) {
-            throw new \InvalidArgumentException('Le PDF doit être valide et ne pas dépasser 60 Mo.');
+            throw new \InvalidArgumentException('Le PDF doit être valide et ne pas dépasser 90 Mo.');
         }
 
         $filename = bin2hex(random_bytes(16)).'.pdf';
