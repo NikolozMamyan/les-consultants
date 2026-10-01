@@ -243,9 +243,13 @@
 <div class="platform-device-chip"><span></span> Available on all your devices</div>
 </div>
 </section>
+{% if catalogAvailable %}
 <section class="catalogue-bridge" aria-label="Training catalogue">
-<button class="button button-primary catalogue-button" type="button">Catalogue</button>
+<a class="button button-primary catalogue-button" href="{{ path('app_catalog') }}">Catalogue<span class="arrow-box">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+</span></a>
 </section>
+{% endif %}
 <section class="cta-section" data-reveal-target="item">
 <div class="eyebrow">Ready to get started?</div>
 <h2>Need a qualified consultant<br><span class="accent">to strengthen your team?</span></h2>
