@@ -31,9 +31,9 @@
                 <a href="{{ path('admin_content') }}"{% if adminSection == 'content' %} aria-current="page"{% endif %}>
                     {{ ui.icon('services') }}<span>Constructeur de thème</span>
                 </a>
-                {# <a href="{{ path('admin_catalog') }}"{% if adminSection == 'catalog' %} aria-current="page"{% endif %}>
+                <a href="{{ path('admin_catalog') }}"{% if adminSection == 'catalog' %} aria-current="page"{% endif %}>
                     {{ ui.icon('book') }}<span>Catalogue</span>
-                </a> #}
+                </a>
                 <a href="{{ path('admin_blog') }}"{% if adminSection == 'blog' %} aria-current="page"{% endif %}>
                     {{ ui.icon('edit') }}<span>Blog</span>
                 </a>
