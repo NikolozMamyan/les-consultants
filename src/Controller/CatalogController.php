@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\CatalogPageRepository;
 use App\Repository\CatalogRepository;
+use App\Service\CatalogContentsBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CatalogController extends AbstractController
 {
     #[Route('/catalogue', name: 'app_catalog', methods: ['GET'])]
-    public function __invoke(CatalogRepository $catalogs, CatalogPageRepository $pages): Response
+    public function __invoke(CatalogRepository $catalogs, CatalogPageRepository $pages, CatalogContentsBuilder $contentsBuilder): Response
     {
         $catalog = $catalogs->findCurrent();
         if (null === $catalog || !$catalog->isEnabled()) {
@@ -25,9 +26,13 @@ final class CatalogController extends AbstractController
             return $this->redirectToRoute('app_expertises');
         }
 
+        $contentsEntries = $contentsBuilder->build($catalog, $visiblePages);
+
         return $this->render('catalog/index.html.twig', [
             'catalog' => $catalog,
             'catalogPages' => $visiblePages,
+            'contentsEntries' => $contentsEntries,
+            'contentsPages' => $contentsBuilder->paginate($contentsEntries),
             'isPreview' => false,
         ]);
     }

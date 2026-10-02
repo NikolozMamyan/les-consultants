@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="{{ asset('styles/catalog.css') }}">
     {{ importmap('app') }}
 </head>
+{% set contentsPageCount = contentsPages|length %}
+{% set hasContentsPage = contentsPageCount > 0 %}
+{% set viewerPageCount = catalogPages|length + contentsPageCount %}
 <body class="catalog-body" data-controller="catalog" data-catalog-worker-url-value="{{ asset('vendor/pdfjs-dist/build/pdf.worker.min.mjs.js') }}" data-action="keydown@window->catalog#keyboard fullscreenchange@document->catalog#fullscreenChanged click@window->catalog#outsideClick">
     <a class="catalog-skip-link" href="#catalog-book">Aller au catalogue</a>
     {% if isPreview %}<div class="catalog-preview-banner">Aperçu administrateur · <a href="{{ path('admin_catalog') }}">Retour au constructeur</a></div>{% endif %}
@@ -31,7 +34,8 @@
             <div class="catalog-book-zoom" data-catalog-target="zoomShell">
                 <div class="catalog-book" id="catalog-book" data-catalog-target="book" aria-label="{{ catalog.title }}">
                     {% for catalogPage in catalogPages %}
-                        <div class="catalog-page-source{{ loop.first or loop.last ? ' catalog-page-source-hard' : '' }}" data-catalog-target="page" data-title="{{ catalogPage.title|e('html_attr') }}" data-pdf="{{ catalogPage.pdfPath|default('')|e('html_attr') }}" data-page-index="{{ loop.index0 }}"{% if loop.first or loop.last %} data-density="hard"{% endif %}>
+                        {% set catalogPageIndex = loop.index0 + (hasContentsPage and not loop.first ? contentsPageCount : 0) %}
+                        <div class="catalog-page-source{{ loop.first or loop.last ? ' catalog-page-source-hard' : '' }}" data-catalog-target="page" data-title="{{ catalogPage.title|e('html_attr') }}" data-pdf="{{ catalogPage.pdfPath|default('')|e('html_attr') }}" data-page-index="{{ catalogPageIndex }}"{% if loop.first or loop.last %} data-density="hard"{% endif %}>
                             <article class="catalog-page-sheet">
                                 {% if catalogPage.imagePath %}
                                     <img src="{{ asset(catalogPage.imagePath) }}" alt="{{ catalogPage.title }}" draggable="false"{% if loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
@@ -45,6 +49,27 @@
                                 {% endif %}
                             </article>
                         </div>
+                        {% if loop.first and hasContentsPage %}
+                            {% for contentsPage in contentsPages %}
+                                <div class="catalog-page-source" data-catalog-target="page" data-title="{{ (catalog.contentsTitle ~ (contentsPageCount > 1 ? ' · ' ~ loop.index ~ '/' ~ contentsPageCount : ''))|e('html_attr') }}" data-pdf="" data-page-index="{{ loop.index }}">
+                                    <article class="catalog-page-sheet catalog-contents-page">
+                                        <header>
+                                            <span>Les Consultants · Catalogue {{ 'now'|date('Y') }}{% if contentsPageCount > 1 %} · {{ loop.index }}/{{ contentsPageCount }}{% endif %}</span>
+                                            <h2>{{ catalog.contentsTitle }}</h2>
+                                            <p>{{ loop.first ? 'Sélectionnez une formation pour accéder directement à sa première page.' : 'Suite des formations disponibles dans ce catalogue.' }}</p>
+                                        </header>
+                                        <div class="catalog-contents-list">
+                                            {% for entry in contentsPage %}
+                                                <button type="button" data-page-index="{{ entry.pageIndex }}" data-action="catalog#goTo" aria-label="Aller à {{ entry.label }}, page {{ entry.pageNumber }}">
+                                                    <i>{{ '%02d'|format(entry.position) }}</i><strong>{{ entry.label }}</strong><span>{{ entry.pageNumber }}</span>
+                                                </button>
+                                            {% endfor %}
+                                        </div>
+                                        <footer><span>Formations professionnelles{% if contentsPageCount > 1 %} · {{ loop.index }}/{{ contentsPageCount }}{% endif %}</span><i></i><strong>les-consultants.lu</strong></footer>
+                                    </article>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -66,7 +91,7 @@
             </button>
             <div class="catalog-current-page"><small>Catalogue</small><strong data-catalog-target="currentTitle">{{ (catalogPages|first).title }}</strong></div>
             <div class="catalog-progress" aria-hidden="true"><span data-catalog-target="progress"></span></div>
-            <span class="catalog-page-number" data-catalog-target="pageNumber">01 / {{ catalogPages|length }}</span>
+            <span class="catalog-page-number" data-catalog-target="pageNumber">01 / {{ viewerPageCount }}</span>
             <button class="catalog-tool" type="button" aria-label="Page suivante" title="Page suivante" data-catalog-target="next" data-action="catalog#next">
                 <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
             </button>
@@ -88,25 +113,34 @@
             </button>
             <div class="catalog-zoom-panel" data-catalog-target="zoomPanel" hidden>
                 <button type="button" aria-label="Dézoomer" data-action="catalog#zoomOut" data-catalog-target="zoomOut"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
-                <input type="range" min="75" max="125" step="5" value="90" aria-label="Niveau de zoom" data-catalog-target="zoomRange" data-action="input->catalog#zoomChanged change->catalog#zoomAnnounced">
+                <input type="range" min="75" max="125" step="5" value="100" aria-label="Niveau de zoom" data-catalog-target="zoomRange" data-action="input->catalog#zoomChanged change->catalog#zoomAnnounced">
                 <button type="button" aria-label="Zoomer" data-action="catalog#zoomIn" data-catalog-target="zoomIn"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button>
-                <output data-catalog-target="zoomValue">90%</output>
+                <output data-catalog-target="zoomValue">100%</output>
             </div>
         </nav>
     </main>
 
     <aside class="catalog-menu" aria-hidden="true" data-catalog-target="menu">
-        <header><div><span>Sommaire</span><h2>{{ catalog.title }}</h2><p>{{ catalogPages|length }} pages</p></div><button type="button" aria-label="Fermer le sommaire" data-action="catalog#closeMenu"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
+        <header><div><span>Sommaire</span><h2>{{ catalog.title }}</h2><p>{{ viewerPageCount }} pages</p></div><button type="button" aria-label="Fermer le sommaire" data-action="catalog#closeMenu"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
         <div class="catalog-thumbnails">
             {% for catalogPage in catalogPages %}
-                <button type="button" data-page-index="{{ loop.index0 }}" data-action="catalog#goTo" data-catalog-target="thumbnail">
+                {% set pageIndex = loop.index0 + (hasContentsPage and not loop.first ? contentsPageCount : 0) %}
+                <button type="button" data-page-index="{{ pageIndex }}" data-action="catalog#goTo" data-catalog-target="thumbnail">
                     <span class="catalog-thumbnail-media">
                         {% if catalogPage.imagePath %}<img src="{{ asset(catalogPage.imagePath) }}" alt="" loading="lazy">
                         {% else %}<canvas data-pdf-source="{{ asset(catalogPage.pdfPath) }}" data-pdf-page="{{ catalogPage.pdfPage|default(1) }}"></canvas>{% endif %}
-                        <i>{{ '%02d'|format(loop.index) }}</i>
+                        <i>{{ '%02d'|format(pageIndex + 1) }}</i>
                     </span>
                     <strong>{{ catalogPage.title }}</strong>
                 </button>
+                {% if loop.first and hasContentsPage %}
+                    {% for contentsPage in contentsPages %}
+                        <button type="button" data-page-index="{{ loop.index }}" data-action="catalog#goTo" data-catalog-target="thumbnail">
+                            <span class="catalog-thumbnail-media catalog-thumbnail-contents"><b>{{ catalog.contentsTitle }}</b><small>{{ contentsPage|length }} documents · {{ loop.index }}/{{ contentsPageCount }}</small><i>{{ '%02d'|format(loop.index + 1) }}</i></span>
+                            <strong>{{ catalog.contentsTitle }}{% if contentsPageCount > 1 %} · {{ loop.index }}/{{ contentsPageCount }}{% endif %}</strong>
+                        </button>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
         </div>
     </aside>

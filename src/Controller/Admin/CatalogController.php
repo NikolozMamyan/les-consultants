@@ -6,9 +6,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\CatalogPage;
 use App\Repository\CatalogPageRepository;
+use App\Service\CatalogContentsBuilder;
 use App\Service\CatalogManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +22,7 @@ final class CatalogController extends AbstractController
     public function __construct(
         private readonly CatalogManager $manager,
         private readonly CatalogPageRepository $pages,
+        private readonly CatalogContentsBuilder $contentsBuilder,
     ) {
     }
 
@@ -27,11 +30,15 @@ final class CatalogController extends AbstractController
     public function index(): Response
     {
         $catalog = $this->manager->current();
+        $catalogPages = $this->pages->findForCatalog($catalog);
+        $contentsEntries = $this->contentsBuilder->build($catalog, $catalogPages);
 
         return $this->render('admin/catalog/index.html.twig', [
             'adminSection' => 'catalog',
             'catalog' => $catalog,
-            'catalogPages' => $this->pages->findForCatalog($catalog),
+            'catalogPages' => $catalogPages,
+            'contentsEntries' => $contentsEntries,
+            'contentsPages' => $this->contentsBuilder->paginate($contentsEntries),
         ]);
     }
 
@@ -46,9 +53,13 @@ final class CatalogController extends AbstractController
             return $this->redirectToRoute('admin_catalog');
         }
 
+        $contentsEntries = $this->contentsBuilder->build($catalog, $visiblePages);
+
         return $this->render('catalog/index.html.twig', [
             'catalog' => $catalog,
             'catalogPages' => $visiblePages,
+            'contentsEntries' => $contentsEntries,
+            'contentsPages' => $this->contentsBuilder->paginate($contentsEntries),
             'isPreview' => true,
         ]);
     }
@@ -71,6 +82,43 @@ final class CatalogController extends AbstractController
         return $this->redirectToRoute('admin_catalog');
     }
 
+    #[Route('/sommaire', name: '_contents', methods: ['POST'])]
+    public function contents(Request $request): RedirectResponse
+    {
+        $this->validateToken('catalog_contents', $request);
+        try {
+            $this->manager->saveContents(
+                $this->manager->current(),
+                $request->request->getString('contentsTitle'),
+                $request->request->all('contentsLabels'),
+                $request->request->getBoolean('resetLabels'),
+                $request->request->getBoolean('resetOrder'),
+            );
+            $this->addFlash('success', match (true) {
+                $request->request->getBoolean('resetLabels') => 'Les noms automatiques du sommaire ont été rétablis.',
+                $request->request->getBoolean('resetOrder') => 'L’ordre automatique du sommaire a été rétabli.',
+                default => 'Le sommaire a été mis à jour.',
+            });
+        } catch (\InvalidArgumentException $exception) {
+            $this->addFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirectToRoute('admin_catalog', ['_fragment' => 'sommaire']);
+    }
+
+    #[Route('/sommaire/reordonner', name: '_contents_reorder', methods: ['POST'])]
+    public function reorderContents(Request $request): JsonResponse
+    {
+        $this->validateToken('catalog_contents_reorder', $request);
+        try {
+            $this->manager->reorderContents($this->manager->current(), $request->request->all('contentsKeys'));
+
+            return $this->json(['ok' => true]);
+        } catch (\InvalidArgumentException $exception) {
+            return $this->json(['ok' => false, 'message' => $exception->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+    }
+
     #[Route('/ajouter-images', name: '_add_images', methods: ['POST'])]
     public function addImages(Request $request): RedirectResponse
     {
@@ -89,26 +137,60 @@ final class CatalogController extends AbstractController
     public function importPdf(Request $request): RedirectResponse
     {
         $this->validateToken('catalog_import_pdf', $request);
-        $file = $request->files->get('pdf');
-        if (!$file instanceof UploadedFile) {
-            $this->addFlash('error', 'Sélectionnez un fichier PDF.');
+        $files = $request->files->all('pdfs');
+        $expectedFileCount = $request->request->getInt('pdfFileCount');
+        if ($expectedFileCount > count($files)) {
+            $this->addFlash('error', sprintf(
+                'Le serveur n’a reçu que %d PDF sur %d. Augmentez la valeur PHP « max_file_uploads » puis recommencez.',
+                count($files),
+                $expectedFileCount,
+            ));
 
             return $this->redirectToRoute('admin_catalog');
         }
 
         try {
-            $count = $this->manager->addPdf(
+            try {
+                $pageCounts = json_decode($request->request->getString('pdfPageCounts'), true, 512, \JSON_THROW_ON_ERROR);
+            } catch (\JsonException) {
+                $pageCounts = [];
+            }
+            if (!is_array($pageCounts)) {
+                $pageCounts = [];
+            }
+
+            $result = $this->manager->addPdfs(
                 $this->manager->current(),
-                $file,
-                $request->request->getInt('pdfPageCount'),
+                $files,
+                $pageCounts,
                 $request->request->getString('pdfTitle'),
             );
-            $this->addFlash('success', sprintf('Le PDF a été importé en %d page%s.', $count, $count > 1 ? 's' : ''));
+            $this->addFlash('success', sprintf(
+                '%d PDF%s importé%s en %d page%s.',
+                $result['documents'],
+                $result['documents'] > 1 ? 's' : '',
+                $result['documents'] > 1 ? 's' : '',
+                $result['pages'],
+                $result['pages'] > 1 ? 's' : '',
+            ));
         } catch (\InvalidArgumentException|\RuntimeException $exception) {
             $this->addFlash('error', $exception->getMessage());
         }
 
         return $this->redirectToRoute('admin_catalog');
+    }
+
+    #[Route('/reordonner', name: '_reorder', methods: ['POST'])]
+    public function reorder(Request $request): JsonResponse
+    {
+        $this->validateToken('catalog_reorder', $request);
+        try {
+            $this->manager->reorder($this->manager->current(), $request->request->all('pageIds'));
+
+            return $this->json(['ok' => true]);
+        } catch (\InvalidArgumentException $exception) {
+            return $this->json(['ok' => false, 'message' => $exception->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 
     #[Route('/page/{id}', name: '_page_update', methods: ['POST'], requirements: ['id' => '\\d+'])]

@@ -45,7 +45,7 @@ export default class extends Controller {
         this.pageFlip.on('flip', (event) => this.update(Number(event.data)));
         this.pageFlip.on('changeState', (event) => this.stageTarget.classList.toggle('is-flipping', ['flipping', 'user_fold'].includes(event.data)));
         this.pageFlip.loadFromHTML(this.pageTargets);
-        this.setZoom(90);
+        this.setZoom(100);
         this.renderPdfCanvases();
     }
 

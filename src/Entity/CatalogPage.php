@@ -33,6 +33,9 @@ class CatalogPage
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pdfPath = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $pdfOriginalName = null;
+
     #[ORM\Column(nullable: true)]
     private ?int $pdfPage = null;
 
@@ -109,6 +112,18 @@ class CatalogPage
     public function setPdfPath(?string $pdfPath): self
     {
         $this->pdfPath = $this->nullable($pdfPath);
+
+        return $this;
+    }
+
+    public function getPdfOriginalName(): ?string
+    {
+        return $this->pdfOriginalName;
+    }
+
+    public function setPdfOriginalName(?string $pdfOriginalName): self
+    {
+        $this->pdfOriginalName = $this->nullable($pdfOriginalName);
 
         return $this;
     }
