@@ -60,3 +60,40 @@
 @media(max-width:1000px){.event-invitation{padding:38px 32px 25px}.event-registration{padding:38px 30px 25px}.event-invitation-footer{flex-direction:column;gap:2px}.event-details{gap:12px}.event-details-copy time{font-size:13px}}
 @media(max-width:760px){.event-header{min-height:90px}.event-header-note{max-width:130px;text-align:right;font-size:9px}.event-layout{grid-template-columns:1fr;border-radius:17px}.event-invitation{padding:33px 30px 28px}.event-invitation h1{font-size:clamp(50px,10vw,72px);margin-top:27px}.event-topic{margin-top:27px}.event-topic h2{font-size:28px}.event-description{max-width:490px}.event-details{margin-top:25px;padding-top:22px}.event-details-copy time{font-size:15px}.event-invitation-footer{display:none}.event-registration{padding:35px 30px 26px}.event-registration h2{font-size:32px}.event-footer{padding-block:20px}}
 @media(max-width:420px){.event-page .container{width:calc(100% - 32px)}.event-header-note{display:none}.event-registration,.event-invitation{padding-inline:23px}.event-registration h2{font-size:27px}.event-registration .form-grid{grid-template-columns:1fr}.event-details-copy time{font-size:13px}.event-date-tile{width:64px;height:72px}.event-date-tile strong{font-size:30px}}
+
+/* Programme de la soirée */
+.event-program {
+    margin-top: 1.5rem;
+}
+
+.event-program-title {
+    display: block;
+    margin-bottom: 0.85rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.7;
+}
+
+.event-program-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.event-program-list li {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.event-program-list time {
+    font-weight: 700;
+    white-space: nowrap;
+}
