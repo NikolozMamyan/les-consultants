@@ -1,0 +1,95 @@
+{% import 'macros/ui.html.twig' as ui %}
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex,nofollow">
+        <meta name="description" content="After Champagne Work, 5e édition : l’usage raisonné de l’IA @ work. Jeudi 19 novembre 2026 à l’Hôtel Royal. Inscrivez-vous avec Les Consultants.">
+        <meta name="theme-color" content="#0b8485">
+        <meta name="referrer" content="strict-origin-when-cross-origin">
+        <meta property="og:title" content="After Champagne Work — 5e édition | Les Consultants">
+        <meta property="og:description" content="L’usage raisonné de l’IA @ work. Rendez-vous jeudi 19 novembre 2026 à l’Hôtel Royal.">
+        <meta property="og:image" content="{{ absolute_url(asset('images/logo-original.png')) }}">
+        <meta property="og:locale" content="fr_FR">
+        <title>After Champagne Work — 5e édition | Les Consultants</title>
+        <link rel="icon" href="{{ asset('images/logo-original.png') }}">
+        <link rel="preload" href="{{ asset('fonts/plus-jakarta-sans.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="{{ asset('styles/site.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles/event.css') }}">
+        {{ importmap('app') }}
+    </head>
+    <body class="event-page">
+        <a class="skip-link" href="#inscription">Aller au formulaire d’inscription</a>
+        <header class="event-header container">
+            <a class="brand" href="{{ path('app_home') }}" aria-label="Les Consultants — Accueil">
+                <span class="brand-symbol"><img src="{{ asset('images/logo-original.png') }}" alt="" width="94" height="94"></span>
+                <span class="brand-name"><span class="brand-title">les consultants</span><small>CONSULTING &amp; TRAINING</small></span>
+            </a>
+            <span class="event-header-note">Les rencontres professionnelles</span>
+        </header>
+
+        <main class="event-layout container" id="contenu">
+            <section class="event-invitation" aria-labelledby="event-title">
+                <div class="event-orbits" aria-hidden="true"><span></span><span></span><span></span></div>
+                <div class="event-edition"><span class="event-edition-dot" aria-hidden="true"></span> Afterwork · 5<sup>e</sup> édition</div>
+                <h1 id="event-title">After<br>Champagne<br><span>Work.</span></h1>
+                <div class="event-topic">
+                    <span class="event-topic-label">Au cœur des échanges</span>
+                    <h2>L’usage raisonné<br>de l’IA <span>@ work.</span></h2>
+                </div>
+                <p class="event-description">Un moment pour se retrouver, partager nos regards et échanger sur la place de l’intelligence artificielle au travail.</p>
+                <div class="event-details">
+                    <div class="event-date-tile" aria-hidden="true"><strong>19</strong><span>NOV. 2026</span></div>
+                    <div class="event-details-copy">
+                        <time datetime="2026-11-19">Jeudi 19 novembre 2026</time>
+                        <span>{{ ui.icon('pin') }} Hôtel Royal</span>
+                    </div>
+                </div>
+                <div class="event-invitation-footer"><span>Les Consultants</span><span>Échanger. Partager. Se rencontrer.</span></div>
+            </section>
+
+            <section class="event-registration" id="inscription" aria-labelledby="registration-title" tabindex="-1">
+                {% if registered %}
+                    <div class="event-thanks" role="status">
+                        <span class="event-thanks-icon">{{ ui.icon('check') }}</span>
+                        <div class="eyebrow">Inscription confirmée</div>
+                        <h2 id="registration-title">Merci pour<br><span class="accent">votre inscription !</span></h2>
+                        <p>Nous sommes ravis de vous retrouver pour cette 5<sup>e</sup> édition d’After Champagne Work.</p>
+                        <div class="event-thanks-details"><strong>Jeudi 19 novembre 2026</strong><span>Hôtel Royal</span></div>
+                        <p>À très bientôt,<br><strong>L’équipe Les Consultants</strong></p>
+                    </div>
+                {% else %}
+                    <div class="eyebrow">Soyez des nôtres</div>
+                    <h2 id="registration-title">Retrouvons-nous<br><span class="accent">autour d’un échange.</span></h2>
+                    <p class="event-form-intro">Inscrivez-vous à la 5<sup>e</sup> édition d’After Champagne Work en quelques instants.</p>
+                    <p class="event-required-note">Tous les champs sont obligatoires.</p>
+                    {{ form_start(registrationForm, { attr: { 'data-turbo': 'false' } }) }}
+                        <div class="event-form-errors" role="alert">{{ form_errors(registrationForm) }}</div>
+                        <div class="form-grid">
+                            {% for field in [registrationForm.firstName, registrationForm.lastName, registrationForm.email, registrationForm.phone] %}
+                                <div class="field{% if field.vars.name in ['email', 'phone'] %} full{% endif %}">
+                                    {{ form_label(field) }}
+                                    {{ form_widget(field) }}
+                                    {{ form_errors(field) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="event-consent">
+                            <div class="consent">
+                                {{ form_widget(registrationForm.consent) }}
+                                {{ form_label(registrationForm.consent) }}
+                            </div>
+                            {{ form_errors(registrationForm.consent) }}
+                        </div>
+                        <button class="button button-primary event-submit" type="submit">Je m’inscris <span class="arrow-box">{{ ui.icon('arrow') }}</span></button>
+                    {{ form_end(registrationForm) }}
+                    <p class="event-privacy">Vos coordonnées servent à organiser cet événement. <a href="{{ path('app_privacy_policy') }}" target="_blank" rel="noopener">Politique de confidentialité<span class="sr-only"> (nouvel onglet)</span></a></p>
+                {% endif %}
+                <div class="event-contact">Une question ? <a href="mailto:pruffin@les-consultants.lu">Contactez-nous {{ ui.icon('up') }}</a></div>
+            </section>
+        </main>
+
+        <footer class="event-footer container"><span>© {{ 'now'|date('Y') }} Les Consultants</span><a href="{{ path('app_legal_notice') }}">Mentions légales</a></footer>
+    </body>
+</html>

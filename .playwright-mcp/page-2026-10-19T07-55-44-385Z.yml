@@ -1,0 +1,32 @@
+- generic [ref=f1e1]:
+  - main [ref=f1e2]:
+    - region [ref=f1e3]:
+      - link "Les Consultants" [ref=f1e4] [cursor=pointer]:
+        - /url: /
+        - strong [ref=f1e6]: Les Consultants
+      - generic [ref=f1e7]:
+        - text: Administration
+        - heading "Connexion au back-office" [level=1] [ref=f1e8]
+        - paragraph [ref=f1e9]: Identifiez-vous pour administrer le contenu du site.
+      - generic [ref=f1e10]:
+        - generic [ref=f1e11]: Adresse e-mail
+        - textbox "Adresse e-mail" [active] [ref=f1e12]
+        - generic [ref=f1e13]: Mot de passe
+        - textbox "Mot de passe" [ref=f1e14]
+        - generic [ref=f1e15] [cursor=pointer]:
+          - checkbox "Rester connecté Conserver la connexion pendant 30 jours sur cet appareil." [checked] [ref=f1e16]
+          - generic [ref=f1e19]:
+            - strong [ref=f1e20]: Rester connecté
+            - generic [ref=f1e21]: Conserver la connexion pendant 30 jours sur cet appareil.
+        - button "Se connecter" [ref=f1e22] [cursor=pointer]
+      - link "← Retour au site" [ref=f1e23] [cursor=pointer]:
+        - /url: /
+  - region "Symfony Web Debug Toolbar" [ref=f1e24]:
+    - generic [ref=f1e27]:
+      - link "Symfony Loading…" [ref=f1e29] [cursor=pointer]:
+        - /url: http://127.0.0.1:8000/_profiler/9f7fe5?panel=request
+        - generic [ref=f1e30]:
+          - img "Symfony" [ref=f1e31]
+          - generic [ref=f1e33]: Loading…
+      - button "Toggle Symfony Toolbar" [expanded] [ref=f1e34] [cursor=pointer]:
+        - generic "Close Toolbar" [ref=f1e35]

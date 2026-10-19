@@ -1,0 +1,36 @@
+{% extends 'admin/base.html.twig' %}
+{% import 'macros/ui.html.twig' as ui %}
+
+{% block title %}Événements{% endblock %}
+
+{% block body %}
+<header class="admin-page-heading">
+    <div><span class="admin-kicker">Événements</span><h1>After Champagne Work</h1><p>5<sup>e</sup> édition · L’usage raisonné de l’IA @ work · Jeudi 19 novembre 2026 · Hôtel Royal</p></div>
+    <a class="admin-button admin-button-light" href="{{ path('admin_events_export') }}" data-turbo="false">{{ ui.icon('up') }} Exporter pour Excel (.csv)</a>
+</header>
+
+<section class="admin-panel">
+    <header class="admin-panel-header admin-table-heading">
+        <div><h2>Les inscrits <span class="admin-count">{{ registrations|length }}</span></h2><p>Export CSV avec séparateur point-virgule (;).</p></div>
+        <a class="admin-text-link" href="{{ path('app_event_after_champagne_work') }}" target="_blank" rel="noopener">Page d’inscription {{ ui.icon('up') }}</a>
+    </header>
+    <div class="admin-table-wrap">
+        <table class="admin-table admin-event-table">
+            <thead><tr><th>Prénom</th><th>Nom</th><th>E-mail</th><th>Téléphone</th><th>Inscrit le</th></tr></thead>
+            <tbody>
+            {% for registration in registrations %}
+                <tr>
+                    <td>{{ registration.firstName }}</td>
+                    <td>{{ registration.lastName }}</td>
+                    <td><a href="mailto:{{ registration.email }}">{{ registration.email }}</a></td>
+                    <td>{{ registration.phone }}</td>
+                    <td><time datetime="{{ registration.createdAt|date('c') }}">{{ registration.createdAt|date('d/m/Y à H:i', 'Europe/Paris') }}</time></td>
+                </tr>
+            {% else %}
+                <tr><td class="admin-empty-state" colspan="5"><strong>Aucune inscription pour le moment</strong><span>Les inscriptions reçues depuis le formulaire apparaîtront ici.</span></td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
