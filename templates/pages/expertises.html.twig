@@ -244,10 +244,27 @@
 </div>
 </section>
 {% if catalogAvailable %}
-<section class="catalogue-bridge" aria-label="Training catalogue">
-<a class="button button-primary catalogue-button" href="{{ path('app_catalog') }}">Catalogue<span class="arrow-box">
+<section class="catalogue-bridge" data-section="catalogue" data-section-label="Training catalogue" data-reveal-target="item" aria-labelledby="catalogue-title">
+<a class="catalogue-card" href="{{ path('app_catalog') }}" aria-labelledby="catalogue-title catalogue-action">
+<div class="catalogue-copy">
+<div class="eyebrow">The training catalogue</div>
+<h2 id="catalogue-title">Your next chapter<br><span>starts here.</span></h2>
+<p>Explore our professional training courses in finance, compliance, risk and governance. Find the expertise to take your team further.</p>
+<ul class="catalogue-topics" aria-label="Training topics">
+<li>Compliance</li><li>Finance</li><li>Risk &amp; governance</li>
+</ul>
+<span class="catalogue-action" id="catalogue-action">Explore the catalogue<span class="catalogue-arrow">
 <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
-</span></a>
+</span></span>
+<small class="catalogue-note">An interactive catalogue. A world of possibilities.</small>
+</div>
+<div class="catalogue-preview">
+<div class="catalogue-book">
+<img src="{{ asset('media/catalogue/default/pages/00-cover.webp') }}" alt="Cover of the Les Consultants professional training catalogue" width="1020" height="1442" loading="lazy" decoding="async">
+</div>
+<span class="catalogue-preview-caption" aria-hidden="true">Browse. Discover. Grow.</span>
+</div>
+</a>
 </section>
 {% endif %}
 <section class="cta-section" data-reveal-target="item">
