@@ -32,7 +32,14 @@ final readonly class CatalogManager
 
     public function current(): Catalog
     {
-        return $this->catalogs->findCurrent() ?? throw new \LogicException('Le catalogue n’est pas initialisé. Exécutez les migrations Doctrine.');
+        $catalog = $this->catalogs->findCurrent();
+        if (null === $catalog) {
+            $catalog = new Catalog();
+            $this->entityManager->persist($catalog);
+            $this->entityManager->flush();
+        }
+
+        return $catalog;
     }
 
     public function saveSettings(Catalog $catalog, string $title, bool $enabled): void
