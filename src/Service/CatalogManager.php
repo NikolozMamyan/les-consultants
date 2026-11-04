@@ -42,6 +42,51 @@ final readonly class CatalogManager
         return $catalog;
     }
 
+    public function restoreDefaultPages(Catalog $catalog): int
+    {
+        $pages = $this->pages->findForCatalog($catalog);
+        $defaults = [
+            '/media/catalogue/default/pages/00-cover.webp' => ['Couverture', null],
+            '/media/catalogue/default/pages/01-introduction.webp' => ['Notre approche', null],
+            '/media/catalogue/default/pages/36-contact.webp' => ['Programme sur mesure', 'mailto:pruffin@les-consultants.lu'],
+            '/media/catalogue/default/pages/37-back.webp' => ['Merci', 'https://les-consultants.lu'],
+        ];
+        $defaultPages = [];
+        $contentPages = [];
+        foreach ($pages as $page) {
+            $path = $page->getImagePath();
+            if (isset($defaults[$path ?? ''])) {
+                $defaultPages[$path] = $page;
+            } else {
+                $contentPages[] = $page;
+            }
+        }
+
+        $created = 0;
+        foreach ($defaults as $path => [$title, $link]) {
+            if (!isset($defaultPages[$path])) {
+                $page = (new CatalogPage($catalog, 1))
+                    ->setTitle($title)
+                    ->setImagePath($path)
+                    ->setLinkUrl($link)
+                    ->setOpenLinkInNewTab(null !== $link && str_starts_with($link, 'https://'));
+                $this->entityManager->persist($page);
+                $defaultPages[$path] = $page;
+                ++$created;
+            }
+        }
+
+        $defaultPages = array_values(array_replace($defaults, $defaultPages));
+        $orderedPages = [$defaultPages[0], $defaultPages[1], ...$contentPages, $defaultPages[2], $defaultPages[3]];
+        foreach ($orderedPages as $index => $page) {
+            $page->setPosition($index + 1);
+        }
+        $catalog->touch();
+        $this->entityManager->flush();
+
+        return $created;
+    }
+
     public function saveSettings(Catalog $catalog, string $title, bool $enabled): void
     {
         $title = trim($title);
@@ -120,7 +165,7 @@ final readonly class CatalogManager
             throw new \InvalidArgumentException('Vous pouvez ajouter au maximum 50 images à la fois.');
         }
 
-        $position = $this->pages->nextPosition($catalog);
+        $position = $this->prepareImport($catalog, count($files));
         foreach ($files as $file) {
             $title = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $page = (new CatalogPage($catalog, $position++))
@@ -138,10 +183,11 @@ final readonly class CatalogManager
     /**
      * @param list<UploadedFile> $files
      * @param array<int, mixed>  $requestedPageCounts
+     * @param array<int, mixed>  $requestedPageTitles
      *
      * @return array{documents: int, pages: int}
      */
-    public function addPdfs(Catalog $catalog, array $files, array $requestedPageCounts, string $requestedTitle): array
+    public function addPdfs(Catalog $catalog, array $files, array $requestedPageCounts, string $requestedTitle, array $requestedPageTitles = []): array
     {
         $files = array_values(array_filter($files, static fn (mixed $file): bool => $file instanceof UploadedFile));
         if ([] === $files) {
@@ -162,7 +208,7 @@ final readonly class CatalogManager
             $pageCounts[$index] = $pageCount;
         }
 
-        $position = $this->pages->nextPosition($catalog);
+        $position = $this->prepareImport($catalog, array_sum($pageCounts));
         $totalPages = 0;
         $storedPaths = [];
 
@@ -175,9 +221,17 @@ final readonly class CatalogManager
                 $fallbackTitle = pathinfo($originalName, PATHINFO_FILENAME);
                 $baseTitle = 1 === count($files) ? trim($requestedTitle) : '';
                 $baseTitle = mb_substr('' !== $baseTitle ? $baseTitle : ('' !== trim($fallbackTitle) ? $fallbackTitle : 'Catalogue'), 0, 150);
+                $pageTitles = $requestedPageTitles[$index] ?? [];
+                if (!is_array($pageTitles)) {
+                    $pageTitles = [];
+                }
 
                 for ($number = 1; $number <= $pageCount; ++$number) {
                     $title = 1 === $pageCount ? $baseTitle : sprintf('%s · page %d', $baseTitle, $number);
+                    $pageTitle = $pageTitles[$number - 1] ?? null;
+                    if (is_string($pageTitle) && '' !== trim($pageTitle) && !(1 === $pageCount && 1 === count($files) && '' !== trim($requestedTitle))) {
+                        $title = trim($pageTitle);
+                    }
                     $page = (new CatalogPage($catalog, $position++))
                         ->setTitle(mb_substr($title, 0, 180))
                         ->setPdfPath($pdfPath)
@@ -300,6 +354,26 @@ final readonly class CatalogManager
         $catalog->touch();
         $this->entityManager->flush();
         $this->deleteUnusedMedia($oldImage, $oldPdf);
+    }
+
+    private function prepareImport(Catalog $catalog, int $pageCount): int
+    {
+        $pages = $this->pages->findForCatalog($catalog);
+        if ([] === $pages) {
+            $this->restoreDefaultPages($catalog);
+            $pages = $this->pages->findForCatalog($catalog);
+        }
+
+        $position = $this->pages->nextPosition($catalog);
+        foreach (array_reverse($pages) as $page) {
+            if (!in_array($page->getImagePath(), ['/media/catalogue/default/pages/36-contact.webp', '/media/catalogue/default/pages/37-back.webp'], true)) {
+                break;
+            }
+            $position = $page->getPosition();
+            $page->setPosition($position + $pageCount);
+        }
+
+        return $position;
     }
 
     private function storeImage(UploadedFile $file): string

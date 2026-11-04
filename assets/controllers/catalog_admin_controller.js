@@ -6,6 +6,7 @@ export default class extends Controller {
     static targets = [
         'pdfInput',
         'pdfPageCounts',
+        'pdfPageTitles',
         'pdfFileCount',
         'pdfStatus',
         'pdfSubmit',
@@ -47,12 +48,14 @@ export default class extends Controller {
         const files = Array.from(this.pdfInputTarget.files);
         const inspectionId = ++this.inspectionId;
         this.pdfPageCountsTarget.value = '';
+        this.pdfPageTitlesTarget.value = '';
         this.pdfFileCountTarget.value = String(files.length);
         this.pdfSelectionTarget.replaceChildren();
         this.pdfSelectionTarget.hidden = files.length === 0;
 
         if (files.length === 0) {
             this.pdfStatusTarget.textContent = 'Les documents seront analysés avant l’import.';
+            this.pdfSubmitTarget.disabled = false;
             return;
         }
         if (files.length > 50) {
@@ -64,6 +67,7 @@ export default class extends Controller {
         this.pdfSubmitTarget.disabled = true;
         this.pdfStatusTarget.textContent = `Analyse de ${files.length} PDF…`;
         const pageCounts = Array(files.length).fill(0);
+        const pageTitles = Array.from({ length: files.length }, () => []);
         const rows = files.map((file, index) => this.createPdfSelectionRow(file, index));
         let completed = 0;
         let cursor = 0;
@@ -83,6 +87,14 @@ export default class extends Controller {
                     }
 
                     pageCounts[index] = pdfDocument.numPages;
+                    for (let number = 1; number <= pdfDocument.numPages; number += 1) {
+                        if (inspectionId !== this.inspectionId) return;
+                        try {
+                            pageTitles[index].push(await this.extractPdfPageTitle(pdfDocument, number));
+                        } catch {
+                            pageTitles[index].push('');
+                        }
+                    }
                     await this.renderPdfPage(pdfDocument, 1, row.canvas, 150);
                     row.detail.textContent = `${pdfDocument.numPages} page${pdfDocument.numPages > 1 ? 's' : ''}`;
                     row.element.classList.add('is-ready');
@@ -111,8 +123,26 @@ export default class extends Controller {
 
         const totalPages = pageCounts.reduce((total, count) => total + count, 0);
         this.pdfPageCountsTarget.value = JSON.stringify(pageCounts);
+        this.pdfPageTitlesTarget.value = JSON.stringify(pageTitles);
         this.pdfStatusTarget.textContent = `${files.length} PDF sélectionné${files.length > 1 ? 's' : ''} · ${totalPages || 'nombre de'} page${totalPages > 1 ? 's' : ''} détectée${totalPages > 1 ? 's' : ''}.`;
         this.pdfSubmitTarget.disabled = false;
+    }
+
+    async extractPdfPageTitle(pdfDocument, pageNumber) {
+        const page = await pdfDocument.getPage(pageNumber);
+        const content = await page.getTextContent();
+        const items = content.items.filter((item) => typeof item.str === 'string' && item.str.trim());
+        const largestSize = Math.max(0, ...items.map((item) => Math.hypot(item.transform[2], item.transform[3])));
+        const title = items
+            .filter((item) => Math.hypot(item.transform[2], item.transform[3]) >= largestSize * 0.9)
+            .map((item) => item.str.trim())
+            .join(' ')
+            .replace(/\s+/g, ' ')
+            .replace(/\s*(['’ʼ])\s*/g, '$1')
+            .trim();
+        page.cleanup();
+
+        return title.slice(0, 180);
     }
 
     createPdfSelectionRow(file, index) {

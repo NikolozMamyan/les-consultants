@@ -13,6 +13,10 @@
     <header class="admin-page-heading admin-catalog-heading">
         <div><span class="admin-kicker">Module commercial</span><h1>Constructeur de catalogue</h1><p>Importez vos PDF ou images, organisez les pages et configurez leurs redirections.</p></div>
         <div class="admin-heading-actions">
+            <form action="{{ path('admin_catalog_restore_covers') }}" method="post">
+                <input type="hidden" name="_token" value="{{ csrf_token('catalog_restore_covers') }}">
+                <button class="admin-button admin-button-light" type="submit">Rétablir les couvertures</button>
+            </form>
             <a class="admin-button admin-button-light" href="{{ path('admin_catalog_preview') }}" target="_blank" rel="noopener">Aperçu {{ ui.icon('eye') }}</a>
         </div>
     </header>
@@ -30,8 +34,8 @@
     <section class="admin-panel admin-catalog-contents" id="sommaire">
         <header>
             <span class="admin-catalog-import-icon">{{ ui.icon('book') }}</span>
-            <div><span class="admin-kicker">Pages automatiques</span><h2>{{ catalog.contentsTitle }}</h2><p>Faites glisser les documents pour personnaliser leur ordre.</p></div>
-            <span class="admin-catalog-contents-count">{{ contentsEntries|length }} document{{ contentsEntries|length > 1 ? 's' : '' }} · {{ contentsPages|length }} page{{ contentsPages|length > 1 ? 's' : '' }}</span>
+            <div><span class="admin-kicker">Pages automatiques</span><h2>{{ catalog.contentsTitle }}</h2><p>Une entrée par page PDF. Personnalisez les titres et faites glisser les entrées pour changer leur ordre.</p></div>
+            <span class="admin-catalog-contents-count">{{ contentsEntries|length }} entrée{{ contentsEntries|length > 1 ? 's' : '' }} · {{ contentsPages|length }} page{{ contentsPages|length > 1 ? 's' : '' }}</span>
         </header>
         <form action="{{ path('admin_catalog_contents') }}" method="post">
             <input type="hidden" name="_token" value="{{ csrf_token('catalog_contents') }}">
@@ -42,12 +46,12 @@
                         <div data-catalog-admin-target="contentsEntry" data-contents-key="{{ entry.key }}" data-action="dragover->catalog-admin#overContents drop->catalog-admin#dropContents">
                             <button type="button" draggable="true" data-action="dragstart->catalog-admin#startContentsDrag dragend->catalog-admin#finishContentsDrag" aria-label="Déplacer {{ entry.label }}" title="Glisser pour déplacer"><span aria-hidden="true">⠿</span></button>
                             <i>{{ '%02d'|format(loop.index) }}</i>
-                            <label><input type="text" name="contentsLabels[{{ entry.key }}]" maxlength="180" value="{{ entry.label }}"><small>{{ entry.filename }} · page {{ entry.pageNumber }}{% if entry.pageCount > 1 %} · {{ entry.pageCount }} pages PDF{% endif %}</small></label>
+                            <label><input type="text" name="contentsLabels[{{ entry.key }}]" maxlength="180" value="{{ entry.label }}"><small>{{ entry.filename }} · page {{ entry.pageNumber }} du catalogue{% if entry.pageCount > 1 %} · page {{ entry.pdfPage }} du PDF{% endif %}</small></label>
                         </div>
                     {% endfor %}
                 </div>
                 <footer>
-                    <p data-catalog-admin-target="contentsStatus">Le nouvel ordre est enregistré automatiquement. Un champ vide reprend le nom du PDF.</p>
+                    <p data-catalog-admin-target="contentsStatus">Le nouvel ordre est enregistré automatiquement. Un champ vide reprend le titre de la page.</p>
                     <div><button class="admin-button admin-button-light" type="submit" name="resetOrder" value="1">Rétablir l’ordre automatique</button><button class="admin-button admin-button-light" type="submit" name="resetLabels" value="1">Rétablir les noms</button><button class="admin-button admin-button-primary" type="submit">Enregistrer {{ ui.icon('check') }}</button></div>
                 </footer>
             {% else %}
@@ -58,10 +62,11 @@
 
     <div class="admin-catalog-import-grid">
         <section class="admin-panel admin-catalog-import">
-            <header><span class="admin-catalog-import-icon">{{ ui.icon('book') }}</span><div><span class="admin-kicker">Import principal</span><h2>Importer des PDF</h2><p>Chaque document peut contenir une ou plusieurs pages.</p></div></header>
+            <header><span class="admin-catalog-import-icon">{{ ui.icon('book') }}</span><div><span class="admin-kicker">Import principal</span><h2>Importer des PDF</h2><p>PDF multipages ou fichiers séparés : chaque page est ajoutée au sommaire avec son titre détecté.</p></div></header>
             <form action="{{ path('admin_catalog_import_pdf') }}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token('catalog_import_pdf') }}">
                 <input type="hidden" name="pdfPageCounts" data-catalog-admin-target="pdfPageCounts">
+                <input type="hidden" name="pdfPageTitles" data-catalog-admin-target="pdfPageTitles">
                 <input type="hidden" name="pdfFileCount" data-catalog-admin-target="pdfFileCount">
                 <label><span>Nom du document <small>optionnel · utilisé pour un PDF unique</small></span><input type="text" name="pdfTitle" maxlength="150" placeholder="Catalogue formations 2027"></label>
                 <label class="admin-catalog-file"><input type="file" name="pdfs[]" accept=".pdf,application/pdf" multiple required data-catalog-admin-target="pdfInput" data-action="change->catalog-admin#inspectPdf"><span>{{ ui.icon('book') }}</span><strong>Choisir un ou plusieurs PDF</strong><small>50 fichiers · 90 Mo et 200 pages maximum par PDF</small></label>

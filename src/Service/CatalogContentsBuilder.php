@@ -14,7 +14,7 @@ final class CatalogContentsBuilder
     /**
      * @param list<CatalogPage> $pages
      *
-     * @return list<array{key: string, label: string, generatedLabel: string, filename: string, pageIndex: int, pageNumber: int, pageCount: int, position: int}>
+     * @return list<array{key: string, label: string, generatedLabel: string, filename: string, pdfPage: int, pageIndex: int, pageNumber: int, pageCount: int, position: int}>
      */
     public function build(Catalog $catalog, array $pages): array
     {
@@ -25,35 +25,50 @@ final class CatalogContentsBuilder
             }
         }
 
-        $contentsPageCount = (int) ceil(count($documentPageCounts) / self::ENTRIES_PER_PAGE);
         $entries = [];
         $seen = [];
         $manualLabels = $catalog->getContentsLabels();
         foreach ($pages as $index => $page) {
             $pdfPath = $page->getPdfPath();
-            if (null === $pdfPath || isset($seen[$pdfPath])) {
+            if (null === $pdfPath) {
                 continue;
             }
 
-            $seen[$pdfPath] = true;
-            $key = hash('sha256', $pdfPath);
+            $pdfPage = $page->getPdfPage() ?? 1;
+            $key = hash('sha256', $pdfPath.($pdfPage > 1 ? '#page='.$pdfPage : ''));
+            if (isset($seen[$key])) {
+                continue;
+            }
+            $seen[$key] = true;
             $filename = $page->getPdfOriginalName() ?? basename($pdfPath);
-            $generatedLabel = $this->generatedLabel($filename, $page->getTitle());
+            $generatedLabel = trim($page->getTitle());
+            if ('' === $generatedLabel) {
+                $generatedLabel = $this->generatedLabel($filename, '');
+            }
             $manualLabel = $manualLabels[$key] ?? null;
             $label = is_string($manualLabel) && '' !== trim($manualLabel) ? trim($manualLabel) : $generatedLabel;
-            $pageIndex = $index + ($index > 0 ? $contentsPageCount : 0);
 
             $entries[] = [
                 'key' => $key,
                 'label' => $label,
                 'generatedLabel' => $generatedLabel,
                 'filename' => $filename,
-                'pageIndex' => $pageIndex,
-                'pageNumber' => $pageIndex + 1,
+                'pdfPage' => $pdfPage,
+                'pageIndex' => $index,
+                'pageNumber' => $index + 1,
                 'pageCount' => $documentPageCounts[$pdfPath],
                 'position' => count($entries) + 1,
             ];
         }
+
+        $contentsPageCount = (int) ceil(count($entries) / self::ENTRIES_PER_PAGE);
+        foreach ($entries as &$entry) {
+            if ($entry['pageIndex'] > 0) {
+                $entry['pageIndex'] += $contentsPageCount;
+                $entry['pageNumber'] += $contentsPageCount;
+            }
+        }
+        unset($entry);
 
         $manualPositions = array_flip(array_values(array_filter(
             $catalog->getContentsOrder(),
@@ -74,9 +89,9 @@ final class CatalogContentsBuilder
     }
 
     /**
-     * @param list<array{key: string, label: string, generatedLabel: string, filename: string, pageIndex: int, pageNumber: int, pageCount: int, position: int}> $entries
+     * @param list<array{key: string, label: string, generatedLabel: string, filename: string, pdfPage: int, pageIndex: int, pageNumber: int, pageCount: int, position: int}> $entries
      *
-     * @return list<list<array{key: string, label: string, generatedLabel: string, filename: string, pageIndex: int, pageNumber: int, pageCount: int, position: int}>>
+     * @return list<list<array{key: string, label: string, generatedLabel: string, filename: string, pdfPage: int, pageIndex: int, pageNumber: int, pageCount: int, position: int}>>
      */
     public function paginate(array $entries): array
     {

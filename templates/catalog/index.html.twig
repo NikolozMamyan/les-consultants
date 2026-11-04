@@ -136,7 +136,7 @@
                 {% if loop.first and hasContentsPage %}
                     {% for contentsPage in contentsPages %}
                         <button type="button" data-page-index="{{ loop.index }}" data-action="catalog#goTo" data-catalog-target="thumbnail">
-                            <span class="catalog-thumbnail-media catalog-thumbnail-contents"><b>{{ catalog.contentsTitle }}</b><small>{{ contentsPage|length }} documents · {{ loop.index }}/{{ contentsPageCount }}</small><i>{{ '%02d'|format(loop.index + 1) }}</i></span>
+                            <span class="catalog-thumbnail-media catalog-thumbnail-contents"><b>{{ catalog.contentsTitle }}</b><small>{{ contentsPage|length }} entrées · {{ loop.index }}/{{ contentsPageCount }}</small><i>{{ '%02d'|format(loop.index + 1) }}</i></span>
                             <strong>{{ catalog.contentsTitle }}{% if contentsPageCount > 1 %} · {{ loop.index }}/{{ contentsPageCount }}{% endif %}</strong>
                         </button>
                     {% endfor %}

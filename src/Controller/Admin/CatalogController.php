@@ -82,6 +82,16 @@ final class CatalogController extends AbstractController
         return $this->redirectToRoute('admin_catalog');
     }
 
+    #[Route('/retablir-couvertures', name: '_restore_covers', methods: ['POST'])]
+    public function restoreCovers(Request $request): RedirectResponse
+    {
+        $this->validateToken('catalog_restore_covers', $request);
+        $this->manager->restoreDefaultPages($this->manager->current());
+        $this->addFlash('success', 'Les pages de couverture, de présentation et de fin ont été rétablies. Vos formations ont été conservées.');
+
+        return $this->redirectToRoute('admin_catalog', ['_fragment' => 'pages']);
+    }
+
     #[Route('/sommaire', name: '_contents', methods: ['POST'])]
     public function contents(Request $request): RedirectResponse
     {
@@ -159,11 +169,21 @@ final class CatalogController extends AbstractController
                 $pageCounts = [];
             }
 
+            try {
+                $pageTitles = json_decode($request->request->getString('pdfPageTitles'), true, 512, \JSON_THROW_ON_ERROR);
+            } catch (\JsonException) {
+                $pageTitles = [];
+            }
+            if (!is_array($pageTitles)) {
+                $pageTitles = [];
+            }
+
             $result = $this->manager->addPdfs(
                 $this->manager->current(),
                 $files,
                 $pageCounts,
                 $request->request->getString('pdfTitle'),
+                $pageTitles,
             );
             $this->addFlash('success', sprintf(
                 '%d PDF%s importé%s en %d page%s.',
