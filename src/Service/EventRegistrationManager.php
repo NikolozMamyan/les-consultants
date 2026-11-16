@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Dto\EventRegistration as RegistrationData;
 use App\Entity\EventRegistration;
+use App\Entity\EventRegistrationSettings;
 use App\Repository\EventRegistrationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -17,6 +18,19 @@ final readonly class EventRegistrationManager
         private EntityManagerInterface $entityManager,
         private EventRegistrationRepository $registrations,
     ) {
+    }
+
+    public function isRegistrationOpen(): bool
+    {
+        return $this->entityManager->find(EventRegistrationSettings::class, self::EVENT_SLUG)?->isRegistrationOpen() ?? false;
+    }
+
+    public function setRegistrationOpen(bool $open): void
+    {
+        $settings = $this->entityManager->find(EventRegistrationSettings::class, self::EVENT_SLUG) ?? new EventRegistrationSettings(self::EVENT_SLUG);
+        $settings->setRegistrationOpen($open);
+        $this->entityManager->persist($settings);
+        $this->entityManager->flush();
     }
 
     public function register(RegistrationData $data): void

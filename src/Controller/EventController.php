@@ -20,6 +20,17 @@ final class EventController extends AbstractController
     #[Route('/after-champagne-work', name: 'app_event_after_champagne_work', methods: ['GET', 'POST'])]
     public function register(Request $request, EventRegistrationManager $registrations, LoggerInterface $logger): Response
     {
+        if (!$registrations->isRegistrationOpen()) {
+            $response = $this->render('events/after_champagne_work.html.twig', [
+                'registrationOpen' => false,
+                'registered' => false,
+            ]);
+            $response->headers->set('X-Robots-Tag', 'noindex, nofollow');
+            $response->headers->set('Cache-Control', 'private, no-store');
+
+            return $response;
+        }
+
         $form = $this->createForm(EventRegistrationType::class, new EventRegistration());
         $form->handleRequest($request);
         $status = $form->isSubmitted() ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK;
@@ -39,6 +50,7 @@ final class EventController extends AbstractController
 
         $response = $this->render('events/after_champagne_work.html.twig', [
             'registrationForm' => $form,
+            'registrationOpen' => true,
             'registered' => [] !== $request->getSession()->getFlashBag()->get('event_registration_success'),
         ], new Response(status: $status));
         $response->headers->set('X-Robots-Tag', 'noindex, nofollow');

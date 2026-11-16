@@ -29,6 +29,7 @@ final class EventControllerTest extends WebTestCase
         $this->client->setServerParameter('HTTP_ORIGIN', 'http://localhost');
         $this->connection = self::getContainer()->get(Connection::class);
         $this->connection->beginTransaction();
+        self::getContainer()->get(EventRegistrationManager::class)->setRegistrationOpen(true);
     }
 
     protected function tearDown(): void
@@ -37,6 +38,28 @@ final class EventControllerTest extends WebTestCase
             $this->connection->rollBack();
         }
         parent::tearDown();
+    }
+
+    public function testClosedRegistrationsShowSoldOutAndRejectAnAlreadyOpenedForm(): void
+    {
+        $crawler = $this->client->request('GET', self::PATH);
+        $form = $crawler->selectButton('Je m’inscris')->form($this->validFields());
+        self::getContainer()->get(EventRegistrationManager::class)->setRegistrationOpen(false);
+
+        $this->client->submit($form);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('.event-sold-out h2', 'Sold out');
+        self::assertSelectorExists('a[href="mailto:pruffin@les-consultants.lu"]');
+        self::assertSelectorNotExists('form');
+        self::assertSame(0, $this->registrationCount());
+
+        $this->client->request('GET', self::PATH);
+        self::assertResponseIsSuccessful();
+        self::assertResponseHeaderSame('X-Robots-Tag', 'noindex, nofollow');
+        self::assertStringContainsString('no-store', $this->client->getResponse()->headers->get('Cache-Control'));
+        self::assertSelectorExists('.event-sold-out');
+        self::assertSelectorNotExists('form');
     }
 
     public function testTheEventPageIsPublicAndNotIndexed(): void
@@ -136,6 +159,9 @@ final class EventControllerTest extends WebTestCase
     public function testDatabaseFailureKeepsFormDataWithoutShowingThankYou(): void
     {
         $entityManager = $this->createStub(EntityManagerInterface::class);
+        $settings = new \App\Entity\EventRegistrationSettings(EventRegistrationManager::EVENT_SLUG);
+        $settings->setRegistrationOpen(true);
+        $entityManager->method('find')->willReturn($settings);
         $entityManager->method('flush')->willThrowException(new class('Database unavailable') extends \RuntimeException implements DatabaseException {});
         self::getContainer()->set(EventRegistrationManager::class, new EventRegistrationManager(
             $entityManager,

@@ -61,6 +61,40 @@ final class AdminEventControllerTest extends WebTestCase
         self::assertStringContainsString('no-store', $this->client->getResponse()->headers->get('Cache-Control'));
     }
 
+    public function testAnAdminCanOpenAndCloseRegistrations(): void
+    {
+        $this->loginAdmin();
+        self::getContainer()->get(EventRegistrationManager::class)->setRegistrationOpen(false);
+
+        foreach ([true, false] as $open) {
+            $crawler = $this->client->request('GET', '/admin/evenements');
+            $form = $crawler->selectButton('Enregistrer')->form();
+            $form['registration_open']->setValue($open);
+            $this->client->submit($form);
+
+            self::assertResponseRedirects('/admin/evenements', 303);
+            $this->client->followRedirect();
+            self::assertSelectorTextContains('.admin-event-settings h2', $open ? 'Inscriptions ouvertes' : 'Inscriptions fermées');
+            $this->client->request('GET', '/after-champagne-work');
+            self::assertResponseIsSuccessful();
+            self::assertSelectorCount($open ? 0 : 1, '.event-sold-out');
+            self::assertSelectorCount($open ? 1 : 0, 'form');
+        }
+    }
+
+    public function testSettingsRequireAuthenticationAndAValidCsrfToken(): void
+    {
+        $this->client->request('POST', '/admin/evenements/inscriptions', ['registration_open' => '1']);
+        self::assertResponseRedirects('/admin/connexion');
+
+        $this->loginAdmin();
+        self::getContainer()->get(EventRegistrationManager::class)->setRegistrationOpen(false);
+        $this->client->request('POST', '/admin/evenements/inscriptions', ['registration_open' => '1', '_token' => 'invalid']);
+
+        self::assertResponseStatusCodeSame(403);
+        self::assertFalse(self::getContainer()->get(EventRegistrationManager::class)->isRegistrationOpen());
+    }
+
     public function testAnAdminCanSeeTheEmptyState(): void
     {
         $this->loginAdmin();

@@ -9,6 +9,19 @@
     <a class="admin-button admin-button-light" href="{{ path('admin_events_export') }}" data-turbo="false">{{ ui.icon('up') }} Exporter pour Excel (.csv)</a>
 </header>
 
+<section class="admin-panel admin-event-settings">
+    <form method="post" action="{{ path('admin_events_registration_settings') }}" data-turbo="false">
+        <input type="hidden" name="_token" value="{{ csrf_token('event_registration_settings') }}">
+        <div><h2>Inscriptions {{ registrationOpen ? 'ouvertes' : 'fermées' }}</h2><p>Lorsque les inscriptions sont désactivées, les visiteurs voient la page « Sold out » et l’adresse de contact.</p></div>
+        <label class="admin-catalog-toggle">
+            <input type="checkbox" name="registration_open" value="1" role="switch"{% if registrationOpen %} checked{% endif %}>
+            <span><strong>Autoriser les inscriptions</strong></span>
+            <i aria-hidden="true"><b></b></i>
+        </label>
+        <button class="admin-button" type="submit">Enregistrer</button>
+    </form>
+</section>
+
 <section class="admin-panel">
     <header class="admin-panel-header admin-table-heading">
         <div><h2>Les inscrits <span class="admin-count">{{ registrations|length }}</span></h2><p>Export CSV avec séparateur point-virgule (;).</p></div>

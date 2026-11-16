@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noindex,nofollow">
-        <meta name="description" content="After Champagne Work, 5e édition : l’usage raisonné de l’IA @ work. Jeudi 19 novembre 2026 à l’Hôtel Royal. Inscrivez-vous avec Les Consultants.">
+        <meta name="description" content="After Champagne Work, 5e édition : l’usage raisonné de l’IA @ work. Jeudi 19 novembre 2026 à l’Hôtel Royal. {{ registrationOpen ? 'Inscrivez-vous avec Les Consultants.' : 'Sold out — les inscriptions sont closes.' }}">
         <meta name="theme-color" content="#0b8485">
         <meta name="referrer" content="strict-origin-when-cross-origin">
         <meta property="og:title" content="After Champagne Work — 5e édition | Les Consultants">
@@ -20,7 +20,7 @@
         {{ importmap('app') }}
     </head>
     <body class="event-page">
-        <a class="skip-link" href="#inscription">Aller au formulaire d’inscription</a>
+        <a class="skip-link" href="#inscription">{{ registrationOpen ? 'Aller au formulaire d’inscription' : 'Aller aux informations de contact' }}</a>
         <header class="event-header container">
             <a class="brand" href="{{ path('app_home') }}" aria-label="Les Consultants — Accueil">
                 <span class="brand-symbol"><img src="{{ asset('images/logo-original.png') }}" alt="" width="94" height="94"></span>
@@ -74,7 +74,20 @@
             </section>
 
             <section class="event-registration" id="inscription" aria-labelledby="registration-title" tabindex="-1">
-                {% if registered %}
+                {% if not registrationOpen %}
+                    <div class="event-sold-out">
+                        <span class="event-sold-out-badge">5<sup>e</sup> édition · Complet</span>
+                        <div class="eyebrow">Merci pour votre enthousiasme</div>
+                        <h2 id="registration-title">Sold out<span class="accent">.</span></h2>
+                        <p>Toutes les places pour cette édition d’After Champagne Work ont été réservées. Les inscriptions sont désormais closes.</p>
+                        <div class="event-sold-out-contact">
+                            <strong>Restons en contact</strong>
+                            <p>Pour toute question, vous pouvez nous écrire :</p>
+                            <a href="mailto:pruffin@les-consultants.lu">pruffin@les-consultants.lu {{ ui.icon('up') }}</a>
+                        </div>
+                        <p class="event-sold-out-signature">À très bientôt,<br><strong>L’équipe Les Consultants</strong></p>
+                    </div>
+                {% elseif registered %}
                     <div class="event-thanks" role="status">
                         <span class="event-thanks-icon">{{ ui.icon('check') }}</span>
                         <div class="eyebrow">Inscription confirmée</div>
